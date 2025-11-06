@@ -98,7 +98,7 @@ const Header = () => {
 const styles = createStyle({
   container: {
     // width: '100%',
-    paddingRight: 5,
+    // paddingRight: 5,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

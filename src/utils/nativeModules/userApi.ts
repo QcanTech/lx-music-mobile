@@ -80,14 +80,35 @@ export const onScriptAction = (handler: (event: ActionsEvent) => void): () => vo
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const eventEmitter = new NativeEventEmitter(UserApiModule)
   const eventListener = eventEmitter.addListener('api-action', event => {
-    if (event.data) event.data = JSON.parse(event.data as string)
-    if (event.action == 'init') {
-      if (event.data.info) event.data.info = { ...loadScriptInfo, ...event.data.info }
-      else event.data.info = { ...loadScriptInfo }
-    } else if (event.action == 'showUpdateAlert') {
-      if (!loadScriptInfo?.allowShowUpdateAlert) return
+    try {
+      if (event.data) {
+        // Safely parse the data
+        if (typeof event.data === 'string') {
+          try {
+            event.data = JSON.parse(event.data as string)
+          } catch (parseError) {
+            console.warn('Failed to parse event data:', parseError)
+            // If parsing fails, keep the original data
+          }
+        }
+      }
+      
+      if (event.action == 'init') {
+        // Safely handle the info object
+        if (event.data && typeof event.data === 'object') {
+          if (event.data.info) {
+            event.data.info = { ...loadScriptInfo, ...event.data.info }
+          } else {
+            event.data.info = { ...loadScriptInfo }
+          }
+        }
+      } else if (event.action == 'showUpdateAlert') {
+        if (!loadScriptInfo?.allowShowUpdateAlert) return
+      }
+      handler(event as ActionsEvent)
+    } catch (error) {
+      console.error('Error processing UserApi event:', error)
     }
-    handler(event as ActionsEvent)
   })
 
   return () => {

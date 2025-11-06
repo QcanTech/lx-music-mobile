@@ -1,13 +1,20 @@
-import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react'
-import { DrawerLayoutAndroid, type DrawerLayoutAndroidProps, View, type LayoutChangeEvent } from 'react-native'
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState, useEffect } from 'react'
+import { View, type LayoutChangeEvent, Platform, Dimensions } from 'react-native'
+import { Drawer } from 'react-native-drawer-layout'
 // import { getWindowSise } from '@/utils/tools'
 import { usePageVisible } from '@/store/common/hook'
 import { type COMPONENT_IDS } from '@/config/constant'
 
-interface Props extends DrawerLayoutAndroidProps {
+interface Props {
   visibleNavNames: COMPONENT_IDS[]
   widthPercentage: number
   widthPercentageMax?: number
+  renderNavigationView: () => React.ReactNode
+  drawerPosition?: 'left' | 'right'
+  drawerType?: 'front' | 'back' | 'slide' | 'permanent'
+  drawerStyle?: any
+  overlayStyle?: any
+  children: React.ReactNode
 }
 
 export interface DrawerLayoutFixedType {
@@ -16,42 +23,52 @@ export interface DrawerLayoutFixedType {
   fixWidth: () => void
 }
 
-const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({ visibleNavNames, widthPercentage, widthPercentageMax, children, ...props }, ref) => {
-  const drawerLayoutRef = useRef<DrawerLayoutAndroid>(null)
+const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({
+  visibleNavNames,
+  widthPercentage,
+  widthPercentageMax,
+  renderNavigationView,
+  drawerPosition,
+  drawerType,
+  drawerStyle,
+  overlayStyle,
+  children,
+  ...props
+}, ref) => {
+  const [isOpen, setIsOpen] = useState(false)
   const [w, setW] = useState<number | `${number}%`>('100%')
   const [drawerWidth, setDrawerWidth] = useState(0)
   const changedRef = useRef({ width: 0, changed: false })
 
+  const openDrawer = useCallback(() => {
+    setIsOpen(true)
+  }, [])
+
+  const closeDrawer = useCallback(() => {
+    setIsOpen(false)
+  }, [])
+
   const fixDrawerWidth = useCallback(() => {
     if (!changedRef.current.width) return
     changedRef.current.changed = true
-    // console.log('usePageVisible', visible, changedRef.current.width)
-    setW(changedRef.current.width - 1)
+    setW(changedRef.current.width)
   }, [])
 
-  // 修复 DrawerLayoutAndroid 在导航到其他屏幕再返回后无法打开的问题
+  // 修复 Drawer 在导航到其他屏幕再返回后无法打开的问题
   usePageVisible(visibleNavNames, useCallback((visible) => {
     if (!visible || !changedRef.current.width) return
     fixDrawerWidth()
   }, [fixDrawerWidth]))
 
   useImperativeHandle(ref, () => ({
-    openDrawer() {
-      drawerLayoutRef.current?.openDrawer()
-    },
-    closeDrawer() {
-      drawerLayoutRef.current?.closeDrawer()
-    },
-    fixWidth() {
-      fixDrawerWidth()
-    },
-  }), [fixDrawerWidth])
+    openDrawer,
+    closeDrawer,
+    fixWidth: fixDrawerWidth,
+  }), [openDrawer, closeDrawer, fixDrawerWidth])
 
 
   const handleLayout = useCallback((e: LayoutChangeEvent) => {
-    // console.log('handleLayout', e.nativeEvent.layout.width, changedRef.current.width)
     if (changedRef.current.changed) {
-      // setW(e.nativeEvent.layout.width - 1)
       setW('100%')
       changedRef.current.changed = false
     } else {
@@ -61,38 +78,45 @@ const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({ visibleNav
 
       // 重新设置面板宽度
       const wp = Math.floor(width * widthPercentage)
-      // console.log(wp, widthPercentageMax)
       setDrawerWidth(widthPercentageMax ? Math.min(wp, widthPercentageMax) : wp)
 
-      // 强制触发渲染以应用更改
-      changedRef.current.changed = true
-      setW(width - 1)
+      // Keep the full width
+      setW('100%')
     }
   }, [widthPercentage, widthPercentageMax])
+
+  const drawerStyleWithWidth = {
+    ...drawerStyle,
+    width: drawerWidth,
+  }
+
+  // Ensure drawer is closed on initial render
+  useEffect(() => {
+    setIsOpen(false)
+  }, [])
 
   return (
     <View
       onLayout={handleLayout}
       style={{ width: w, flex: 1 }}
     >
-      <DrawerLayoutAndroid
-        ref={drawerLayoutRef}
-        keyboardDismissMode="on-drag"
-        drawerWidth={drawerWidth}
+      <Drawer
+        open={isOpen}
+        onOpen={openDrawer}
+        onClose={closeDrawer}
+        renderDrawerContent={renderNavigationView}
+        drawerPosition={drawerPosition}
+        drawerType={drawerType}
+        drawerStyle={drawerStyleWithWidth}
+        overlayStyle={overlayStyle}
         {...props}
       >
-        <View style={{ marginRight: w == '100%' ? 0 : -1, flex: 1 }}>
+        <View style={{ width: '100%', flex: 1 }}>
           {children}
         </View>
-      </DrawerLayoutAndroid>
+      </Drawer>
     </View>
   )
 })
-
-// const styles = createStyle({
-//   container: {
-//     flex: 1,
-//   },
-// })
 
 export default DrawerLayoutFixed

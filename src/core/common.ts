@@ -14,8 +14,8 @@ import { saveData } from '@/plugins/storage'
 import { throttle } from '@/utils/common'
 import { getSelectedManagedFolder, saveFontSize, saveViewPrevState, setSelectedManagedFolder } from '@/utils/data'
 import { showPactModal as handleShowPactModal } from '@/navigation'
-import { hideDesktopLyricView } from '@/utils/nativeModules/lyricDesktop'
-import { getPersistedUriList, selectManagedFolder } from '@/utils/fs'
+// import { hideDesktopLyricView } from '@/utils/nativeModules/lyricDesktop'
+// import { getPersistedUriList } from '@/utils/fs'
 
 
 const throttleSaveSetting = throttle(() => {
@@ -57,7 +57,7 @@ export const exitApp = (reason: string) => {
   void Promise.all([
     hideDesktopLyric(),
     destroyPlayer(),
-    hideDesktopLyricView(),
+    // hideDesktopLyricView(),
   ]).finally(() => {
     isDestroying = false
     utilExitApp()
@@ -93,21 +93,21 @@ export const showPactModal = () => {
   handleShowPactModal()
 }
 
-export const checkStoragePermissions = async() => {
-  const selectedManagedFolder = await getSelectedManagedFolder()
-  if (selectedManagedFolder) return (await getPersistedUriList()).some(uri => selectedManagedFolder.startsWith(uri))
-  return false
-}
+// export const checkStoragePermissions = async() => {
+//   const selectedManagedFolder = await getSelectedManagedFolder()
+//   if (selectedManagedFolder) return (await getPersistedUriList()).some(uri => selectedManagedFolder.startsWith(uri))
+//   return false
+// }
 
-export const requestStoragePermission = async() => {
-  const isGranted = await checkStoragePermissions()
-  if (isGranted) return isGranted
+// export const requestStoragePermission = async() => {
+//   const isGranted = await checkStoragePermissions()
+//   if (isGranted) return isGranted
 
-  const uri = await selectManagedFolder()
-  if (!uri.isDirectory) return false
-  await setSelectedManagedFolder(uri.path)
-  return true
-}
+//   const uri = await selectManagedFolder()
+//   if (!uri.isDirectory) return false
+//   await setSelectedManagedFolder(uri.path)
+//   return true
+// }
 
 export const setBgPic = (pic: string | null) => {
   commonActions.setBgPic(pic)

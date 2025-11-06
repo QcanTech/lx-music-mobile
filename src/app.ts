@@ -3,10 +3,13 @@ import { init as initLog } from '@/utils/log'
 import { bootLog, getBootLog } from '@/utils/bootLog'
 import '@/config/globalData'
 import { getFontSize } from '@/utils/data'
-import { exitApp } from './utils/nativeModules/utils'
+// import { exitApp } from './utils/nativeModules/utils'
 import { windowSizeTools } from './utils/windowSizeTools'
 import { listenLaunchEvent } from './navigation/regLaunchedEvent'
 import { tipDialog } from './utils/tools'
+
+// Initialize gesture handler for proper worklet support
+import 'react-native-gesture-handler'
 
 console.log('starting app...')
 listenLaunchEvent()
@@ -39,7 +42,7 @@ void Promise.all([getFontSize(), windowSizeTools.init()]).then(async([fontSize])
         btnText: 'Exit',
         bgClose: false,
       }).then(() => {
-        exitApp()
+        // exitApp()
       })
       return
     }
@@ -61,7 +64,7 @@ void Promise.all([getFontSize(), windowSizeTools.init()]).then(async([fontSize])
         btnText: 'Exit',
         bgClose: false,
       }).then(() => {
-        exitApp()
+        // exitApp()
       })
     })
   })
@@ -72,6 +75,6 @@ void Promise.all([getFontSize(), windowSizeTools.init()]).then(async([fontSize])
     btnText: 'Exit',
     bgClose: false,
   }).then(() => {
-    exitApp()
+    // exitApp()
   })
 })

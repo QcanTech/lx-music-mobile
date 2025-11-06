@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native'
 import Text from '@/components/common/Text'
 import { Icon } from '@/components/common/Icon'
 import { createStyle } from '@/utils/tools'
-import { getExternalStoragePaths, stat } from '@/utils/fs'
+import { stat } from '@/utils/fs'
 import { useTheme } from '@/store/theme/hook'
 import { scaleSizeH } from '@/utils/pixelRatio'
 import { useStatusbarHeight } from '@/store/common/hook'
@@ -31,14 +31,14 @@ export default memo(({
 
   const checkExternalStoragePath = useCallback(() => {
     storagePathsRef.current = []
-    void getExternalStoragePaths().then(async(storagePaths) => {
-      for (const path of storagePaths) {
-        try {
-          if (!(await stat(path)).canRead) continue
-        } catch { continue }
-        storagePathsRef.current.push(path)
-      }
-    })
+    // void getExternalStoragePaths().then(async(storagePaths) => {
+    //   for (const path of storagePaths) {
+    //     try {
+    //       if (!(await stat(path)).canRead) continue
+    //     } catch { continue }
+    //     storagePathsRef.current.push(path)
+    //   }
+    // })
   }, [])
   useEffect(() => {
     checkExternalStoragePath()

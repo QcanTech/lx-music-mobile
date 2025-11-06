@@ -6,8 +6,8 @@ export type SizeHandler = (size: { width: number, height: number }) => void
 export const getWindowSize = async() => {
   return getWindowSizeRaw().then((size) => {
     const scale = Dimensions.get('window').scale
-    size.width = size.width / scale
-    size.height = size.height / scale
+    size.width = size.width
+    size.height = size.height
     return size
   })
 }

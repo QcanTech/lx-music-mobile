@@ -7,7 +7,7 @@ import List, { type ListType } from './List'
 import ConfirmAlert, { type ConfirmAlertType } from '@/components/common/ConfirmAlert'
 import { toast, TEMP_FILE_PATH, checkStoragePermissions, requestStoragePermission, confirmDialog } from '@/utils/tools'
 import { useI18n } from '@/lang'
-import { selectFile, unlink } from '@/utils/fs'
+import { unlink } from '@/utils/fs'
 import { useUnmounted } from '@/utils/hooks'
 import settingState from '@/store/setting/state'
 import { log } from '@/utils/log'
@@ -62,33 +62,33 @@ export default forwardRef<ChoosePathType, ChoosePathProps>(({
         //   })
         // }
       } else {
-        void selectFile({
-          extTypes: options.filter,
-          toPath: TEMP_FILE_PATH,
-        }).then((file) => {
-          // console.log(file)
-          if (!file || isUnmounted.current) return
-          if (options.filter && !options.filter.some(ext => file.data.endsWith('.' + ext))) {
-            toast(t('storage_file_no_match'), 'long')
-            void unlink(file.data)
-            return
-          }
-          onConfirm(file.data)
-        }).catch(err => {
-          if (isUnmounted.current) return
-          log.warn('open document failed: ' + err.message)
-          void confirmDialog({
-            message: t('storage_file_no_select_file_failed_tip'),
-            bgClose: false,
-          }).then((confirm) => {
-            if (!confirm) {
-              toast(t('disagree_tip'), 'long')
-              return
-            }
-            updateSetting({ 'common.useSystemFileSelector': false })
-            void handleOpenExternalStorage(options)
-          })
-        })
+        // void selectFile({
+        //   extTypes: options.filter,
+        //   toPath: TEMP_FILE_PATH,
+        // }).then((file) => {
+        //   // console.log(file)
+        //   if (!file || isUnmounted.current) return
+        //   if (options.filter && !options.filter.some(ext => file.data.endsWith('.' + ext))) {
+        //     toast(t('storage_file_no_match'), 'long')
+        //     void unlink(file.data)
+        //     return
+        //   }
+        //   onConfirm(file.data)
+        // }).catch(err => {
+        //   if (isUnmounted.current) return
+        //   log.warn('open document failed: ' + err.message)
+        //   void confirmDialog({
+        //     message: t('storage_file_no_select_file_failed_tip'),
+        //     bgClose: false,
+        //   }).then((confirm) => {
+        //     if (!confirm) {
+        //       toast(t('disagree_tip'), 'long')
+        //       return
+        //     }
+        //     updateSetting({ 'common.useSystemFileSelector': false })
+        //     void handleOpenExternalStorage(options)
+        //   })
+        // })
       }
     },
   }))

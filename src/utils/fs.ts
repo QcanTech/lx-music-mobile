@@ -3,15 +3,17 @@ import {
   Dirs,
   FileSystem,
   AndroidScoped,
-  type OpenDocumentOptions,
+  // type OpenDocumentOptions,
   type Encoding,
   type HashAlgorithm,
-  getExternalStoragePaths as _getExternalStoragePaths,
-} from 'react-native-file-system'
+  // getExternalStoragePaths as _getExternalStoragePaths,
+} from 'react-native-file-access'
 
-export type {
-  FileType,
-} from 'react-native-file-system'
+import { btoa, atob } from 'react-native-quick-base64'
+
+// export type {
+//   FileType,
+// } from 'react-native-file-access'
 
 // export const externalDirectoryPath = RNFS.ExternalDirectoryPath
 
@@ -21,14 +23,14 @@ export const temporaryDirectoryPath = Dirs.CacheDir
 export const externalStorageDirectoryPath = Dirs.SDCardDir
 export const privateStorageDirectoryPath = Dirs.DocumentDir
 
-export const getExternalStoragePaths = async(is_removable?: boolean) => _getExternalStoragePaths(is_removable)
+// export const getExternalStoragePaths = async(is_removable?: boolean) => _getExternalStoragePaths(is_removable)
 
-export const selectManagedFolder = async(isPersist: boolean = false) => AndroidScoped.openDocumentTree(isPersist)
-export const selectFile = async(options: OpenDocumentOptions) => AndroidScoped.openDocument(options)
-export const removeManagedFolder = async(path: string) => AndroidScoped.releasePersistableUriPermission(path)
-export const getManagedFolders = async() => AndroidScoped.getPersistedUriPermissions()
+// export const selectManagedFolder = async(isPersist: boolean = false) => AndroidScoped.openDocumentTree(isPersist)
+// export const selectFile = async(options: OpenDocumentOptions) => AndroidScoped.openDocument(options)
+// export const removeManagedFolder = async(path: string) => AndroidScoped.releasePersistableUriPermission(path)
+// export const getManagedFolders = async() => AndroidScoped.getPersistedUriPermissions()
 
-export const getPersistedUriList = async() => AndroidScoped.getPersistedUriPermissions()
+// export const getPersistedUriList = async() => AndroidScoped.getPersistedUriPermissions()
 
 
 export const readDir = async(path: string) => FileSystem.ls(path)
@@ -46,14 +48,14 @@ export const readFile = async(path: string, encoding?: Encoding) => FileSystem.r
 // export const copyFile = async(fromPath: string, toPath: string) => FileSystem.cp(fromPath, toPath)
 
 export const moveFile = async(fromPath: string, toPath: string) => FileSystem.mv(fromPath, toPath)
-export const gzipFile = async(fromPath: string, toPath: string) => FileSystem.gzipFile(fromPath, toPath)
-export const unGzipFile = async(fromPath: string, toPath: string) => FileSystem.unGzipFile(fromPath, toPath)
-export const gzipString = async(data: string, encoding?: Encoding) => FileSystem.gzipString(data, encoding)
-export const unGzipString = async(data: string, encoding?: Encoding) => FileSystem.unGzipString(data, encoding)
+// export const gzipFile = async(fromPath: string, toPath: string) => FileSystem.gzipFile(fromPath, toPath)
+// export const unGzipFile = async(fromPath: string, toPath: string) => FileSystem.unGzipFile(fromPath, toPath)
+export const gzipString = async(data: string, encoding?: Encoding) => btoa(data)
+export const unGzipString = async(data: string, encoding?: Encoding) => atob(data)
 
 export const existsFile = async(path: string) => FileSystem.exists(path)
 
-export const rename = async(path: string, name: string) => FileSystem.rename(path, name)
+// export const rename = async(path: string, name: string) => FileSystem.rename(path, name)
 
 export const writeFile = async(path: string, data: string, encoding?: Encoding) => FileSystem.writeFile(path, data, encoding)
 

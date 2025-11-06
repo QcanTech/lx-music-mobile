@@ -53,7 +53,7 @@ export default memo(() => {
 
 
   useEffect(() => {
-    handleGetAppCacheSize()
+    // handleGetAppCacheSize()
   }, [])
 
   return (

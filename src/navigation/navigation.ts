@@ -61,15 +61,15 @@ export async function pushHomeScreen() {
             name: HOME_SCREEN,
             options: {
               topBar: {
-                visible: false,
-                height: 0,
+                visible: true,
+                height: 3,
                 drawBehind: false,
               },
               statusBar: {
                 drawBehind: true,
                 visible: true,
                 style: getStatusBarStyle(theme.isDark),
-                backgroundColor: 'transparent',
+                backgroundColor: 'red',
               },
               navigationBar: {
                 // visible: false,
@@ -77,6 +77,9 @@ export async function pushHomeScreen() {
               },
               layout: {
                 componentBackgroundColor: theme['c-content-background'],
+              },
+              window: {
+                backgroundColor: 'red',
               },
             },
           },

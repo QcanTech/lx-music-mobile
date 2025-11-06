@@ -4,7 +4,7 @@ import Input, { type InputType } from '@/components/common/Input'
 import Text from '@/components/common/Text'
 import ConfirmAlert, { type ConfirmAlertType } from '@/components/common/ConfirmAlert'
 import { createStyle, toast } from '@/utils/tools'
-import { getManagedFolders, stat, removeManagedFolder, selectManagedFolder } from '@/utils/fs'
+import { stat } from '@/utils/fs'
 import { useTheme } from '@/store/theme/hook'
 import { getOpenStoragePath, saveOpenStoragePath } from '@/utils/data'
 import Button from '@/components/common/Button'
@@ -67,9 +67,9 @@ export default forwardRef<OpenDirModalType, { onOpenDir: (dir: string) => Promis
   useImperativeHandle(ref, () => ({
     show(paths) {
       setPaths(paths)
-      void getManagedFolders().then((dirs) => {
-        setContentPaths(dirs)
-      })
+      // void getManagedFolders().then((dirs) => {
+      //   setContentPaths(dirs)
+      // })
       confirmAlertRef.current?.setVisible(true)
       requestAnimationFrame(() => {
         void getOpenStoragePath().then(path => {
@@ -104,20 +104,20 @@ export default forwardRef<OpenDirModalType, { onOpenDir: (dir: string) => Promis
     confirmAlertRef.current?.setVisible(false)
   }
   const removeSelectStoragePath = (path: string) => {
-    void removeManagedFolder(path).then(async() => {
-      return getManagedFolders().then((dirs) => {
-        setContentPaths(dirs)
-      })
-    })
+    // void removeManagedFolder(path).then(async() => {
+    //   return getManagedFolders().then((dirs) => {
+    //     setContentPaths(dirs)
+    //   })
+    // })
   }
   const handleSelectStorage = () => {
-    void selectManagedFolder(true).then((dir) => {
-      if (!dir || isUnmounted.current) return
-      void onOpenDir(dir.path)
-      confirmAlertRef.current?.setVisible(false)
-    }).catch((err) => {
-      toast(global.i18n.t('open_storage_select_managed_folder_failed_tip', { msg: err.message }))
-    })
+    // void selectManagedFolder(true).then((dir) => {
+    //   if (!dir || isUnmounted.current) return
+    //   void onOpenDir(dir.path)
+    //   confirmAlertRef.current?.setVisible(false)
+    // }).catch((err) => {
+    //   toast(global.i18n.t('open_storage_select_managed_folder_failed_tip', { msg: err.message }))
+    // })
   }
 
   return (

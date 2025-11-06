@@ -69,7 +69,7 @@ export default forwardRef<BlankViewType, BlankViewProps>(({ onSearch }, ref) => 
 const styles = createStyle({
   content: {
     // paddingTop: 15,
-    paddingBottom: 15,
+    paddingBottom: 115,
     paddingLeft: 15,
     paddingRight: 15,
   },

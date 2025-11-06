@@ -2,6 +2,7 @@
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
 #import <React/RCTBundleURLProvider.h>
+#import <RNGestureHandlerManager.h>
 
 @implementation AppDelegate
 

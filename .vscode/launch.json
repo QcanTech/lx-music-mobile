@@ -1,0 +1,99 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Android",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
+            "request": "launch",
+            "platform": "android",
+            "sourceMaps": true,
+            "outDir": "${workspaceFolder}/.vscode/.react",
+            "react-native": {
+                "workspaceRoot": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Run Android",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
+            "request": "launch",
+            "platform": "android",
+            "enableDebug": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceFolder}/.vscode/.react",
+            "react-native": {
+                "workspaceRoot": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Debug iOS",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
+            "request": "launch",
+            "platform": "ios",
+            "sourceMaps": true,
+            "outDir": "${workspaceFolder}/.vscode/.react",
+            "react-native": {
+                "workspaceRoot": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Run iOS",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
+            "request": "launch",
+            "platform": "ios",
+            "enableDebug": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceFolder}/.vscode/.react",
+            "react-native": {
+                "workspaceRoot": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Attach to Packager",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnative",
+            "request": "attach",
+            "sourceMaps": true,
+            "outDir": "${workspaceFolder}/.vscode/.react",
+            "react-native": {
+                "workspaceRoot": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Debug Android (Hermes)",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnativedirect",
+            "request": "launch",
+            "platform": "android",
+            "env": {
+                "REACT_DEBUGGER": "echo Setting up debugger. If this hangs, make sure you've run 'Debug Android' from VS Code once, then close the packager and try again."
+            },
+            "sourceMaps": true,
+            "outDir": "${workspaceFolder}/.vscode/.react",
+            "react-native": {
+                "workspaceRoot": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Debug iOS (Hermes)",
+            "cwd": "${workspaceFolder}",
+            "type": "reactnativedirect",
+            "request": "launch",
+            "platform": "ios",
+            "env": {
+                "REACT_DEBUGGER": "echo Setting up debugger. If this hangs, make sure you've run 'Debug iOS' from VS Code once, then close the packager and try again."
+            },
+            "sourceMaps": true,
+            "outDir": "${workspaceFolder}/.vscode/.react",
+            "react-native": {
+                "workspaceRoot": "${workspaceFolder}"
+            }
+        }
+    ]
+}

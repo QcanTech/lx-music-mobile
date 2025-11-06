@@ -2,7 +2,7 @@ import { Platform, ToastAndroid, BackHandler, Linking, Dimensions, Alert, Appear
 // import ExtraDimensions from 'react-native-extra-dimensions-android'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { storageDataPrefix } from '@/config/constant'
-import { gzipFile, readFile, temporaryDirectoryPath, unGzipFile, unlink, writeFile } from '@/utils/fs'
+import { readFile, temporaryDirectoryPath, unlink, writeFile } from '@/utils/fs'
 import { getSystemLocales, isIgnoringBatteryOptimization, isNotificationsEnabled, requestNotificationPermission, requestIgnoreBatteryOptimization, shareText } from '@/utils/nativeModules/utils'
 import musicSdk from '@/utils/musicSdk'
 import { getData, removeData, saveData } from '@/plugins/storage'
@@ -20,7 +20,8 @@ export const getDeviceLanguage = async() => {
   //     NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
   //   : await getSystemLocales()
   // deviceLanguage = typeof deviceLanguage === 'string' ? deviceLanguage.substring(0, 5).toLocaleLowerCase() : ''
-  return getSystemLocales()
+  // return getSystemLocales()
+  return "zh_cn"
 }
 
 
@@ -153,10 +154,10 @@ export const exitApp = () => {
 export const handleSaveFile = async(path: string, data: any) => {
   // if (!path.endsWith('.json')) path += '.json'
   // const buffer = gzip(data)
-  const tempFilePath = `${temporaryDirectoryPath}/tempFile.json`
-  await writeFile(tempFilePath, JSON.stringify(data))
-  await gzipFile(tempFilePath, path)
-  await unlink(tempFilePath)
+  // const tempFilePath = `${temporaryDirectoryPath}/tempFile.json`
+  await writeFile(path, JSON.stringify(data))
+  // await gzipFile(tempFilePath, path)
+  // await unlink(tempFilePath)
 }
 export const handleReadFile = async<T = unknown>(path: string): Promise<T> => {
   let isJSON = path.endsWith('.json')
@@ -164,10 +165,10 @@ export const handleReadFile = async<T = unknown>(path: string): Promise<T> => {
   if (isJSON) {
     data = await readFile(path)
   } else {
-    const tempFilePath = `${temporaryDirectoryPath}/tempFile.json`
-    await unGzipFile(path, tempFilePath)
-    data = await readFile(tempFilePath)
-    await unlink(tempFilePath)
+    // const tempFilePath = `${temporaryDirectoryPath}/tempFile.json`
+    // await unGzipFile(path, tempFilePath)
+    data = await readFile(path)
+    // await unlink(tempFilePath)
   }
   data = JSON.parse(data)
 
