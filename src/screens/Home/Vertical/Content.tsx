@@ -16,8 +16,7 @@ const Content = () => {
 
   useEffect(() => {
     const changeVisible = (visible: boolean) => {
-      console.error('changeVisible', visible)
-      visible = false
+      console.log('changeVisible', visible, drawer.current)
       if (visible) {
         drawer.current?.openDrawer()
       } else {
@@ -38,7 +37,7 @@ const Content = () => {
   return (
     <DrawerLayoutFixed
       ref={drawer}
-      widthPercentage={0}
+      widthPercentage={0.7}
       widthPercentageMax={MAX_WIDTH}
       visibleNavNames={[COMPONENT_IDS.home]}
       // drawerWidth={width}

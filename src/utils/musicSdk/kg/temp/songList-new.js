@@ -149,15 +149,15 @@ export default {
    */
   getSongListUrl(sortId, tagId, page) {
     if (tagId == null) tagId = ''
-    return `http://www2.kugou.kugou.com/yueku/v9/special/getSpecial?is_ajax=1&cdn=cdn&t=${sortId}&c=${tagId}&p=${page}`
+    return `https://www2.kugou.kugou.com/yueku/v9/special/getSpecial?is_ajax=1&cdn=cdn&t=${sortId}&c=${tagId}&p=${page}`
   },
   getInfoUrl(tagId) {
     return tagId
-      ? `http://www2.kugou.kugou.com/yueku/v9/special/getSpecial?is_smarty=1&cdn=cdn&t=5&c=${tagId}`
-      : 'http://www2.kugou.kugou.com/yueku/v9/special/getSpecial?is_smarty=1&'
+      ? `https://www2.kugou.kugou.com/yueku/v9/special/getSpecial?is_smarty=1&cdn=cdn&t=5&c=${tagId}`
+      : 'https://www2.kugou.kugou.com/yueku/v9/special/getSpecial?is_smarty=1&'
   },
   getSongListDetailUrl(id) {
-    return `http://www2.kugou.kugou.com/yueku/v9/special/single/${id}-5-9999.html`
+    return `https://www2.kugou.kugou.com/yueku/v9/special/single/${id}-5-9999.html`
   },
 
   filterInfoHotTag(rawData) {
@@ -441,7 +441,7 @@ export default {
     if (codeInfo.global_collection_id) return this.getUserListDetailByCollectionId(codeInfo.global_collection_id, page)
 
     if (codeInfo.userid != null) {
-      const songList = await createHttpFetch('http://www2.kugou.kugou.com/apps/kucodeAndShare/app/', {
+      const songList = await createHttpFetch('https://www2.kugou.kugou.com/apps/kucodeAndShare/app/', {
         method: 'POST',
         headers: {
           'KG-RC': 1,

@@ -33,6 +33,7 @@ const LeftHeader = () => {
   const statusBarHeight = useStatusbarHeight()
 
   const openMenu = () => {
+    console.log('openMenu')
     global.app_event.changeMenuVisible(true)
   }
 

@@ -21,7 +21,7 @@ export const httpFetch = (url, options = { method: 'get' }) => {
   const requestObj = fetchData(url, options)
   return {
     promise: requestObj.request.catch(err => {
-      console.log('出错', err.message)
+      console.log('出错', err)
       switch (err.message) {
         case 'socket hang up':
           return Promise.reject(new Error(requestMsg.unachievable))
@@ -103,7 +103,7 @@ const handleRequestData = async(url, {
   cache = 'no-store',
   ...options
 }) => {
-  // console.log(url, options)
+  // console.log(url, options, headers)
   headers = Object.assign({
     Accept: 'application/json',
   }, headers)
@@ -181,7 +181,7 @@ const fetchData = (url, { timeout = 15000, ...options }) => {
         ...options,
         signal: controller.signal,
       }).then(resp => (options.binary ? resp.blob() : resp.text()).then(text => {
-        // console.log(options, headers, text)
+        // console.log(options, text)
         return {
           headers: resp.headers.map,
           body: text,

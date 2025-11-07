@@ -29,7 +29,7 @@ const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({
   widthPercentageMax,
   renderNavigationView,
   drawerPosition,
-  drawerType,
+  drawerType = 'front',
   drawerStyle,
   overlayStyle,
   children,
@@ -39,10 +39,13 @@ const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({
   const [w, setW] = useState<number | `${number}%`>('100%')
   const [drawerWidth, setDrawerWidth] = useState(0)
   const changedRef = useRef({ width: 0, changed: false })
+  const [isReady, setIsReady] = useState(false)
 
   const openDrawer = useCallback(() => {
-    setIsOpen(true)
-  }, [])
+    if (isReady) {
+      setIsOpen(true)
+    }
+  }, [isReady])
 
   const closeDrawer = useCallback(() => {
     setIsOpen(false)
@@ -90,31 +93,40 @@ const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({
     width: drawerWidth,
   }
 
-  // Ensure drawer is closed on initial render
+  // Ensure drawer is closed on initial render and set ready state
   useEffect(() => {
     setIsOpen(false)
+    // Small delay to ensure gesture handler is ready
+    const timer = setTimeout(() => {
+      setIsReady(true)
+    }, 100)
+    return () => clearTimeout(timer)
   }, [])
 
+  // Adding key to force remount when isOpen changes to avoid gesture handler issues
   return (
     <View
       onLayout={handleLayout}
       style={{ width: w, flex: 1 }}
     >
-      <Drawer
-        open={isOpen}
-        onOpen={openDrawer}
-        onClose={closeDrawer}
-        renderDrawerContent={renderNavigationView}
-        drawerPosition={drawerPosition}
-        drawerType={drawerType}
-        drawerStyle={drawerStyleWithWidth}
-        overlayStyle={overlayStyle}
-        {...props}
-      >
-        <View style={{ width: '100%', flex: 1 }}>
-          {children}
-        </View>
-      </Drawer>
+      {isReady && (
+        <Drawer
+          key={`drawer-${isOpen}`}
+          open={isOpen}
+          onOpen={openDrawer}
+          onClose={closeDrawer}
+          renderDrawerContent={renderNavigationView}
+          drawerPosition={drawerPosition}
+          drawerType={drawerType}
+          drawerStyle={drawerStyleWithWidth}
+          overlayStyle={overlayStyle}
+          {...props}
+        >
+          <View style={{ width: '100%', flex: 1 }}>
+            {children}
+          </View>
+        </Drawer>
+      )}
     </View>
   )
 })
