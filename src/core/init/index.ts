@@ -21,7 +21,7 @@ const handlePushedHomeScreen = async() => {
   if (settingState.setting['common.isAgreePact']) {
     if (isFirstPush) {
       isFirstPush = false
-      void checkUpdate()
+      // void checkUpdate()
       void initDeeplink()
     }
   } else {

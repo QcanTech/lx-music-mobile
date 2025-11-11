@@ -21,7 +21,7 @@ export const httpFetch = (url, options = { method: 'get' }) => {
   const requestObj = fetchData(url, options)
   return {
     promise: requestObj.request.catch(err => {
-      console.log('出错', err)
+      console.log('出错', err, url)
       switch (err.message) {
         case 'socket hang up':
           return Promise.reject(new Error(requestMsg.unachievable))
@@ -203,7 +203,7 @@ const fetchData = (url, { timeout = 15000, ...options }) => {
           return resp
         }
       }).catch(err => {
-        // console.log(err, err.code, err.message)
+        console.log(err, err.code, err.message)
         return Promise.reject(err)
       }).finally(() => {
         if (id == null) return

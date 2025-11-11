@@ -9,7 +9,7 @@ import { listenLaunchEvent } from './navigation/regLaunchedEvent'
 import { tipDialog } from './utils/tools'
 
 // Initialize gesture handler for proper worklet support
-import 'react-native-gesture-handler'
+// import 'react-native-gesture-handler'
 
 console.log('starting app...')
 listenLaunchEvent()

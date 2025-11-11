@@ -16,6 +16,7 @@ export default {
       Referer: 'http://www.kuwo.cn/',
     })
     return this.requestObj.promise.then(({ body, statusCode }) => {
+      console.log('tipSearchBySong', body, statusCode)
       if (statusCode != 200 || !body.WORDITEMS) return Promise.reject(new Error('请求失败'))
       return body.WORDITEMS
     })
