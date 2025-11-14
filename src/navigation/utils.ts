@@ -33,6 +33,7 @@ export const showPactModal = () => {
           visible: true,
           style: getStatusBarStyle(theme.isDark),
           backgroundColor: 'transparent',
+          animate: true
         },
         navigationBar: {
           // visible: false,

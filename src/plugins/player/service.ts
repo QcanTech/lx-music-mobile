@@ -68,8 +68,8 @@ const registerPlaybackService = async() => {
 
   TrackPlayer.addEventListener(TPEvent.PlaybackError, async(err: any) => {
     console.log('playback-error', err)
-    global.app_event.error()
-    global.app_event.playerError()
+    // global.app_event.error()
+    // global.app_event.playerError()
   })
 
   TrackPlayer.addEventListener(TPEvent.RemoteSeek, async({ position }) => {

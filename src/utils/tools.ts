@@ -1,4 +1,5 @@
 import { Platform, ToastAndroid, BackHandler, Linking, Dimensions, Alert, Appearance, PermissionsAndroid, AppState, StyleSheet, type ScaledSize } from 'react-native'
+import Toast from 'react-native-toast-message'
 // import ExtraDimensions from 'react-native-extra-dimensions-android'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { storageDataPrefix } from '@/config/constant'
@@ -105,35 +106,15 @@ export const requestStoragePermission = async() => {
  * @param duration 时长
  * @param position 位置
  */
-export const toast = (message: string, duration: 'long' | 'short' = 'short', position: 'top' | 'center' | 'bottom' = 'bottom') => {
-  let _duration
-  switch (duration) {
-    case 'long':
-      _duration = ToastAndroid.LONG
-      break
-    case 'short':
-    default:
-      _duration = ToastAndroid.SHORT
-      break
-  }
-  let _position
-  let offset: number
-  switch (position) {
-    case 'top':
-      _position = ToastAndroid.TOP
-      offset = 120
-      break
-    case 'center':
-      _position = ToastAndroid.CENTER
-      offset = 0
-      break
-    case 'bottom':
-    default:
-      _position = ToastAndroid.BOTTOM
-      offset = 120
-      break
-  }
-  ToastAndroid.showWithGravityAndOffset(message, _duration, _position, 0, offset)
+export const toast = (message: string, duration: 'long' | 'short' = 'short', position: 'top' | 'bottom' = 'bottom') => {
+  // Use react-native-toast-message for cross-platform support
+  Toast.show({
+    type: 'success',
+    text1: message,
+    position: position,
+    visibilityTime: duration === 'long' ? 3500 : 2000,
+    autoHide: true,
+  })
 }
 
 export const openUrl = async(url: string): Promise<void> => Linking.canOpenURL(url).then(async() => Linking.openURL(url))

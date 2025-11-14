@@ -26,7 +26,7 @@ export default memo(() => {
       console.log(layout, size)
       sizeRef.current = [size.height, layout.height]
       const height = getStatusbarHeight(size.height, layout.height)
-
+      console.log("statusbar height:", height, size)
       if (currentHeightRef.current != height) {
         currentHeightRef.current = height
         setStatusbarHeight(height)

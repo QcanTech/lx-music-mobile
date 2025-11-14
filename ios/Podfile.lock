@@ -965,9 +965,9 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-track-player (2.1.2):
+  - react-native-track-player (4.1.1):
     - React-Core
-    - SwiftAudioEx (= 0.14.7)
+    - SwiftAudioEx (= 1.1.0)
   - React-nativeconfig (0.73.11)
   - React-NativeModulesApple (0.73.11):
     - glog
@@ -1173,7 +1173,7 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - SocketRocket (0.6.1)
-  - SwiftAudioEx (0.14.7)
+  - SwiftAudioEx (1.1.0)
   - Yoga (1.14.0)
   - ZIPFoundation (0.9.20)
 
@@ -1465,7 +1465,7 @@ SPEC CHECKSUMS:
   react-native-quick-base64: b22d82ec7dbba1987d269f81abc5d1a98d47ea9e
   react-native-quick-md5: 368e091d448aa3d32a0cbb5d3ce883ae85b72596
   react-native-slider: 6fc533efc19242ae8719e1002fd55a3f213f56ea
-  react-native-track-player: 7fcdc7299198620ec4f692d1782e5151c57cfea0
+  react-native-track-player: 6dc2e2633265704b8ab6d8124b80239d4ed1f911
   React-nativeconfig: 8fd29a35a3e4e8c37682d976667663d834ba6165
   React-NativeModulesApple: 83d7077877f8eda8e1b6055b3f8f16f7db8463b5
   React-perflogger: 3887a05940ccd34a83457fd153fdeda509b31737
@@ -1496,10 +1496,10 @@ SPEC CHECKSUMS:
   RNReanimated: 4af3924737f0bcd29c96e7b2973394deb44fdb7e
   RNVectorIcons: 76364622e6f8e55bb456705582cde20f55ef889c
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  SwiftAudioEx: 3a4024e48f3b3e45dac6bf2668d7adbe7b83f50e
+  SwiftAudioEx: f6aa653770f3a0d3851edaf8d834a30aee4a7646
   Yoga: a813a6d82538ccba91c54406404e3ed80b48a692
   ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
 
-PODFILE CHECKSUM: 2999c8e65907e86df7c90b4ec2445964842e32db
+PODFILE CHECKSUM: 30df830a2dfed5fcb07d5b042de8dbcce3080f5b
 
 COCOAPODS: 1.16.2
