@@ -1,4 +1,5 @@
 import { memo, useEffect, useState } from 'react'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import themeState, { ThemeContext } from '../theme/state'
 
@@ -21,8 +22,10 @@ export default memo(({ children }: {
   }, [])
 
   return (
-    <ThemeContext.Provider value={theme}>
-      {children}
-    </ThemeContext.Provider>
+    <SafeAreaProvider>
+      <ThemeContext.Provider value={theme}>
+        {children}
+      </ThemeContext.Provider>
+    </SafeAreaProvider>
   )
 })

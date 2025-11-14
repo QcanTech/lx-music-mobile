@@ -52,6 +52,7 @@ const styles = createStyle({
     height: '100%',
     flexGrow: 0,
     flexShrink: 1,
+    padding: 5,
     // paddingLeft: 5,
     // paddingRight: 5,
     // backgroundColor: 'rgba(0,0,0,0.1)',
