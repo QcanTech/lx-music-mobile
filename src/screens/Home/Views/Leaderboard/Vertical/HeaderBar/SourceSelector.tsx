@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { StyleSheet, View, type ViewStyle } from 'react-native'
 
 import { createStyle } from '@/utils/tools'
@@ -24,9 +24,16 @@ export interface SourceSelectorType {
 export default forwardRef<SourceSelectorType, SourceSelectorProps>(({ style, onSourceChange }, ref) => {
   const sourceSelectorRef = useRef<SourceSelectorCommonType>(null)
 
+  useEffect(() => {
+    // sourceSelectorRef.current?.setSourceList(leaderboardState.sources, leaderboardState.sources[0])
+  }, [])
   useImperativeHandle(ref, () => ({
-    setSource(source) {
-      sourceSelectorRef.current?.setSourceList(leaderboardState.sources, source)
+    setSource(source) {      
+      if (sourceSelectorRef.current) {
+        sourceSelectorRef.current.setSourceList(leaderboardState.sources, source)
+      } else {
+        console.warn('sourceSelectorRef is not initialized in setSource')
+      }
     },
   }), [])
 

@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { View } from 'react-native'
 
 // import { useGetter, useDispatch } from '@/store'
@@ -23,19 +23,31 @@ export interface HeaderBarType {
   setBound: (source: LX.OnlineSource, id: string, name: string) => void
 }
 
-
 export default forwardRef<HeaderBarType, HeaderBarProps>(({ onShowBound, onSourceChange }, ref) => {
   const activeListNameRef = useRef<ActiveListNameType>(null)
   const sourceSelectorRef = useRef<SourceSelectorType>(null)
   const theme = useTheme()
 
   useImperativeHandle(ref, () => ({
-    setBound(source, id, name) {
-      sourceSelectorRef.current?.setSource(source)
-      activeListNameRef.current?.setBound(id, name)
+    setBound(source, id, name) {      
+      if (sourceSelectorRef.current) {
+        sourceSelectorRef.current.setSource(source)
+      } else {
+        console.warn('sourceSelectorRef is not initialized')
+      }
+      
+      if (activeListNameRef.current) {
+        activeListNameRef.current.setBound(id, name)
+      } else {
+        console.warn('activeListNameRef is not initialized')
+      }
     },
   }), [])
 
+  useEffect(() => {
+    console.log('HeaderBar mounted')
+    return () => console.log('HeaderBar unmounted')
+  }, [])
 
   return (
     <View style={{ ...styles.currentList, borderBottomColor: theme['c-border-background'] }}>

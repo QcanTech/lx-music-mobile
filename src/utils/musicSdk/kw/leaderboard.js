@@ -205,8 +205,9 @@ export default {
     const request = httpFetch(requestUrl, { cache: 'default' }).promise
 
     return request.then(({ statusCode, body }) => {
+      // console.log('kw leaderboard', body)
       const rawData = wbdCrypto.decodeData(body)
-      // console.log(rawData)
+      // console.log('kw leaderboard rawData', rawData)
       const data = rawData.data
       if (statusCode !== 200 || rawData.code != 200 || !data.musiclist) return this.getList(id, page, retryNum)
 

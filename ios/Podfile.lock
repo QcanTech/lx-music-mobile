@@ -959,6 +959,12 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - react-native-quick-crypto (0.7.17):
+    - glog
+    - OpenSSL-Universal
+    - RCT-Folly (= 2022.05.16.00)
+    - React
+    - React-Core
   - react-native-quick-md5 (3.0.6):
     - React-Core
   - react-native-safe-area-context (5.6.2):
@@ -1236,6 +1242,7 @@ DEPENDENCIES:
   - react-native-local-media-metadata (from `../node_modules/react-native-local-media-metadata`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-quick-base64 (from `../node_modules/react-native-quick-base64`)
+  - react-native-quick-crypto (from `../node_modules/react-native-quick-crypto`)
   - react-native-quick-md5 (from `../node_modules/react-native-quick-md5`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -1354,6 +1361,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-quick-base64:
     :path: "../node_modules/react-native-quick-base64"
+  react-native-quick-crypto:
+    :path: "../node_modules/react-native-quick-crypto"
   react-native-quick-md5:
     :path: "../node_modules/react-native-quick-md5"
   react-native-safe-area-context:
@@ -1468,6 +1477,7 @@ SPEC CHECKSUMS:
   react-native-local-media-metadata: f81918222495af7316f9d42f8e0f2c2aeefd013c
   react-native-pager-view: 556ea1f4123da10af65bf0f91cc419e752bc0c64
   react-native-quick-base64: b22d82ec7dbba1987d269f81abc5d1a98d47ea9e
+  react-native-quick-crypto: 4a239789a4e5b1a1f0f3b022c21c6f44dd5ae3ce
   react-native-quick-md5: 368e091d448aa3d32a0cbb5d3ce883ae85b72596
   react-native-safe-area-context: 6c8805194166a9d6b3e53ba69ca76756c9bfb052
   react-native-slider: 6fc533efc19242ae8719e1002fd55a3f213f56ea

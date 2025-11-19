@@ -91,6 +91,7 @@ export default {
       }),
     })
     const { statusCode, body } = await requestObj_listDetail.promise
+    console.log('getListDetail', statusCode, body)
     if (statusCode !== 200 || body.code !== this.successCode) return this.getListDetail(id, page, ++tryNum)
     let limit = 1000
     let rangeStart = (page - 1) * limit
@@ -102,7 +103,7 @@ export default {
       try {
         list = (await musicDetailApi.getList(body.playlist.trackIds.slice(rangeStart, limit * page).map(trackId => trackId.id))).list
       } catch (err) {
-        console.log(err)
+        console.log('filterListDetail', err)
         if (err.message == 'try max num') {
           throw err
         } else {

@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import List, { type ListType, type ListProps } from './List'
 import ListMenu, { type ListMenuType, type Position } from './ListMenu'
@@ -25,6 +25,7 @@ export default forwardRef<BoardsListType, BoardsListProps>(({ onBoundChange, onP
   }), [])
 
   const handleShowMenu: ListProps['onShowMenu'] = ({ listId, name, index }, position: Position) => {
+    console.log('handleShowMenu', listId, name, index)
     listMenuRef.current?.show({
       listId,
       index,

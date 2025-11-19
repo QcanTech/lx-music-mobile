@@ -172,6 +172,7 @@ export default {
     try {
       resp = await this.getData(bangid)
     } catch (err) {
+      console.log('wy getList', err)
       if (err.message == 'try max num') {
         throw err
       } else {

@@ -111,7 +111,6 @@ const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({
     >
       {isReady && (
         <Drawer
-          key={`drawer-${isOpen}`}
           open={isOpen}
           onOpen={openDrawer}
           onClose={closeDrawer}

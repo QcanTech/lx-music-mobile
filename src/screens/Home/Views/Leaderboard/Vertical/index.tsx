@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useLayoutEffect, memo } from 'react'
 import { View } from 'react-native'
 import { createStyle } from '@/utils/tools'
 
@@ -21,7 +21,7 @@ import boardState from '@/store/leaderboard/state'
 
 const MAX_WIDTH = scaleSizeW(200)
 
-export default () => {
+const LeaderboardView = () => {
   const drawer = useRef<DrawerLayoutFixedType>(null)
   const theme = useTheme()
   const musicListRef = useRef<MusicListType>(null)
@@ -31,24 +31,46 @@ export default () => {
   const boundInfo = useRef<{ source: LX.OnlineSource, id: string | null }>({ source: 'kw', id: null })
   // const [width, setWidth] = useState(0)
 
+  useLayoutEffect(() => {
+    console.log('Components mounted, refs initialized:', {
+      boardsListRef: boardsListRef.current,
+      headerBarRef: headerBarRef.current
+    })
+  }, [])
+
   const handleBoundChange = (source: LX.OnlineSource, id: string) => {
-    musicListRef.current?.loadList(source, id)
+    console.log('handleBoundChange called', id)
+    if (musicListRef.current) {
+      musicListRef.current.loadList(source, id)
+    } else {
+      console.warn('musicListRef.current is null in handleBoundChange')
+    }
     void saveLeaderboardSetting({
       source,
       boardId: id,
     })
   }
   const onBoundChange: BoardsListProps['onBoundChange'] = (id) => {
+    console.log('onBoundChange called, id:', id)
     boundInfo.current.id = id
     void getBoardsList(boundInfo.current.source).then(list => {
       requestAnimationFrame(() => {
         const bound = list.find(l => l.id == id)
-        headerBarRef.current?.setBound(boundInfo.current.source, id, bound?.name ?? 'Unknown')
+        if (headerBarRef.current) {
+          headerBarRef.current.setBound(boundInfo.current.source, id, bound?.name ?? 'Unknown')
+        } else {
+          console.warn('headerBarRef.current is null in onBoundChange')
+        }
       })
     })
     handleBoundChange(boundInfo.current.source, id)
     requestAnimationFrame(() => {
-      drawer.current?.closeDrawer()
+      // console.warn('onShowBound')
+      if (drawer.current) {
+        drawer.current.openDrawer()
+      } else {
+        console.warn('Drawer ref not initialized')
+      }
     })
   }
   const onPlay: BoardsListProps['onPlay'] = (id) => {
@@ -60,8 +82,25 @@ export default () => {
     void handleCollect(id, name, boundInfo.current.source)
   }
   const onShowBound = () => {
-    requestAnimationFrame(() => {
-      drawer.current?.openDrawer()
+    // Always ensure the list is populated before opening the drawer
+    void getBoardsList(boundInfo.current.source).then(list => {
+      const id = boundInfo.current.id
+      const name = list.find(l => l.id == id)?.name
+      requestAnimationFrame(() => {
+        if (boardsListRef.current && headerBarRef.current) {
+          boardsListRef.current.setList(list, id || '')
+          headerBarRef.current.setBound(boundInfo.current.source, id || '', name || 'Unknown')
+          requestAnimationFrame(() => {
+            if (drawer.current) {
+              drawer.current.openDrawer()
+            } else {
+              console.warn('Drawer ref not initialized when trying to show bound')
+            }
+          })
+        } else {
+          console.warn('Refs not initialized when trying to show bound')
+        }
+      })
     })
   }
   const onSourceChange: HeaderBarProps['onSourceChange'] = (source) => {
@@ -70,17 +109,21 @@ export default () => {
       const id = list[0].id
       const name = list[0].name
       requestAnimationFrame(() => {
-        boardsListRef.current?.setList(list, id)
-        headerBarRef.current?.setBound(source, id, name ?? 'Unknown')
-        requestAnimationFrame(() => {
-          handleBoundChange(source, id)
-        })
+        if (boardsListRef.current && headerBarRef.current) {
+          boardsListRef.current.setList(list, id)
+          headerBarRef.current.setBound(source, id, name ?? 'Unknown')
+          requestAnimationFrame(() => {
+            handleBoundChange(source, id)
+          })
+        } else {
+          console.warn('Refs not initialized when changing source')
+        }
       })
     })
   }
 
   const navigationView = () => {
-    return (
+    const content = (
       <BoardsList
         ref={boardsListRef}
         onBoundChange={onBoundChange}
@@ -88,6 +131,7 @@ export default () => {
         onPlay={onPlay}
       />
     )
+    return content
   }
 
   // const theme = useTheme()
@@ -95,21 +139,57 @@ export default () => {
 
   useEffect(() => {
     const handleFixDrawer = (id: CommonState['navActiveId']) => {
-      if (id == 'nav_top') drawer.current?.fixWidth()
+      if (id == 'nav_top') {
+        if (drawer.current) {
+          drawer.current.fixWidth()
+        } else {
+          console.warn('Drawer ref not initialized in handleFixDrawer')
+        }
+      }
     }
     global.state_event.on('navActiveIdUpdated', handleFixDrawer)
 
 
     isUnmountedRef.current = false
-    void getLeaderboardSetting().then(({ source, boardId }) => {
+    void getLeaderboardSetting().then(({ source, boardId }) => {  
+      // source = 'kw'  
+      //   void saveLeaderboardSetting({
+      //   source,
+      //   boardId: "kw__16",
+      // })
+      console.log('getLeaderboardSetting', source, boardId)
       boundInfo.current.source = source
       boundInfo.current.id = boardId
-      void getBoardsList(source).then(list => {
-        const bound = list.find(l => l.id == boardId)
-        boardsListRef.current?.setList(list, boardId)
-        headerBarRef.current?.setBound(source, boardId, bound?.name ?? 'Unknown')
-      })
-      musicListRef.current?.loadList(source, boardId)
+      
+      // Add a small delay to ensure components are mounted
+      setTimeout(() => {
+        void getBoardsList(source).then(list => {
+          const bound = list.find(l => l.id == boardId)
+          // console.log('getBoardsList', source, bound?.name, list)
+          
+          if (boardsListRef.current && headerBarRef.current) {
+            boardsListRef.current.setList(list, boardId)
+            headerBarRef.current.setBound(source, boardId, bound?.name ?? 'Unknown')
+          } else {
+            console.warn('Refs not initialized in useEffect, retrying...')
+            // Retry after a short delay
+            setTimeout(() => {
+              if (boardsListRef.current && headerBarRef.current) {
+                boardsListRef.current.setList(list, boardId)
+                headerBarRef.current.setBound(source, boardId, bound?.name ?? 'Unknown')
+              } else {
+                console.error('Refs still not initialized after retry')
+              }
+            }, 100)
+          }
+        })
+        console.log('loadList', source, boardId)
+        if (musicListRef.current) {
+          musicListRef.current.loadList(source, boardId)
+        } else {
+          console.warn('musicListRef.current is null in useEffect')
+        }
+      }, 100)
     })
 
     return () => {
@@ -128,8 +208,8 @@ export default () => {
       widthPercentageMax={MAX_WIDTH}
       drawerPosition={settingState.setting['common.drawerLayoutPosition']}
       renderNavigationView={navigationView}
-      drawerBackgroundColor={theme['c-content-background']}
-      style={{ elevation: 1 }}
+      // drawerBackgroundColor={theme['c-content-background']}
+      // style={{ elevation: 1 }}
     >
       <View style={styles.container}>
         <HeaderBar ref={headerBarRef} onShowBound={onShowBound} onSourceChange={onSourceChange} />
@@ -159,3 +239,5 @@ const styles = createStyle({
   //   flex: 1,
   // },
 })
+
+export default memo(LeaderboardView)

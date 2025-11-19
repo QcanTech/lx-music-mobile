@@ -13,7 +13,6 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		312D460C2EC3325600967909 /* user-api-preload.js in Resources */ = {isa = PBXBuildFile; fileRef = 312D460A2EC3325600967909 /* user-api-preload.js */; };
-		312D46122EC5B04500967909 /* CryptoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 312D460E2EC5B04500967909 /* CryptoModule.m */; };
 		31327BF82EBCA20B0005BA87 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31327BF72EBCA20B0005BA87 /* icomoon.ttf */; };
 		31327BF92EBCA20B0005BA87 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31327BF72EBCA20B0005BA87 /* icomoon.ttf */; };
 		316E25E42EB9D6A2008FEE7C /* UserApiModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 316E25E32EB9D6A2008FEE7C /* UserApiModule.m */; };
@@ -44,8 +43,6 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = LxMusicMobile/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-LxMusicMobile-LxMusicMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LxMusicMobile-LxMusicMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		312D460A2EC3325600967909 /* user-api-preload.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "user-api-preload.js"; sourceTree = "<group>"; };
-		312D460D2EC5B04500967909 /* CryptoModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CryptoModule.h; sourceTree = "<group>"; };
-		312D460E2EC5B04500967909 /* CryptoModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CryptoModule.m; sourceTree = "<group>"; };
 		312D46112EC5B04500967909 /* UserApiConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserApiConstants.h; sourceTree = "<group>"; };
 		31327BF72EBCA20B0005BA87 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = LxMusicMobile/Fonts/icomoon.ttf; sourceTree = "<group>"; };
 		316E25E22EB9D6A2008FEE7C /* UserApiModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserApiModule.h; sourceTree = "<group>"; };
@@ -100,8 +97,6 @@
 		13B07FAE1A68108700A75B9A /* LxMusicMobile */ = {
 			isa = PBXGroup;
 			children = (
-				312D460D2EC5B04500967909 /* CryptoModule.h */,
-				312D460E2EC5B04500967909 /* CryptoModule.m */,
 				312D46112EC5B04500967909 /* UserApiConstants.h */,
 				312D460B2EC3325600967909 /* Assets */,
 				316E25E22EB9D6A2008FEE7C /* UserApiModule.h */,
@@ -308,13 +303,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -373,13 +364,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -394,13 +381,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -415,13 +398,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -446,7 +425,6 @@
 				316E25E42EB9D6A2008FEE7C /* UserApiModule.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				312D46122EC5B04500967909 /* CryptoModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,7 +621,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -711,7 +692,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
