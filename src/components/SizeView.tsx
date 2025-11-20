@@ -5,13 +5,14 @@ import commonState from '@/store/common/state'
 import settingState from '@/store/setting/state'
 import { setStatusbarHeight } from '@/core/common'
 import { windowSizeTools, getWindowSize } from '@/utils/windowSizeTools'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const getStatusbarHeight = (winHeight: number, layoutHeight: number, safeAreaTop: number) => {
   // For iOS, we use the safe area top inset
   console.log('getStatusbarHeight', winHeight, layoutHeight, safeAreaTop)
   let height = 0
   if (Platform.OS === 'ios') {
-    height = safeAreaTop / 3
+    // height = safeAreaTop / 3
   } else {
     // On Android, we use the actual StatusBar height
     height = (!settingState.setting['common.alwaysKeepStatusbarHeight'] &&
@@ -68,5 +69,5 @@ export default memo(() => {
     }
   }, [safeAreaInsets.top])
   
-  return (<View style={StyleSheet.absoluteFill} onLayout={handleLayout} />)
+  return (<SafeAreaView edges={['top']}><View style={StyleSheet.absoluteFill} onLayout={handleLayout} /></SafeAreaView>)
 }, () => true)

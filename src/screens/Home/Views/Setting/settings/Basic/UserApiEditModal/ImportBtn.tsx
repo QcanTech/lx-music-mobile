@@ -23,7 +23,7 @@ export default ({ btnStyle }: BtnProps) => {
 
   const importTypes = useMemo(() => {
     return [
-      { action: 'local', label: t('user_api_btn_import_local') },
+      // { action: 'local', label: t('user_api_btn_import_local') },
       { action: 'online', label: t('user_api_btn_import_online') },
     ] as const
   }, [t])
@@ -39,11 +39,11 @@ export default ({ btnStyle }: BtnProps) => {
       return
     }
 
-    if (action == 'local') {
-      scriptImportExportRef.current?.import()
-    } else {
+    // if (action == 'local') {
+    //   scriptImportExportRef.current?.import()
+    // } else {
       scriptImportOnlineRef.current?.show()
-    }
+    // }
   }
 
 
