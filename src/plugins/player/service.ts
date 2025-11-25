@@ -29,22 +29,22 @@ const registerPlaybackService = async() => {
 
   console.log('reg services...')
   TrackPlayer.addEventListener(TPEvent.RemotePlay, () => {
-    // console.log('remote-play')
+    console.log('remote-play')
     play()
   })
 
   TrackPlayer.addEventListener(TPEvent.RemotePause, () => {
-    // console.log('remote-pause')
+    console.log('remote-pause')
     void pause()
   })
 
   TrackPlayer.addEventListener(TPEvent.RemoteNext, () => {
-    // console.log('remote-next')
+    console.log('remote-next')
     void playNext()
   })
 
   TrackPlayer.addEventListener(TPEvent.RemotePrevious, () => {
-    // console.log('remote-previous')
+    console.log('remote-previous')
     void playPrev()
   })
 
@@ -98,7 +98,7 @@ const registerPlaybackService = async() => {
         global.app_event.pause()
         global.app_event.playerWaiting()
         break
-      case TPState.Connecting:
+      case TPState.Loading:
         global.app_event.playerLoadstart()
         break
       default:
@@ -110,7 +110,7 @@ const registerPlaybackService = async() => {
     // console.log('currentIsPlaying', currentIsPlaying, global.lx.playInfo.isPlaying)
     // void updateMetaData(global.lx.store_playMusicInfo.musicInfo, currentIsPlaying)
   })
-  TrackPlayer.addEventListener(TPEvent.PlaybackTrackChanged, async info => {
+  TrackPlayer.addEventListener(TPEvent.PlaybackActiveTrackChanged, async info => {
     // console.log('PlaybackTrackChanged====>', info)
     global.lx.playerTrackId = await getCurrentTrackId()
     if (info.track == null) return

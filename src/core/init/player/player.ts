@@ -18,6 +18,7 @@ export default async(setting: LX.AppSetting) => {
   }
 
   const handleEnded = () => {
+    console.log('handleEnded', playerState.musicInfo.id)
     // setTimeout(() => {
     if (global.lx.isPlayedStop) {
       setStatusText(global.i18n.t('player__end'))
@@ -27,7 +28,7 @@ export default async(setting: LX.AppSetting) => {
     // global.app_event.stop()
     global.app_event.setProgress(0)
     setStatusText(global.i18n.t('player__end'))
-    // void playNext(true) TODO:: 临时注释
+    void playNext(true)
     // })
   }
 

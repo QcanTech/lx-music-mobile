@@ -27,7 +27,7 @@ export default memo(() => {
       <IsStartupAutoPlay />
       <IsStartupPushPlayDetailScreen />
       <IsShowBackBtn />
-      <IsShowExitBtn />
+      {/* <IsShowExitBtn /> */}
       <IsAutoHidePlayBar />
       <IsHomePageScroll />
       <IsUseSystemFileSelector />

@@ -119,7 +119,7 @@ export function useBufferProgress() {
     let isUnmounted = false
     let preBuffered = 0
     let duration = 0
-    let interval: NodeJS.Timer | null = null
+    let interval: NodeJS.Timeout | null = null
 
     const clearItv = () => {
       if (!interval) return
@@ -142,7 +142,7 @@ export function useBufferProgress() {
     const sub = TrackPlayer.addEventListener(Event.PlaybackState, data => {
       switch (data.state) {
         case State.None:
-          // console.log('state', 'None')
+          console.log('Event.PlaybackState', 'None')
           setProgress(0)
           break
         // case State.Ready:

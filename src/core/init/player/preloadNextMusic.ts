@@ -2,7 +2,7 @@ import { getMusicUrl } from '@/core/music'
 import { getNextPlayMusicInfo, resetRandomNextMusicInfo } from '@/core/player/player'
 import { checkUrl } from '@/utils/request'
 import playerState from '@/store/player/state'
-import { isCached } from '@/plugins/player/utils'
+// import { isCached } from '@/plugins/player/utils'
 
 
 const preloadMusicInfo = {
@@ -19,19 +19,19 @@ const preloadNextMusicUrl = async(curTime: number) => {
   if (preloadMusicInfo.isLoading || curTime - preloadMusicInfo.preProgress < 3) return
   preloadMusicInfo.isLoading = true
   console.log('preload next music url')
-  const info = await getNextPlayMusicInfo()
-  if (info) {
-    preloadMusicInfo.info = info
-    const url = await getMusicUrl({ musicInfo: info.musicInfo }).catch(() => '')
-    if (url) {
-      console.log('preload url', url)
-      const [cached, available] = await Promise.all([isCached(url), checkUrl(url).then(() => true).catch(() => false)])
-      if (!cached && !available) {
-        const url = await getMusicUrl({ musicInfo: info.musicInfo, isRefresh: true }).catch(() => '')
-        console.log('preload url refresh', url)
-      }
-    }
-  }
+  // const info = await getNextPlayMusicInfo()
+  // if (info) {
+    // preloadMusicInfo.info = info
+    // const url = await getMusicUrl({ musicInfo: info.musicInfo }).catch(() => '')
+    // if (url) {
+    //   console.log('preload url', url)
+    //   const [cached, available] = await Promise.all([isCached(url), checkUrl(url).then(() => true).catch(() => false)])
+    //   if (!cached && !available) {
+    //     const url = await getMusicUrl({ musicInfo: info.musicInfo, isRefresh: true }).catch(() => '')
+    //     console.log('preload url refresh', url)
+    //   }
+    // }
+  // }
   preloadMusicInfo.isLoading = false
 }
 
@@ -54,10 +54,10 @@ export default () => {
   }
 
   const handlePlayProgressChanged: typeof global.state_event.playProgressChanged = (progress) => {
-    const duration = progress.maxPlayTime
-    if (duration > 10 && duration - progress.nowPlayTime < 10 && !preloadMusicInfo.info) {
-      void preloadNextMusicUrl(progress.nowPlayTime)
-    }
+    // const duration = progress.maxPlayTime
+    // if (duration > 10 && duration - progress.nowPlayTime < 10 && !preloadMusicInfo.info) {
+    //   void preloadNextMusicUrl(progress.nowPlayTime)
+    // }
   }
 
   global.app_event.on('setProgress', setProgress)

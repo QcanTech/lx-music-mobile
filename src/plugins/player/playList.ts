@@ -100,27 +100,27 @@ export const isTempTrack = (trackId: string) => /\/\/default$/.test(trackId)
 
 
 export const getCurrentTrackId = async() => {
-  const currentTrackIndex = await TrackPlayer.getCurrentTrack()
+  const currentTrackIndex = (await TrackPlayer.getActiveTrackIndex()) || 0
   return list[currentTrackIndex]?.id
 }
 export const getCurrentTrack = async() => {
-  const currentTrackIndex = await TrackPlayer.getCurrentTrack()
+  const currentTrackIndex = (await TrackPlayer.getActiveTrackIndex()) || 0
   return list[currentTrackIndex]
 }
 
 export const updateMetaData = async(musicInfo: LX.Player.MusicInfo, isPlay: boolean, lyric?: string, force = false) => {
   if (!force && isPlay == state.isPlaying) {
-    const duration = await TrackPlayer.getDuration()
-    if (state.prevDuration != duration) {
-      state.prevDuration = duration
+    const progress = await TrackPlayer.getProgress()
+    if (state.prevDuration != progress.duration) {
+      state.prevDuration = progress.duration
       const trackInfo = await getCurrentTrack()
       if (trackInfo && musicInfo) {
         delayUpdateMusicInfo(musicInfo, lyric)
       }
     }
   } else {
-    const [duration, trackInfo] = await Promise.all([TrackPlayer.getDuration(), getCurrentTrack()])
-    state.prevDuration = duration
+    const [progress, trackInfo] = await Promise.all([TrackPlayer.getProgress(), getCurrentTrack()])
+    state.prevDuration = progress.duration
     if (trackInfo && musicInfo) {
       delayUpdateMusicInfo(musicInfo, lyric)
     }
@@ -203,12 +203,16 @@ const updateMetaInfo = async(mInfo: LX.Player.MusicInfo, lyric?: string) => {
     name = lyric
     singer = `${mInfo.name}${mInfo.singer ? ` - ${mInfo.singer}` : ''}`
   }
+  let progress = await TrackPlayer.getProgress()
+  console.log('progress', progress, progress.position)
+  
   let nowPlayingInfo = {
     title: name,
     artist: singer,
     album: mInfo.album ?? undefined,
     artwork,
     duration: state.prevDuration || 0,
+    elapsedTime: progress.position
   }
   console.log('updateNowPlayingMetadata', nowPlayingInfo)
   await TrackPlayer.updateNowPlayingMetadata(nowPlayingInfo)

@@ -1,5 +1,6 @@
 import TrackPlayer from 'react-native-track-player'
 import { updateOptions, setVolume, setPlaybackRate, migratePlayerCache } from './utils'
+import { IOSCategory } from 'react-native-track-player'
 
 // const listenEvent = () => {
 //   TrackPlayer.addEventListener('playback-error', err => {
@@ -31,9 +32,10 @@ const initial = async({ volume, playRate, cacheSize, isHandleAudioFocus, isEnabl
     maxCacheSize: cacheSize * 1024,
     maxBuffer: 1000,
     waitForBuffer: true,
-    handleAudioFocus: isHandleAudioFocus,
-    audioOffload: isEnableAudioOffload,
+    // handleAudioFocus: isHandleAudioFocus,
+    // audioOffload: isEnableAudioOffload,
     autoUpdateMetadata: false,
+    iosCategory: IOSCategory.Playback,
   })
   global.lx.playerStatus.isInitialized = true
   global.lx.playerStatus.isIniting = false
