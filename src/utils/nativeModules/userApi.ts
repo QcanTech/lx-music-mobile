@@ -31,7 +31,7 @@ export interface SendActions {
   response: SendResponseParams
 }
 export const sendAction = <T extends keyof SendActions>(action: T, data: SendActions[T]) => {
-  console.log('sendAction', action, data)
+  // console.log('sendAction', action, data)
   UserApiModule.sendAction(action, JSON.stringify(data))
 }
 
@@ -81,7 +81,7 @@ export const onScriptAction = (handler: (event: ActionsEvent) => void): () => vo
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const eventEmitter = new NativeEventEmitter(UserApiModule)
   const eventListener = eventEmitter.addListener('api-action', event => {
-    console.log('onScriptAction api-action event:', event)
+    // console.log('onScriptAction api-action event:', event)
     try {
       if (event.data) {
         // Safely parse the data

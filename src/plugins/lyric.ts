@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react'
 import Lyric, { type Lines } from 'lrc-file-parser'
+
+import { updateNowPlayingTitles } from '@/plugins/player/utils'
+import { setLastLyric } from '@/core/player/playInfo'
+import playerState from '@/store/player/state'
+import settingState from '@/store/setting/state'
+
 // import { getStore, subscribe } from '@/store'
 export type Line = Lines[number]
 type PlayHook = (line: number, text: string) => void
@@ -29,11 +35,11 @@ const lrcTools = {
   },
   onPlay(line: number, text: string) {
     this.currentLineData.line = line
-    // console.log(line)
     this.currentLineData.text = text
     for (const hook of this.playHooks) hook(line, text)
   },
   onSetLyric(lines: Lines) {
+    console.log('onSetLyric', lines)
     this.currentLines = lines
     this.currentLineData.line = 0
     this.currentLineData.text = ''
@@ -65,6 +71,21 @@ const lrcTools = {
 
 export const init = async() => {
   lrcTools.init()
+  lrcTools.addPlayHook(updateRemoteLyric)
+}
+
+const updateRemoteLyric = async(line: number, lrc: string)  => {
+  // console.log('updateRemoteLyric', line, lrc)
+  const isShowBluetoothLyric = settingState.setting['player.isShowBluetoothLyric']
+  if (!isShowBluetoothLyric) {
+    return
+  }
+  setLastLyric(lrc)
+  if (lrc == null) {
+    void updateNowPlayingTitles(playerState.musicInfo.name, playerState.musicInfo.singer ?? '')
+  } else {
+    void updateNowPlayingTitles(lrc, `${playerState.musicInfo.name}${playerState.musicInfo.singer ? ` - ${playerState.musicInfo.singer}` : ''}`)
+  }
 }
 
 export const setLyric = (lyric: string, translation?: string, romalrc?: string) => {

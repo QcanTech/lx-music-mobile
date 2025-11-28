@@ -11,6 +11,7 @@ import musicSdk from '@/utils/musicSdk'
 import { toOldMusicInfo } from '@/utils'
 
 export const handlePlay = (musicInfo: LX.Music.MusicInfoOnline) => {
+  console.log('handlePlay', musicInfo)
   void addListMusics(LIST_IDS.DEFAULT, [musicInfo], settingState.setting['list.addMusicLocationType']).then(() => {
     const index = getListMusicSync(LIST_IDS.DEFAULT).findIndex(m => m.id == musicInfo.id)
     if (index < 0) return

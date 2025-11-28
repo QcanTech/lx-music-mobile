@@ -22,7 +22,7 @@ export default () => {
       //   setStatusText('')
       //   return
       // }
-
+      console.log('load timeout', prevTimeoutId, playerState.musicInfo.id)
       // 如果加载超时，则尝试刷新URL
       if (prevTimeoutId == playerState.musicInfo.id) {
         prevTimeoutId = null

@@ -9,9 +9,9 @@ import { state } from '@/plugins/player/playList'
 const updateRemoteLyric = async(lrc?: string) => {
   setLastLyric(lrc)
   if (lrc == null) {
-    void updateNowPlayingTitles((state.prevDuration || 0) * 1000, playerState.musicInfo.name, playerState.musicInfo.singer ?? '', playerState.musicInfo.album ?? '')
+    void updateNowPlayingTitles(playerState.musicInfo.name, playerState.musicInfo.singer ?? '')
   } else {
-    void updateNowPlayingTitles((state.prevDuration || 0) * 1000, lrc, `${playerState.musicInfo.name}${playerState.musicInfo.singer ? ` - ${playerState.musicInfo.singer}` : ''}`, playerState.musicInfo.album ?? '')
+    void updateNowPlayingTitles(lrc, `${playerState.musicInfo.name}${playerState.musicInfo.singer ? ` - ${playerState.musicInfo.singer}` : ''}`)
   }
 }
 

@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 const getStatusbarHeight = (winHeight: number, layoutHeight: number, safeAreaTop: number) => {
   // For iOS, we use the safe area top inset
-  console.log('getStatusbarHeight', winHeight, layoutHeight, safeAreaTop)
+  // console.log('getStatusbarHeight', winHeight, layoutHeight, safeAreaTop)
   let height = 0
   if (Platform.OS === 'ios') {
     // height = safeAreaTop / 3

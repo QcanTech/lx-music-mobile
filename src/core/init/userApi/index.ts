@@ -213,7 +213,7 @@ export default async(setting: LX.AppSetting) => {
   }
 
   onScriptAction((event) => {
-    console.log('onScriptAction: ', event)
+    // console.log('onScriptAction: ', event)
     switch (event.action) {
       case 'init':
         if ((event as unknown as { errorMessage?: string }).errorMessage) event.data.errorMessage = (event as unknown as { errorMessage: string }).errorMessage

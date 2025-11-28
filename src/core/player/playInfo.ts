@@ -120,6 +120,7 @@ const setPlayerMusicInfo = (musicInfo: LX.Music.MusicInfo | LX.Download.ListItem
  * @param isTempPlay 是否临时播放
  */
 export const setPlayMusicInfo = (listId: string | null, musicInfo: LX.Download.ListItem | LX.Music.MusicInfo | null, isTempPlay: boolean = false) => {
+  console.log('setPlayMusicInfo',listId, musicInfo, isTempPlay)
   playerActions.setPlayMusicInfo(listId, musicInfo, isTempPlay)
   setPlayerMusicInfo(musicInfo)
 

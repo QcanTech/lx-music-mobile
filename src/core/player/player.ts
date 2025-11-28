@@ -196,6 +196,7 @@ const handleRestorePlay = async(restorePlayInfo: LX.Player.SavedPlayInfo) => {
 
 
 const debouncePlay = debounceBackgroundTimer((musicInfo: LX.Player.PlayMusic) => {
+  console.log('-------------- debouncePlay ---------------', musicInfo)
   setMusicUrl(musicInfo)
 
   void getPicPath({ musicInfo, listId: playerState.playMusicInfo.listId }).then((url: string) => {
@@ -226,6 +227,7 @@ const debouncePlay = debounceBackgroundTimer((musicInfo: LX.Player.PlayMusic) =>
 
 // 处理音乐播放
 const handlePlay = async() => {
+  // console.log('-------------handlePlay-------------', global.lx.restorePlayInfo)
   if (!isInitialized()) {
     await checkNotificationPermission()
     void checkIgnoringBatteryOptimization()
@@ -262,6 +264,7 @@ const handlePlay = async() => {
   if (settingState.setting['player.togglePlayMethod'] == 'random' && !playMusicInfo.isTempPlay) addPlayedList(playMusicInfo as LX.Player.PlayMusicInfo)
 
   debouncePlay(musicInfo)
+
 }
 
 /**
@@ -286,6 +289,7 @@ export const playListById = async(listId: string, id: string) => {
  * @param index 播放的歌曲位置
  */
 export const playList = async(listId: string, index: number) => {
+  // console.log('playList', listId, index, getList(listId))
   const prevListId = playerState.playInfo.playerListId
   setPlayListId(listId)
   setPlayMusicInfo(listId, getList(listId)[index])
@@ -408,6 +412,7 @@ const handlePlayNext = async(playMusicInfo: LX.Player.PlayMusicInfo) => {
  * @returns
  */
 export const playNext = async(isAutoToggle = false): Promise<void> => {
+  // console.error('playNext', playerState.tempPlayList, isAutoToggle)
   if (playerState.tempPlayList.length) { // 如果稍后播放列表存在歌曲则直接播放改列表的歌曲
     const playMusicInfo = playerState.tempPlayList[0]
     removeTempPlayList(0)

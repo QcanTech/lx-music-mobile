@@ -68,8 +68,8 @@ const registerPlaybackService = async() => {
 
   TrackPlayer.addEventListener(TPEvent.PlaybackError, async(err: any) => {
     console.log('playback-error', err)
-    // global.app_event.error()
-    // global.app_event.playerError()
+    global.app_event.error()
+    global.app_event.playerError()
   })
 
   TrackPlayer.addEventListener(TPEvent.RemoteSeek, async({ position }) => {
@@ -110,37 +110,32 @@ const registerPlaybackService = async() => {
     // console.log('currentIsPlaying', currentIsPlaying, global.lx.playInfo.isPlaying)
     // void updateMetaData(global.lx.store_playMusicInfo.musicInfo, currentIsPlaying)
   })
+
+  TrackPlayer.addEventListener(TPEvent.PlaybackQueueEnded, async info => {
+    console.log('PlaybackQueueEnded====>', info)
+    await TrackPlayer.pause()
+    global.app_event.playerPause()
+    global.app_event.pause()
+    global.app_event.playerEnded()
+    global.app_event.playerEmptied()
+  })
+
   TrackPlayer.addEventListener(TPEvent.PlaybackActiveTrackChanged, async info => {
-    // console.log('PlaybackTrackChanged====>', info)
+    console.log('PlaybackTrackChanged====>', info)
+    // return
     global.lx.playerTrackId = await getCurrentTrackId()
     if (info.track == null) return
     if (global.lx.isPlayedStop) return handleExitApp('Timeout Exit')
 
-    // console.log('global.lx.playerTrackId====>', global.lx.playerTrackId)
-    if (isEmpty()) {
-      // console.log('====TEMP PAUSE====')
-      await TrackPlayer.pause()
-      global.app_event.playerPause()
-      global.app_event.pause()
-      global.app_event.playerEnded()
-      global.app_event.playerEmptied()
-      // if (retryTrack) {
-      //   if (retryTrack.musicId == retryGetUrlId) {
-      //     if (++retryGetUrlNum > 1) {
-      //       store.dispatch(playerAction.playNext(true))
-      //       retryGetUrlId = null
-      //       retryTrack = null
-      //       return
-      //     }
-      //   } else {
-      //     retryGetUrlId = retryTrack.musicId
-      //     retryGetUrlNum = 0
-      //   }
-      //   store.dispatch(playerAction.refreshMusicUrl(global.lx.playInfo.currentPlayMusicInfo, errorTime))
-      // } else {
-      //   store.dispatch(playerAction.playNext(true))
-      // }
-    }
+    console.log('global.lx.playerTrackId====>', global.lx.playerTrackId)
+    // if (isEmpty()) {
+    //   // console.log('====TEMP PAUSE====')
+    //   await TrackPlayer.pause()
+    //   global.app_event.playerPause()
+    //   global.app_event.pause()
+    //   global.app_event.playerEnded()
+    //   global.app_event.playerEmptied()
+    // }
   //   // if (!info.nextTrack) return
   //   // if (info.track) {
   //   //   const track = info.track.substring(0, info.track.lastIndexOf('__//'))

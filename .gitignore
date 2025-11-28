@@ -32,6 +32,7 @@ keystore.properties
 *.iml
 *.hprof
 .cxx/
+.vscode/
 
 # node.js
 #

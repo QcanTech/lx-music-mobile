@@ -3,6 +3,8 @@ import BackgroundTimer from 'react-native-background-timer'
 import { playMusic as handlePlayMusic } from './playList'
 import { existsFile, moveFile, privateStorageDirectoryPath, temporaryDirectoryPath } from '@/utils/fs'
 import { toast } from '@/utils/tools'
+import playerState from '@/store/player/state'
+
 // import { PlayerMusicInfo } from '@/store/modules/player/playInfo'
 
 
@@ -11,7 +13,6 @@ export { useBufferProgress } from './hook'
 const emptyIdRxp = /\/\/default$/
 const tempIdRxp = /\/\/default$|\/\/default\/\/restorePlay$/
 export const isEmpty = (trackId = global.lx.playerTrackId) => {
-  // console.log(trackId)
   return !trackId || emptyIdRxp.test(trackId)
 }
 export const isTempId = (trackId = global.lx.playerTrackId) => !trackId || tempIdRxp.test(trackId)
@@ -168,9 +169,20 @@ export const setPause = async() => TrackPlayer.pause()
 export const setCurrentTime = async(time: number) => TrackPlayer.seekTo(time)
 export const setVolume = async(num: number) => TrackPlayer.setVolume(num)
 export const setPlaybackRate = async(num: number) => TrackPlayer.setRate(num)
-export const updateNowPlayingTitles = async(duration: number, title: string, artist: string, album: string) => {
-  console.log('set playing titles', duration, title, artist, album)
-  return TrackPlayer.updateNowPlayingTitles(duration, title, artist, album)
+export const updateNowPlayingTitles = async(title: string, artist: string) => {
+  console.log('set playing titles', title, artist)
+
+  let progress = await TrackPlayer.getProgress()
+    console.log('progress', progress, progress.position)
+  let nowPlayingInfo = {
+    title: title,
+    artist: artist,
+    album: playerState.musicInfo?.album || '',
+    artwork: playerState.musicInfo.pic || '',
+    duration: progress.duration || 0,
+    elapsedTime: progress.position
+  }
+  return TrackPlayer.updateNowPlayingMetadata(nowPlayingInfo)
 }
 
 export const resetPlay = async() => Promise.all([setPause(), setCurrentTime(0)])

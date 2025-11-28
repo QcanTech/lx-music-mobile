@@ -24,7 +24,7 @@ export default memo(() => {
     void showRemoteLyric(isShowBluetoothLyric)
     if (!isShowBluetoothLyric) {
       setLastLyric()
-      void updateNowPlayingTitles((state.prevDuration || 0) * 1000, playerState.musicInfo.name, playerState.musicInfo.singer ?? '', playerState.musicInfo.album ?? '')
+      void updateNowPlayingTitles(playerState.musicInfo.name, playerState.musicInfo.singer ?? '')
     }
   }
 

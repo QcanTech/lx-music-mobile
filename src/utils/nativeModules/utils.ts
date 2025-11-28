@@ -106,7 +106,7 @@ export const getWindowSize = async(): Promise<{ width: number, height: number }>
   // return UtilsModule.getWindowSize()
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-  console.log('getWindowSize', windowWidth, windowHeight)
+  // console.log('getWindowSize', windowWidth, windowHeight)
   return { width: windowWidth, height: windowHeight }
 }
 

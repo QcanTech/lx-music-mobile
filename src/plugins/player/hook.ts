@@ -140,9 +140,9 @@ export function useBufferProgress() {
     }
 
     const sub = TrackPlayer.addEventListener(Event.PlaybackState, data => {
+      console.log('Event.PlaybackState', data.state)
       switch (data.state) {
         case State.None:
-          console.log('Event.PlaybackState', 'None')
           setProgress(0)
           break
         // case State.Ready:
@@ -174,8 +174,8 @@ export function useBufferProgress() {
     })
 
     void updateBuffer()
-    void TrackPlayer.getState().then((state) => {
-      if (state == State.Buffering) interval = setInterval(updateBuffer, 1000)
+    void TrackPlayer.getPlaybackState().then((state) => {
+      if (state.state == State.Buffering) interval = setInterval(updateBuffer, 1000)
     })
     return () => {
       isUnmounted = true
