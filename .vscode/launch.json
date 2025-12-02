@@ -50,7 +50,7 @@
             "name": "Debug iOS (Hermes)",
             "cwd": "${workspaceFolder}",
             "type": "reactnativedirect",
-            "request": "launch",
+            "request": "attach",
             "platform": "ios",
             "env": {
                 "REACT_DEBUGGER": "echo Setting up debugger. If this hangs, make sure you've run 'Debug iOS' from VS Code once, then close the packager and try again."
