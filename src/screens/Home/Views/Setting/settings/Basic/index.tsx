@@ -26,7 +26,7 @@ export default memo(() => {
     <Section title={t('setting_basic')}>
       <IsStartupAutoPlay />
       <IsStartupPushPlayDetailScreen />
-      <IsShowBackBtn />
+      {/* <IsShowBackBtn /> */}
       {/* <IsShowExitBtn /> */}
       <IsAutoHidePlayBar />
       <IsHomePageScroll />

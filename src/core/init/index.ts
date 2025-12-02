@@ -17,7 +17,7 @@ import { cheatTip } from '@/utils/tools'
 
 let isFirstPush = true
 const handlePushedHomeScreen = async() => {
-  await cheatTip()
+  // await cheatTip()
   if (settingState.setting['common.isAgreePact']) {
     if (isFirstPush) {
       isFirstPush = false

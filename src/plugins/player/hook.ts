@@ -127,10 +127,15 @@ export function useBufferProgress() {
       interval = null
     }
     const updateBuffer = async() => {
-      const buffered = await (duration ? TrackPlayer.getBufferedPosition() : Promise.all([TrackPlayer.getBufferedPosition(), TrackPlayer.getDuration()]).then(([buffered, _duration]) => {
-        duration = _duration
-        return buffered
-      }))
+      let progress = {duration: 0, position: 0, buffered: 0}
+      try {
+        progress = await TrackPlayer.getProgress()
+      }catch(err) {
+        console.log('get progress failed', err)
+        return
+      }
+      let buffered = progress.buffered
+      duration = progress.duration
       // console.log('updateBuffer', buffered, duration, buffered > 0, buffered == duration)
       // After the asynchronous code is executed, if the component has been uninstalled, do not update the status
       if (buffered > 0 && buffered == duration) clearItv()
