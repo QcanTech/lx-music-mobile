@@ -171,16 +171,21 @@ export const setVolume = async(num: number) => TrackPlayer.setVolume(num)
 export const setPlaybackRate = async(num: number) => TrackPlayer.setRate(num)
 export const updateNowPlayingTitles = async(title: string, artist: string) => {
   console.log('set playing titles', title, artist)
-
-  let progress = await TrackPlayer.getProgress()
+  let progress = {duration: 0, position: 0}
+  try {
+    progress = await TrackPlayer.getProgress()
     console.log('progress', progress, progress.position)
+  }catch(err) {
+    console.log('get progress failed', err)
+    return
+  }
   let nowPlayingInfo = {
     title: title,
     artist: artist,
     album: playerState.musicInfo?.album || '',
     artwork: playerState.musicInfo.pic || '',
-    duration: progress.duration || 0,
-    elapsedTime: progress.position
+    duration: progress?.duration || 0,
+    elapsedTime: progress?.position
   }
   return TrackPlayer.updateNowPlayingMetadata(nowPlayingInfo)
 }

@@ -1,4 +1,5 @@
 import { AppState, NativeEventEmitter, NativeModules, Platform, Dimensions } from 'react-native'
+import { NetworkInfo } from 'react-native-network-info';
 
 const { UtilsModule } = NativeModules
 
@@ -38,7 +39,7 @@ export const screenUnkeepAwake = () => {
 
 // export const getWIFIIPV4Address = UtilsModule.getWIFIIPV4Address as () => Promise<string>
 export const getWIFIIPV4Address = async(): Promise<string> => {
-  return ""
+  return NetworkInfo.getIPV4Address().then((ipv4: string | null) => ipv4 || 'UnKnown');
 }
 
 export const getDeviceName = async(): Promise<string> => {

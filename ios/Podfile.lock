@@ -951,6 +951,8 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - react-native-network-info (5.2.2):
+    - React
   - react-native-pager-view (6.7.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1238,6 +1240,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-local-media-metadata (from `../node_modules/react-native-local-media-metadata`)
+  - react-native-network-info (from `../node_modules/react-native-network-info`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-quick-base64 (from `../node_modules/react-native-quick-base64`)
   - react-native-quick-crypto (from `../node_modules/react-native-quick-crypto`)
@@ -1355,6 +1358,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-timer"
   react-native-local-media-metadata:
     :path: "../node_modules/react-native-local-media-metadata"
+  react-native-network-info:
+    :path: "../node_modules/react-native-network-info"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-quick-base64:
@@ -1473,6 +1478,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 57bf49a458398d329dad2bf8bc660e3e35b96989
   react-native-background-timer: 4638ae3bee00320753647900b21260b10587b6f7
   react-native-local-media-metadata: f81918222495af7316f9d42f8e0f2c2aeefd013c
+  react-native-network-info: 703d4b16ff0ff6f03127728348251bf5f12b823a
   react-native-pager-view: 556ea1f4123da10af65bf0f91cc419e752bc0c64
   react-native-quick-base64: 587ccca2d32a4ea6828aefeb43a4d9cccb486a96
   react-native-quick-crypto: 4a239789a4e5b1a1f0f3b022c21c6f44dd5ae3ce

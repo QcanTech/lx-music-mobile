@@ -10,6 +10,7 @@ import { createStyle } from '@/utils/tools'
 // import { useSettingValue } from '@/store/setting/hook'
 import { useTheme } from '@/store/theme/hook'
 import { useSettingValue } from '@/store/setting/hook'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 export default memo(({ isHome = false }: { isHome?: boolean }) => {
@@ -19,6 +20,7 @@ export default memo(({ isHome = false }: { isHome?: boolean }) => {
   const autoHidePlayBar = useSettingValue('common.autoHidePlayBar')
 
   const playerComponent = useMemo(() => (
+    <SafeAreaView edges={['bottom']}>
     <View style={{ ...styles.container, backgroundColor: theme['c-content-background'] }}>
       <Pic isHome={isHome} />
       <View style={styles.center}>
@@ -32,6 +34,7 @@ export default memo(({ isHome = false }: { isHome?: boolean }) => {
         <ControlBtn />
       </View>
     </View>
+    </SafeAreaView>
   ), [theme, isHome])
 
   // console.log('render pb')

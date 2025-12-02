@@ -79,8 +79,8 @@ export const generateRsaKey = async() => {
     .replace(/\n/g, '')
   
   return {
-    publicKey: `${KEY_PREFIX.publicKeyStart}\n${publicKeyBase64}${KEY_PREFIX.publicKeyEnd}`,
-    privateKey: `${KEY_PREFIX.privateKeyStart}\n${privateKeyBase64}${KEY_PREFIX.privateKeyEnd}`,
+    publicKey: `${KEY_PREFIX.publicKeyStart}\n${publicKeyBase64}\n${KEY_PREFIX.publicKeyEnd}`,
+    privateKey: `${KEY_PREFIX.privateKeyStart}\n${privateKeyBase64}\n${KEY_PREFIX.privateKeyEnd}`,
   }
 }
 

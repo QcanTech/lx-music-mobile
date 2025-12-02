@@ -9,7 +9,9 @@ import {
   // getExternalStoragePaths as _getExternalStoragePaths,
 } from 'react-native-file-access'
 
-import { btoa, atob } from 'react-native-quick-base64'
+import pako from 'pako'
+
+import { btoa } from 'react-native-quick-base64'
 
 // export type {
 //   FileType,
@@ -50,8 +52,12 @@ export const readFile = async(path: string, encoding?: Encoding) => FileSystem.r
 export const moveFile = async(fromPath: string, toPath: string) => FileSystem.mv(fromPath, toPath)
 // export const gzipFile = async(fromPath: string, toPath: string) => FileSystem.gzipFile(fromPath, toPath)
 // export const unGzipFile = async(fromPath: string, toPath: string) => FileSystem.unGzipFile(fromPath, toPath)
-export const gzipString = async(data: string, encoding?: Encoding) => btoa(data)
-export const unGzipString = async(data: string, encoding?: Encoding) => atob(data)
+export const gzipString = async(data: string, encoding?: Encoding) => { return btoa(String.fromCharCode(...pako.gzip(data))) }
+export const unGzipString = async(data: string, encoding?: Encoding) => {
+  // console.log('unGzipString', data, encoding)
+  let buff = Buffer.from(data, 'base64')
+  return pako.ungzip(buff, {to: 'string'})
+}
 
 export const existsFile = async(path: string) => FileSystem.exists(path)
 
