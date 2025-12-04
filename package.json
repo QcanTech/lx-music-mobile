@@ -66,6 +66,7 @@
     "react-native-local-media-metadata": "github:lyswhut/react-native-local-media-metadata#c8c7ae7b11ce027626cae413c3d996ed3b1413a5",
     "react-native-navigation": "7.39.2",
     "react-native-network-info": "^5.2.2",
+    "react-native-nitro-modules": "^0.0.2",
     "react-native-pager-view": "6.7.1",
     "react-native-quick-base64": "^2.1.2",
     "react-native-quick-crypto": "^0.7.17",
