@@ -15,13 +15,13 @@ export const SETTING_SCREENS = [
   'basic',
   'player',
   'lyric_desktop',
-  'search',
+  // 'search',
   'list',
-  'sync',
+  // 'sync',
   'backup',
-  'other',
-  'version',
-  'about',
+  // 'other',
+  // 'version',
+  // 'about',
 ] as const
 
 export type SettingScreenIds = typeof SETTING_SCREENS[number]

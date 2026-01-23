@@ -18,7 +18,7 @@ import { addHistoryWord } from '@/core/search/search'
 
 interface SearchInfo {
   temp_source: LX.OnlineSource
-  source: LX.OnlineSource | 'all'
+  source: LX.OnlineSource | 'all' | 'local'
   searchType: 'music' | 'songlist'
 }
 
@@ -34,8 +34,9 @@ export default () => {
     void getSearchSetting().then(info => {
       // info.type = 'music'
       searchInfo.current.temp_source = info.temp_source
-      searchInfo.current.source = info.source
+      // searchInfo.current.source = info.source
       searchInfo.current.searchType = info.type
+      searchInfo.current.source = 'local'
       switch (info.type) {
         case 'music':
           headerBarRef.current?.setSourceList(searchMusicState.sources, info.source)
@@ -71,6 +72,7 @@ export default () => {
     listRef.current?.loadList(searchState.searchText, source, searchInfo.current.searchType)
   }
   const handleTipSearch: HeaderBarProps['onTipSearch'] = (text) => {
+    return
     setTimeout(() => {
       searchTipListRef.current?.search(text, layoutHeightRef.current)
     }, 500)
@@ -91,6 +93,7 @@ export default () => {
     listRef.current?.loadList(text, searchInfo.current.source, searchInfo.current.searchType)
   }
   const handleShowTipList: HeaderBarProps['onShowTipList'] = () => {
+    return
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => {
       searchTipListRef.current?.show(layoutHeightRef.current)

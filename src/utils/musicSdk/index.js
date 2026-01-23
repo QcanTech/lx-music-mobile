@@ -30,10 +30,10 @@ const sources = {
       name: '咪咕音乐',
       id: 'mg',
     },
-    // {
-    //   name: '百度音乐',
-    //   id: 'bd',
-    // },
+    {
+      name: '百度音乐',
+      id: 'bd',
+    },
   ],
   kw,
   kg,
@@ -64,6 +64,9 @@ export const searchMusic = async({ name, singer, source: s, limit = 25 }) => {
   const tasks = []
   const excludeSource = ['xm']
   for (const source of sources.sources) {
+    if (!sources[source.id]) {
+      continue
+    }
     if (!sources[source.id].musicSearch || source.id == s || excludeSource.includes(source.id)) continue
     tasks.push(sources[source.id].musicSearch.search(`${musicName} ${singer || ''}`.trim(), 1, limit).catch(_ => null))
   }

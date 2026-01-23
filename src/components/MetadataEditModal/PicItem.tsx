@@ -42,9 +42,9 @@ export default memo(({ value, label, onOnlineMatch, onChanged }: PicItemProps) =
           <TouchableOpacity onPress={onOnlineMatch}>
             <Text size={13} color={theme['c-button-font']}>{global.i18n.t('metadata_edit_modal_form_match_pic')}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleShowSelectFile}>
+          {/* <TouchableOpacity onPress={handleShowSelectFile}>
             <Text size={13} color={theme['c-button-font']}>{global.i18n.t('metadata_edit_modal_form_select_pic')}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
       <View style={styles.picContent}>

@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "react-native run-android --active-arch-only",
-    "ios": "react-native run-ios",
+    "ios": "BROWSER=none react-native run-ios",
     "start": "react-native start",
     "sc": "react-native start --reset-cache",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",

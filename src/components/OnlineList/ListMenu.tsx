@@ -54,8 +54,8 @@ export default forwardRef<ListMenuType, ListMenuProps>((props: ListMenuProps, re
       { action: 'playLater', label: t('play_later') },
       // { action: 'download', label: '下载' },
       { action: 'add', label: t('add_to') },
-      { action: 'copyName', label: t('copy_name') },
-      { action: 'musicSourceDetail', label: t('music_source_detail') },
+      // { action: 'copyName', label: t('copy_name') },
+      // { action: 'musicSourceDetail', label: t('music_source_detail') },
       { action: 'dislike', label: t('dislike'), disabled: isDislikeMusic },
     ] as const
   }, [t, isDislikeMusic])

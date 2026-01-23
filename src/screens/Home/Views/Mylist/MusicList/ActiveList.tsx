@@ -16,13 +16,14 @@ import { useSettingValue } from '@/store/setting/hook'
 
 export interface ActiveListProps {
   onShowSearchBar: () => void
+  onShowImportPress: () => void
   onScrollToTop: () => void
 }
 export interface ActiveListType {
   setVisibleBar: (visible: boolean) => void
 }
 
-export default forwardRef<ActiveListType, ActiveListProps>(({ onShowSearchBar, onScrollToTop }, ref) => {
+export default forwardRef<ActiveListType, ActiveListProps>(({ onShowSearchBar, onShowImportPress, onScrollToTop }, ref) => {
   const theme = useTheme()
   const currentListId = useActiveListId()
   const fetching = useListFetching(currentListId)
@@ -59,14 +60,17 @@ export default forwardRef<ActiveListType, ActiveListProps>(({ onShowSearchBar, o
   }, [])
 
   return (
-    <TouchableOpacity onPress={showList} onLongPress={onScrollToTop} style={{ ...styles.currentList, opacity: visibleBar ? 1 : 0, borderBottomColor: theme['c-border-background'] }}>
-      <Icon style={styles.currentListIcon} color={theme['c-button-font']} name="chevron-right" size={12} />
-      { fetching ? <Loading color={theme['c-button-font']} style={styles.loading} /> : null }
-      <Text style={styles.currentListText} numberOfLines={1} color={theme['c-button-font']}>{currentListName}</Text>
-      <TouchableOpacity style={styles.currentListBtns} onPress={onShowSearchBar}>
-        <Icon color={theme['c-button-font']} name="search-2" />
+      <TouchableOpacity onPress={showList} onLongPress={onScrollToTop} style={{ ...styles.currentList, opacity: visibleBar ? 1 : 0, borderBottomColor: theme['c-border-background'] }}>
+        <Icon style={styles.currentListIcon} color={theme['c-button-font']} name="chevron-right" size={12} />
+        { fetching ? <Loading color={theme['c-button-font']} style={styles.loading} /> : null }
+        <Text style={styles.currentListText} numberOfLines={1} color={theme['c-button-font']}>{currentListName}</Text>
+        <TouchableOpacity style={styles.currentListBtns} onPress={onShowSearchBar}>
+          <Icon color={theme['c-button-font']} name="search-2" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.currentListBtns} onPress={onShowImportPress}>
+          <Icon color={theme['c-button-font']} name="download-2" />
+        </TouchableOpacity>
       </TouchableOpacity>
-    </TouchableOpacity>
   )
 })
 

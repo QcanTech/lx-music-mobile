@@ -2,6 +2,7 @@ import songlistState, { type TagInfo, type ListDetailInfo, type ListInfo } from 
 import songlistActions from '@/store/songlist/action'
 import { deduplicationList, toNewMusicInfo } from '@/utils'
 import musicSdk from '@/utils/musicSdk'
+import { getLocalPlaylistMusic } from './search/local'
 
 
 interface DetailPageCache { data: ListDetailInfo, sourcePage: number }
@@ -10,6 +11,40 @@ type CacheValue = LimitDetailCache | ListInfo
 
 const cache = new Map<string, CacheValue>()
 const LIST_LOAD_LIMIT = 30
+
+
+/**
+ * Special handler for local playlist detail loading
+ */
+const getLocalListDetail = async(id: string, page: number): Promise<ListDetailInfo> => {
+  try {
+    const musicList = await getLocalPlaylistMusic(id)
+    
+    // Simple conversion - cast to any to bypass strict typing
+    const onlineMusicList = musicList as unknown as LX.Music.MusicInfoOnline[]
+
+    return {
+      list: onlineMusicList,
+      source: 'local' as unknown as LX.OnlineSource,
+      total: musicList.length,
+      page,
+      limit: LIST_LOAD_LIMIT,
+      maxPage: Math.ceil(musicList.length / LIST_LOAD_LIMIT),
+      key: `local_detail_${id}_${page}`,
+      id,
+      info: {
+        name: '',
+        img: '',
+        desc: '',
+        author: '本地',
+        play_count: '',
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load local playlist:', error)
+    throw new Error('Failed to load local playlist')
+  }
+}
 
 
 /**
@@ -93,7 +128,11 @@ export const getList = async(source: LX.OnlineSource, tabId: string, sortId: str
  * @param page 页数
  * @returns
  */
-const getListDetailLimit = async(source: LX.OnlineSource, id: string, page: number): Promise<ListDetailInfo> => {
+const getListDetailLimit = async(source: LX.OnlineSource | 'local', id: string, page: number): Promise<ListDetailInfo> => {
+  // Handle local source specially
+  if (source === 'local') {
+    return getLocalListDetail(id, page)
+  }
   const listKey = `sdetail__${source}__${id}`
   const prevPageKey = `sdetail__${source}__${id}__${page - 1}`
   const tempListKey = `sdetail__${source}__${id}__temp`
@@ -170,14 +209,18 @@ export const clearListDetail = () => {
  * @param isRefresh 是否跳过缓存
  * @returns
  */
-export const getListDetail = async(id: string, source: LX.OnlineSource, page: number, isRefresh = false): Promise<ListDetailInfo> => {
+export const getListDetail = async(id: string, source: LX.OnlineSource | 'local', page: number, isRefresh = false): Promise<ListDetailInfo> => {
+  // Handle local source specially
+  if (source === 'local') {
+    return getLocalListDetail(id, page)
+  }
+  
   const listKey = `sdetail__${source}__${id}`
-  const pageKey = `sdetail__${source}__${id}__${page}`
-
   let listCache = cache.get(listKey) as LimitDetailCache
   if (!listCache || isRefresh) {
     cache.set(listKey, listCache = new Map())
   }
+  const pageKey = `sdetail__${source}__${id}__${page}`
 
   let pageCache = listCache.get(pageKey) as DetailPageCache
   if (pageCache) return pageCache.data
@@ -192,7 +235,17 @@ export const getListDetail = async(id: string, source: LX.OnlineSource, page: nu
  * @param isRefresh 是否跳过缓存
  * @returns
  */
-export const getListDetailAll = async(source: LX.OnlineSource, id: string, isRefresh = false): Promise<LX.Music.MusicInfoOnline[]> => {
+export const getListDetailAll = async(source: LX.OnlineSource | 'local', id: string, isRefresh = false): Promise<LX.Music.MusicInfoOnline[]> => {
+  // Handle local source specially
+  if (source === 'local') {
+    try {
+      const musicList = await getLocalPlaylistMusic(id)
+      return musicList as unknown as LX.Music.MusicInfoOnline[]
+    } catch (error) {
+      console.error('Failed to load all local playlist music:', error)
+      return []
+    }
+  }
   // console.log(tabId)
   const listKey = `sdetail__${source}__${id}`
   let listCache = cache.get(listKey) as LimitDetailCache

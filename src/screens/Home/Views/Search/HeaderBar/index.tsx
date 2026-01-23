@@ -54,7 +54,7 @@ export default forwardRef<HeaderBarType, HeaderBarProps>(({ onSourceChange, onTi
   return (
     <View style={{ ...styles.searchBar, borderBottomColor: theme['c-border-background'] }}>
       <View style={styles.selector}>
-        <SourceSelector ref={sourceSelectorRef} onSourceChange={onSourceChange} center />
+        {/* <SourceSelector ref={sourceSelectorRef} onSourceChange={onSourceChange} center /> */}
       </View>
       <SearchInput
         ref={searchInputRef}

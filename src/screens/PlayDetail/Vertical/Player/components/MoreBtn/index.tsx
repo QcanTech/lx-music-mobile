@@ -8,10 +8,10 @@ import CommentBtn from './CommentBtn'
 export default () => {
   return (
     <View style={styles.container}>
-      <DesktopLyricBtn />
+      {/* <DesktopLyricBtn /> */}
       <MusicAddBtn />
       <PlayModeBtn />
-      <CommentBtn />
+      {/* <CommentBtn /> */}
     </View>
   )
 }

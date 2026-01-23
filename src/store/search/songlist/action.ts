@@ -37,8 +37,16 @@ const setLists = (results: SearchResult[], page: number, text: string): ListInfo
   let totals = []
   let limit = 0
   let list = []
+  const seenIds = new Set<string>()
+  
   for (const source of results) {
-    list.push(...source.list)
+    // Add items from this source, but skip duplicates
+    for (const item of source.list) {
+      if (!seenIds.has(item.id)) {
+        list.push(item)
+        seenIds.add(item.id)
+      }
+    }
     totals.push(source.total)
     maxTotals[source.source] = source.total
     state.maxPages[source.source] = Math.ceil(source.total / source.limit)
@@ -59,7 +67,30 @@ const setLists = (results: SearchResult[], page: number, text: string): ListInfo
 const setList = (datas: SearchResult, page: number, text: string): ListInfoItem[] => {
   // console.log(datas.source, datas.list)
   let listInfo = state.listInfos[datas.source]!
-  listInfo.list = page == 1 ? datas.list : [...listInfo.list, ...datas.list]
+  
+  // Handle deduplication when adding new items
+  let newList = []
+  const seenIds = new Set<string>()
+  
+  // Add existing items first
+  if (page != 1) {
+    for (const item of listInfo.list) {
+      if (!seenIds.has(item.id)) {
+        newList.push(item)
+        seenIds.add(item.id)
+      }
+    }
+  }
+  
+  // Add new items, skipping duplicates
+  for (const item of datas.list) {
+    if (!seenIds.has(item.id)) {
+      newList.push(item)
+      seenIds.add(item.id)
+    }
+  }
+  
+  listInfo.list = newList
   if (page == 1 || (datas.total && datas.list.length)) listInfo.total = datas.total
   else listInfo.total = datas.limit * page
   listInfo.page = page

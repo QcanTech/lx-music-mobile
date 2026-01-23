@@ -16,7 +16,7 @@ export interface Metadata {
   name: string // 歌曲名
   singer: string // 艺术家名
   albumName: string // 歌曲专辑名称
-  pic: string
+  pic: string | null
   lyric: string
   interval: string
 }
@@ -103,6 +103,7 @@ export default forwardRef<MetadataFormType, {}>((props, ref) => {
       },
       isRefresh: false,
     }).then(async(pic) => {
+      console.log('online match pic', pic)
       if (isUnmounted.current || path != filePath.current) return
       let ext = pic.split('?')[0]
       ext = ext.substring(ext.lastIndexOf('.') + 1)
@@ -120,7 +121,7 @@ export default forwardRef<MetadataFormType, {}>((props, ref) => {
         })
       })
     }).catch((err) => {
-      console.log(err)
+      console.log('online match error', err)
       if (isUnmounted.current || path != filePath.current) return
       toast(t('metadata_edit_modal_form_match_pic_failed'))
     }).finally(() => {
@@ -180,14 +181,13 @@ export default forwardRef<MetadataFormType, {}>((props, ref) => {
 
   return (
     <View style={styles.container}>
-      <TextAreaItem
+      {/* <TextAreaItem
         value={fileName}
         label={global.i18n.t('metadata_edit_modal_file_name')}
         numberOfLines={2}
         scrollEnabled
         style={{ ...styles.pathText, color: theme['c-primary-font'] }}
-      />
-
+      /> */}
       <InputItem
         value={data.name}
         label={t('metadata_edit_modal_form_name')}
@@ -198,11 +198,11 @@ export default forwardRef<MetadataFormType, {}>((props, ref) => {
         label={t('metadata_edit_modal_form_singer')}
         onChanged={handleUpdateSinger}
         keyboardType="name-phone-pad" />
-      <ParseName
+      {/* <ParseName
         fileName={fileName}
         onNameChanged={handleUpdateName}
         onSingerChanged={handleUpdateSinger}
-      />
+      /> */}
       <InputItem
         value={data.albumName}
         label={t('metadata_edit_modal_form_album_name')}

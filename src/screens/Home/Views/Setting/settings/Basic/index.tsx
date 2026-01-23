@@ -30,15 +30,15 @@ export default memo(() => {
       {/* <IsShowExitBtn /> */}
       <IsAutoHidePlayBar />
       <IsHomePageScroll />
-      <IsUseSystemFileSelector />
+      {/* <IsUseSystemFileSelector /> */}
       <IsAlwaysKeepStatusbarHeight />
       <Theme />
       <DrawerLayoutPosition />
       <Language />
       <FontSize />
-      <ShareType />
-      <Source />
-      <SourceName />
+      {/* <ShareType /> */}
+      {/* <Source /> */}
+      {/* <SourceName /> */}
     </Section>
   )
 })

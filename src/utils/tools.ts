@@ -22,7 +22,7 @@ export const getDeviceLanguage = async() => {
   //   : await getSystemLocales()
   // deviceLanguage = typeof deviceLanguage === 'string' ? deviceLanguage.substring(0, 5).toLocaleLowerCase() : ''
   // return getSystemLocales()
-  return "zh_cn"
+  return "en_us"
 }
 
 

@@ -24,8 +24,8 @@ const Main = () => {
 
   const component = useMemo(() => {
     switch (id) {
-      case 'nav_songlist': return <SongList />
-      case 'nav_top': return <Leaderboard />
+      // case 'nav_songlist': return <SongList />
+      // case 'nav_top': return <Leaderboard />
       case 'nav_love': return <Mylist />
       case 'nav_setting': return <Setting />
       case 'nav_search':

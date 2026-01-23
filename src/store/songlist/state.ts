@@ -34,7 +34,7 @@ export declare interface ListInfoItem {
   img?: string
   // grade: basic.favorcnt / 10,
   desc?: string
-  source: LX.OnlineSource
+  source: LX.OnlineSource | 'local'
   total?: string
 }
 export declare interface ListInfo {
@@ -44,14 +44,14 @@ export declare interface ListInfo {
   limit: number
   maxPage: number
   key: string | null
-  source: LX.OnlineSource
+  source: LX.OnlineSource | 'local'
   tagId: string
   sortId: string
 }
 
 export declare interface ListDetailInfo {
   list: LX.Music.MusicInfoOnline[]
-  source: LX.OnlineSource
+  source: LX.OnlineSource | 'local'
   // desc: string | null
   total: number
   page: number
@@ -73,7 +73,7 @@ export declare interface ListDetailInfo {
 //   source: '',
 // })
 
-export type Source = LX.OnlineSource
+export type Source = LX.OnlineSource | 'local'
 export interface InitState {
   sources: Source[]
   sortList: Partial<Record<Source, SortInfo[]>>
@@ -94,7 +94,7 @@ const state: InitState = {
     limit: 30,
     maxPage: 1,
     key: null,
-    source: 'kw',
+    source: 'local',
     tagId: '',
     sortId: '',
   },
@@ -107,17 +107,17 @@ const state: InitState = {
     limit: 30,
     maxPage: 1,
     key: null,
-    source: 'kw',
+    source: 'local',
     info: {},
   },
 }
 
 
 for (const source of music.sources) {
-  const songList = music[source.id as Source]?.songList
-  if (!songList) continue
-  state.sources.push(source.id as Source)
-  state.sortList[source.id as Source] = songList.sortList as SortInfo[]
+  if (!music[source.id as LX.OnlineSource]?.songList) continue
+  const sourceTyped = source.id as LX.OnlineSource
+  state.sources.push(sourceTyped)
+  state.sortList[sourceTyped] = music[sourceTyped].songList!.sortList as SortInfo[]
 }
 
 

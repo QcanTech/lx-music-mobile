@@ -22,7 +22,7 @@ export type {
 }
 
 export interface MetadataEditType {
-  show: (filePath: string) => void
+  show: (filePath: string, musicInfo: LX.Music.MusicInfo) => void
 }
 export interface MetadataEditProps {
   onUpdate: (info: Metadata) => void
@@ -38,18 +38,31 @@ export default forwardRef<MetadataEditType, MetadataEditProps>((props, ref) => {
   const [processing, setProcessing] = useState(false)
   const isUnmounted = useUnmounted()
 
-  const handleShow = (filePath: string) => {
+  const handleShow = (filePath: string, musicInfo: LX.Music.MusicInfo) => {
     alertRef.current?.setVisible(true)
+    metadata.current = {
+      name: musicInfo.name  ,
+      singer: musicInfo.singer == "Unknown Artist" ? "" : musicInfo.singer,
+      albumName: musicInfo.meta.albumName,
+      pic: musicInfo.meta.picUrl,
+      interval: '',
+      lyric: '',
+    }
+    requestAnimationFrame(() => {
+      metadataFormRef.current?.setForm(filePath, metadata.current)
+    })
+    return
     void Promise.all([
       readMetadata(filePath),
       readPic(filePath).catch(() => ''),
       readLyric(filePath, false).catch(() => ''),
     ]).then(async([_metadata, pic, lyric]) => {
+      console.log('readMetadata', _metadata, pic, lyric)
       if (!_metadata) return
       if (isUnmounted.current) return
       metadata.current = {
-        name: _metadata.name,
-        singer: _metadata.singer,
+        name: name || _metadata.name ,
+        singer: singer || _metadata.singer,
         albumName: _metadata.albumName,
         pic,
         interval: formatPlayTime2(_metadata.interval),
@@ -58,16 +71,18 @@ export default forwardRef<MetadataEditType, MetadataEditProps>((props, ref) => {
       requestAnimationFrame(() => {
         metadataFormRef.current?.setForm(filePath, metadata.current)
       })
+    }).catch(err => {
+      log.error(`read (${filePath}) metadata failed: \n${err.message}`)
     })
   }
   useImperativeHandle(ref, () => ({
-    show(path) {
+    show(path, musicInfo) {
       filePath.current = path
-      if (visible) handleShow(path)
+      if (visible) handleShow(path, musicInfo)
       else {
         setVisible(true)
         requestAnimationFrame(() => {
-          handleShow(path)
+          handleShow(path, musicInfo)
         })
       }
     },
@@ -89,20 +104,20 @@ export default forwardRef<MetadataEditType, MetadataEditProps>((props, ref) => {
         _metadata.albumName != metadata.current.albumName
       ) {
         isUpdated ||= true
-        await writeMetadata(filePath.current, {
-          name: _metadata.name,
-          singer: _metadata.singer,
-          albumName: _metadata.albumName,
-        })
+        // await writeMetadata(filePath.current, {
+        //   name: _metadata.name,
+        //   singer: _metadata.singer,
+        //   albumName: _metadata.albumName,
+        // })
       }
       if (_metadata.pic != metadata.current.pic) {
         isUpdated ||= true
-        await writePic(filePath.current, _metadata.pic)
+        // await writePic(filePath.current, _metadata.pic)
         if (_metadata.pic.startsWith(TEMP_FILE_PATH)) void unlink(_metadata.pic)
       }
       if (_metadata.lyric != metadata.current.lyric) {
         isUpdated ||= true
-        await writeLyric(filePath.current, _metadata.lyric)
+        // await writeLyric(filePath.current, _metadata.lyric)
       }
     } catch (err: any) {
       log.error(`save (${filePath.current}) metadata failed: \n${err.message}`)

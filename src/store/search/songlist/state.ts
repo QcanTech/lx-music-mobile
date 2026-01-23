@@ -11,9 +11,10 @@ export type SearchListInfo = Omit<ListInfo, 'source' | 'maxPage'>
 
 interface ListInfos extends Partial<Record<LX.OnlineSource, SearchListInfo>> {
   'all': SearchListInfo
+  'local': SearchListInfo
 }
 
-export type Source = LX.OnlineSource | 'all'
+export type Source = LX.OnlineSource | 'all' | 'local'
 
 export interface InitState {
   searchText: string
@@ -25,10 +26,19 @@ export interface InitState {
 
 const state: InitState = {
   searchText: '',
-  source: 'kw',
+  source: 'local',
   sources: [],
   listInfos: {
     all: {
+      page: 1,
+      limit: 15,
+      total: 0,
+      list: [],
+      key: null,
+      tagId: '',
+      sortId: '',
+    },
+    local: {
       page: 1,
       limit: 15,
       total: 0,
@@ -56,6 +66,7 @@ for (const source of music.sources) {
   }
   maxPages[source.id as LX.OnlineSource] = 0
 }
+state.sources.push('local')
 state.sources.push('all')
 
 export default state

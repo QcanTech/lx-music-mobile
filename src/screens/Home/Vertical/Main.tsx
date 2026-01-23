@@ -52,77 +52,77 @@ const SearchPage = () => {
 
   return visible ? component : null
 }
-const SongListPage = () => {
-  const [visible, setVisible] = useState(commonState.navActiveId == 'nav_songlist')
-  const component = useMemo(() => <SongList />, [])
-  useEffect(() => {
-    let currentId: CommonState['navActiveId'] = commonState.navActiveId
-    const handleNavIdUpdate = (id: CommonState['navActiveId']) => {
-      currentId = id
-      if (id == 'nav_songlist') {
-        requestAnimationFrame(() => {
-          setVisible(true)
-        })
-      }
-    }
-    const handleHide = () => {
-      if (currentId != 'nav_setting') return
-      setVisible(false)
-    }
-    const handleConfigUpdated = (keys: Array<keyof LX.AppSetting>) => {
-      if (keys.some(k => hideKeys.includes(k))) handleHide()
-    }
-    global.state_event.on('navActiveIdUpdated', handleNavIdUpdate)
-    global.state_event.on('themeUpdated', handleHide)
-    global.state_event.on('languageChanged', handleHide)
-    global.state_event.on('configUpdated', handleConfigUpdated)
+// const SongListPage = () => {
+//   const [visible, setVisible] = useState(commonState.navActiveId == 'nav_songlist')
+//   const component = useMemo(() => <SongList />, [])
+//   useEffect(() => {
+//     let currentId: CommonState['navActiveId'] = commonState.navActiveId
+//     const handleNavIdUpdate = (id: CommonState['navActiveId']) => {
+//       currentId = id
+//       if (id == 'nav_songlist') {
+//         requestAnimationFrame(() => {
+//           setVisible(true)
+//         })
+//       }
+//     }
+//     const handleHide = () => {
+//       if (currentId != 'nav_setting') return
+//       setVisible(false)
+//     }
+//     const handleConfigUpdated = (keys: Array<keyof LX.AppSetting>) => {
+//       if (keys.some(k => hideKeys.includes(k))) handleHide()
+//     }
+//     global.state_event.on('navActiveIdUpdated', handleNavIdUpdate)
+//     global.state_event.on('themeUpdated', handleHide)
+//     global.state_event.on('languageChanged', handleHide)
+//     global.state_event.on('configUpdated', handleConfigUpdated)
 
-    return () => {
-      global.state_event.off('navActiveIdUpdated', handleNavIdUpdate)
-      global.state_event.off('themeUpdated', handleHide)
-      global.state_event.off('languageChanged', handleHide)
-      global.state_event.on('configUpdated', handleConfigUpdated)
-    }
-  }, [])
+//     return () => {
+//       global.state_event.off('navActiveIdUpdated', handleNavIdUpdate)
+//       global.state_event.off('themeUpdated', handleHide)
+//       global.state_event.off('languageChanged', handleHide)
+//       global.state_event.on('configUpdated', handleConfigUpdated)
+//     }
+//   }, [])
 
-  return visible ? component : null
-  // return activeId == 1 || activeId == 0  ? SongList : null
-}
-const LeaderboardPage = () => {
-  const [visible, setVisible] = useState(commonState.navActiveId == 'nav_top')
-  const component = useMemo(() => <Leaderboard />, [])
-  useEffect(() => {
-    let currentId: CommonState['navActiveId'] = commonState.navActiveId
-    const handleNavIdUpdate = (id: CommonState['navActiveId']) => {
-      currentId = id
-      if (id == 'nav_top') {
-        requestAnimationFrame(() => {
-          setVisible(true)
-        })
-      }
-    }
-    const handleHide = () => {
-      if (currentId != 'nav_setting') return
-      setVisible(false)
-    }
-    const handleConfigUpdated = (keys: Array<keyof LX.AppSetting>) => {
-      if (keys.some(k => hideKeys.includes(k))) handleHide()
-    }
-    global.state_event.on('navActiveIdUpdated', handleNavIdUpdate)
-    global.state_event.on('themeUpdated', handleHide)
-    global.state_event.on('languageChanged', handleHide)
-    global.state_event.on('configUpdated', handleConfigUpdated)
+//   return visible ? component : null
+//   // return activeId == 1 || activeId == 0  ? SongList : null
+// }
+// const LeaderboardPage = () => {
+//   const [visible, setVisible] = useState(commonState.navActiveId == 'nav_top')
+//   const component = useMemo(() => <Leaderboard />, [])
+//   useEffect(() => {
+//     let currentId: CommonState['navActiveId'] = commonState.navActiveId
+//     const handleNavIdUpdate = (id: CommonState['navActiveId']) => {
+//       currentId = id
+//       if (id == 'nav_top') {
+//         requestAnimationFrame(() => {
+//           setVisible(true)
+//         })
+//       }
+//     }
+//     const handleHide = () => {
+//       if (currentId != 'nav_setting') return
+//       setVisible(false)
+//     }
+//     const handleConfigUpdated = (keys: Array<keyof LX.AppSetting>) => {
+//       if (keys.some(k => hideKeys.includes(k))) handleHide()
+//     }
+//     global.state_event.on('navActiveIdUpdated', handleNavIdUpdate)
+//     global.state_event.on('themeUpdated', handleHide)
+//     global.state_event.on('languageChanged', handleHide)
+//     global.state_event.on('configUpdated', handleConfigUpdated)
 
-    return () => {
-      global.state_event.off('navActiveIdUpdated', handleNavIdUpdate)
-      global.state_event.off('themeUpdated', handleHide)
-      global.state_event.off('languageChanged', handleHide)
-      global.state_event.on('configUpdated', handleConfigUpdated)
-    }
-  }, [])
+//     return () => {
+//       global.state_event.off('navActiveIdUpdated', handleNavIdUpdate)
+//       global.state_event.off('themeUpdated', handleHide)
+//       global.state_event.off('languageChanged', handleHide)
+//       global.state_event.on('configUpdated', handleConfigUpdated)
+//     }
+//   }, [])
 
-  return visible ? component : null
-}
+//   return visible ? component : null
+// }
 const MylistPage = () => {
   const [visible, setVisible] = useState(commonState.navActiveId == 'nav_love')
   const component = useMemo(() => <Mylist />, [])
@@ -180,15 +180,15 @@ const SettingPage = () => {
 
 const viewMap = {
   nav_search: 0,
-  nav_songlist: 1,
-  nav_top: 2,
-  nav_love: 3,
-  nav_setting: 4,
+  // nav_songlist: 1,
+  // nav_top: 2,
+  nav_love: 1,
+  nav_setting: 2,
 }
 const indexMap = [
   'nav_search',
-  'nav_songlist',
-  'nav_top',
+  // 'nav_songlist',
+  // 'nav_top',
   'nav_love',
   'nav_setting',
 ] as const
@@ -277,12 +277,12 @@ const Main = () => {
       <View collapsable={false} key="nav_search" style={styles.pageStyle}>
         <SearchPage />
       </View>
-      <View collapsable={false} key="nav_songlist" style={styles.pageStyle}>
+      {/* <View collapsable={false} key="nav_songlist" style={styles.pageStyle}>
         <SongListPage />
-      </View>
-      <View collapsable={false} key="nav_top" style={styles.pageStyle}>
+      </View> */}
+      {/* <View collapsable={false} key="nav_top" style={styles.pageStyle}>
         <LeaderboardPage />
-      </View>
+      </View> */}
       <View collapsable={false} key="nav_love" style={styles.pageStyle}>
         <MylistPage />
       </View>
