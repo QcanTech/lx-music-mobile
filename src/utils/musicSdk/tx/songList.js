@@ -299,7 +299,9 @@ export default {
         Referer: 'http://y.qq.com/portal/search.html',
       },
     })
-      .promise.then(({ body }) => {
+      .promise.then((response) => {
+        console.warn('client_music_search_songlist', response)
+        const body = response.body
         if (body.code != 0) return this.search(text, page, limit, ++retryNum)
         // console.log(body.data.list)
         return {
@@ -321,6 +323,9 @@ export default {
           total: body.data.sum,
           source: 'tx',
         }
+      }).catch(e => {
+        console.log('client_music_search_songlist exception', e)
+        return this.search(text, page, limit, ++retryNum)
       })
   },
 }
