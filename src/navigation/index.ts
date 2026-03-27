@@ -1,7 +1,7 @@
 import { Navigation } from 'react-native-navigation'
 import * as screenNames from './screenNames'
 import * as navigations from './navigation'
-
+import { updateNavigationColors } from './navigation'
 import registerScreens from './registerScreens'
 import { removeComponentId } from '@/core/common'
 import { onAppLaunched } from './regLaunchedEvent'
@@ -38,4 +38,5 @@ export {
   init,
   screenNames,
   navigations,
+  updateNavigationColors,
 }

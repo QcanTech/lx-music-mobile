@@ -10,7 +10,8 @@ import {
 } from './screenNames'
 
 import themeState from '@/store/theme/state'
-import { NAV_SHEAR_NATIVE_IDS } from '@/config/constant'
+import commonState from '@/store/common/state'
+import { COMPONENT_IDS, NAV_SHEAR_NATIVE_IDS } from '@/config/constant'
 import { getStatusBarStyle } from './utils'
 import { windowSizeTools } from '@/utils/windowSizeTools'
 import { type ListInfoItem } from '@/store/songlist/state'
@@ -591,3 +592,35 @@ export function pushTabBasedApp() {
   })
 }
  */
+export async function updateNavigationColors(theme: LX.ActiveTheme) {
+  const style = getStatusBarStyle(theme.isDark)
+  Navigation.setDefaultOptions({
+    statusBar: {
+      style,
+    },
+    navigationBar: {
+      backgroundColor: theme['c-content-background'],
+    },
+    layout: {
+      componentBackgroundColor: theme['c-content-background'],
+    },
+  })
+
+  const mergeOptions = (componentId: string) => {
+    Navigation.mergeOptions(componentId, {
+      statusBar: {
+        style,
+      },
+      navigationBar: {
+        backgroundColor: theme['c-content-background'],
+      },
+      layout: {
+        componentBackgroundColor: theme['c-content-background'],
+      },
+    })
+  }
+
+  for (const id of Object.values(commonState.componentIds)) {
+    if (id) mergeOptions(id)
+  }
+}
