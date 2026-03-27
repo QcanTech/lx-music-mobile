@@ -96,7 +96,7 @@ const handleDeflateRaw = data => new Promise((resolve, reject) => {
 
 const regx = /(?:\d\w)+/g
 
-const handleRequestData = async(url, {
+const handleRequestData = async (url, {
   method = 'get',
   headers = {},
   format = 'json',
@@ -167,7 +167,7 @@ const blobToBuffer = (blob) => {
 }
 
 const fetchData = (url, { timeout = 15000, ...options }) => {
-  console.log('---start---', url)
+  // console.log('---start---', url)
 
   const controller = new global.AbortController()
   let id = BackgroundTimer.setTimeout(() => {
@@ -199,7 +199,7 @@ const fetchData = (url, { timeout = 15000, ...options }) => {
         } else {
           try {
             resp.body = JSON.parse(resp.body)
-          } catch {}
+          } catch { }
           return resp
         }
       }).catch(err => {
@@ -216,7 +216,7 @@ const fetchData = (url, { timeout = 15000, ...options }) => {
   }
 }
 
-export const checkUrl = async(url, options = {}) => {
+export const checkUrl = async (url, options = {}) => {
   return fetchData(url, { method: 'head', ...options }).request.then(resp => {
     if (resp.statusCode === 200) {
       return Promise.resolve()

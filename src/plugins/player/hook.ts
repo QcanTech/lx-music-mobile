@@ -78,7 +78,7 @@ export function useProgress(updateInterval: number) {
     }
   }, [])
 
-  const getProgress = async() => {
+  const getProgress = async () => {
     const [position, duration, buffered] = await Promise.all([
       TrackPlayer.getPosition(),
       TrackPlayer.getDuration(),
@@ -126,11 +126,11 @@ export function useBufferProgress() {
       clearInterval(interval)
       interval = null
     }
-    const updateBuffer = async() => {
-      let progress = {duration: 0, position: 0, buffered: 0}
+    const updateBuffer = async () => {
+      let progress = { duration: 0, position: 0, buffered: 0 }
       try {
         progress = await TrackPlayer.getProgress()
-      }catch(err) {
+      } catch (err) {
         console.log('get progress failed', err)
         return
       }
@@ -145,7 +145,7 @@ export function useBufferProgress() {
     }
 
     const sub = TrackPlayer.addEventListener(Event.PlaybackState, data => {
-      console.log('Event.PlaybackState', data.state)
+      // console.log('Event.PlaybackState', data.state)
       switch (data.state) {
         case State.None:
           setProgress(0)

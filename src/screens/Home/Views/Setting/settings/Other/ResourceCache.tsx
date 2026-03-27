@@ -6,8 +6,8 @@ import { StyleSheet, View } from 'react-native'
 import SubTitle from '../../components/SubTitle'
 import Button from '../../components/Button'
 import { toast, resetNotificationPermissionCheck, confirmDialog, resetIgnoringBatteryOptimizationCheck } from '@/utils/tools'
-import { getAppCacheSize, clearAppCache } from '@/utils/nativeModules/cache'
-import { getCacheSize, clearCache } from '@/plugins/player/utils'
+import { getAppCacheSize, clearAppCache, getTrackPlayerCacheSize, clearTrackPlayerCache } from '@/utils/nativeModules/cache'
+import { getVideoCacheSize, clearVideoCache } from '@/plugins/player/utils'
 import { sizeFormate } from '@/utils'
 import { useI18n } from '@/lang'
 import Text from '@/components/common/Text'
@@ -22,9 +22,11 @@ export default memo(() => {
   // const clearCache = useDispatch('list', 'clearCache')
 
   const handleGetAppCacheSize = () => {
-    void Promise.all([getAppCacheSize(), getCacheSize()]).then(([size, size2]) => {
-      const count = size + size2
+    void Promise.all([getAppCacheSize(), getTrackPlayerCacheSize(), getVideoCacheSize()]).then(([size, size2, size3]) => {
+      const count = size + size2 + size3
       setCacheSize(sizeFormate(count))
+    }).catch(err => {
+      console.log(err)
     })
   }
 
@@ -38,7 +40,8 @@ export default memo(() => {
       setCleaning(true)
       void Promise.all([
         clearAppCache(),
-        clearCache(),
+        clearTrackPlayerCache(),
+        clearVideoCache(),
         clearMusicUrl(),
         resetNotificationPermissionCheck(),
         resetIgnoringBatteryOptimizationCheck(),
@@ -53,7 +56,8 @@ export default memo(() => {
 
 
   useEffect(() => {
-    // handleGetAppCacheSize()
+    handleGetAppCacheSize()
+    console.log('handleGetAppCacheSize')
   }, [])
 
   return (

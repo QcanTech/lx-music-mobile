@@ -349,6 +349,7 @@
   "setting_play_cache_size": "最大缓存大小（MB）",
   "setting_play_cache_size_no_cache": "禁用缓存",
   "setting_play_cache_size_save_tip": "缓存设置完毕，重启应用后生效",
+  "setting_play_while_cache": "边听边缓存（仅 iOS 有效）",
   "setting_play_handle_audio_focus": "其他应用播放声音时，自动暂停播放",
   "setting_play_handle_audio_focus_tip": "重启应用后生效",
   "setting_play_lyric_transition": "显示歌词翻译",

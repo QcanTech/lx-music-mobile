@@ -1,12 +1,12 @@
 import TrackPlayer, { Capability, Event, RepeatMode, State } from 'react-native-track-player'
 import BackgroundTimer from 'react-native-background-timer'
 import { playMusic as handlePlayMusic } from './playList'
-import { existsFile, moveFile, privateStorageDirectoryPath, temporaryDirectoryPath } from '@/utils/fs'
+import { existsFile, moveFile, privateStorageDirectoryPath, temporaryDirectoryPath, readDir, stat, unlink, mkdir } from '@/utils/fs'
 import { toast } from '@/utils/tools'
 import playerState from '@/store/player/state'
+import { Platform } from 'react-native'
 
 // import { PlayerMusicInfo } from '@/store/modules/player/playInfo'
-
 
 export { useBufferProgress } from './hook'
 
@@ -155,27 +155,27 @@ export const setResource = (musicInfo: LX.Player.PlayMusic, url: string, duratio
   playMusic(musicInfo, url, duration ?? 0)
 }
 
-export const setPlay = async() => TrackPlayer.play()
-export const getPosition = async() => TrackPlayer.getPosition()
-export const getDuration = async() => TrackPlayer.getDuration()
-export const setStop = async() => {
+export const setPlay = async () => TrackPlayer.play()
+export const getPosition = async () => TrackPlayer.getPosition()
+export const getDuration = async () => TrackPlayer.getDuration()
+export const setStop = async () => {
   await TrackPlayer.stop()
   if (!isEmpty()) await TrackPlayer.skipToNext()
 }
-export const setLoop = async(loop: boolean) => TrackPlayer.setRepeatMode(loop ? RepeatMode.Off : RepeatMode.Track)
+export const setLoop = async (loop: boolean) => TrackPlayer.setRepeatMode(loop ? RepeatMode.Off : RepeatMode.Track)
 
-export const setPause = async() => TrackPlayer.pause()
+export const setPause = async () => TrackPlayer.pause()
 // export const skipToNext = () => TrackPlayer.skipToNext()
-export const setCurrentTime = async(time: number) => TrackPlayer.seekTo(time)
-export const setVolume = async(num: number) => TrackPlayer.setVolume(num)
-export const setPlaybackRate = async(num: number) => TrackPlayer.setRate(num)
-export const updateNowPlayingTitles = async(title: string, artist: string) => {
+export const setCurrentTime = async (time: number) => TrackPlayer.seekTo(time)
+export const setVolume = async (num: number) => TrackPlayer.setVolume(num)
+export const setPlaybackRate = async (num: number) => TrackPlayer.setRate(num)
+export const updateNowPlayingTitles = async (title: string, artist: string) => {
   console.log('set playing titles', title, artist)
-  let progress = {duration: 0, position: 0}
+  let progress = { duration: 0, position: 0 }
   try {
     progress = await TrackPlayer.getProgress()
     console.log('progress', progress, progress.position)
-  }catch(err) {
+  } catch (err) {
     console.log('get progress failed', err)
     return
   }
@@ -190,12 +190,69 @@ export const updateNowPlayingTitles = async(title: string, artist: string) => {
   return TrackPlayer.updateNowPlayingMetadata(nowPlayingInfo)
 }
 
-export const resetPlay = async() => Promise.all([setPause(), setCurrentTime(0)])
+export const resetPlay = async () => Promise.all([setPause(), setCurrentTime(0)])
 
-// export const isCached = async(url: string) => TrackPlayer.isCached(url)
-export const getCacheSize = async() => TrackPlayer.getCacheSize()
-export const clearCache = async() => TrackPlayer.clearCache()
-export const migratePlayerCache = async() => {
+// TrackPlayer cache helpers have been moved to @/utils/nativeModules/cache
+
+const getDirSize = async (path: string): Promise<number> => {
+  let size = 0
+  try {
+    const isExist = await existsFile(path)
+    if (!isExist) return size
+    const statItem = await stat(path)
+    if (statItem.type === 'directory') {
+      const children = await readDir(path)
+      for (const child of children) {
+        size += await getDirSize(path + '/' + child)
+      }
+    } else {
+      size += statItem.size
+    }
+  } catch (err) { }
+  return size
+}
+
+export const getVideoCacheSize = async () => {
+  if (Platform.OS !== 'ios') return 0
+  const cacheDir = privateStorageDirectoryPath + '/KTVHTTPCache'
+  // const logFiles = async (dir: string, depth = 0) => {
+  //   try {
+  //     const isExist = await existsFile(dir)
+  //     if (!isExist) {
+  //       console.log('[KTVHTTPCache] directory does not exist:', dir)
+  //       return
+  //     }
+  //     const children = await readDir(dir)
+  //     for (const child of children) {
+  //       const childPath = dir + '/' + child
+  //       const s = await stat(childPath)
+  //       const indent = '  '.repeat(depth)
+  //       if (s.type === 'directory') {
+  //         console.log(`${indent}[DIR]  ${child}`)
+  //         await logFiles(childPath, depth + 1)
+  //       } else {
+  //         console.log(`${indent}[FILE] ${child}  (${s.size} bytes)`)
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log('[KTVHTTPCache] error reading dir:', dir, err)
+  //   }
+  // }
+  // console.log('[KTVHTTPCache] listing files in:', cacheDir)
+  // await logFiles(cacheDir)
+  return getDirSize(cacheDir)
+}
+
+export const clearVideoCache = async () => {
+  if (Platform.OS !== 'ios') return
+  const cachePath = privateStorageDirectoryPath + '/KTVHTTPCache'
+  if (await existsFile(cachePath)) {
+    await unlink(cachePath)
+    await mkdir(cachePath)
+  }
+}
+
+export const migratePlayerCache = async () => {
   const newCachePath = privateStorageDirectoryPath + '/TrackPlayer'
   if (await existsFile(newCachePath)) return
   const oldCachePath = temporaryDirectoryPath + '/TrackPlayer'
@@ -209,7 +266,7 @@ export const migratePlayerCache = async() => {
   })
 }
 
-export const destroy = async() => {
+export const destroy = async () => {
   if (global.lx.playerStatus.isIniting || !global.lx.playerStatus.isInitialized) return
   await TrackPlayer.destroy()
   global.lx.playerStatus.isInitialized = false
@@ -217,7 +274,7 @@ export const destroy = async() => {
 
 type PlayStatus = 'None' | 'Ready' | 'Playing' | 'Paused' | 'Stopped' | 'Buffering' | 'Connecting'
 
-export const onStateChange = async(listener: (state: PlayStatus) => void) => {
+export const onStateChange = async (listener: (state: PlayStatus) => void) => {
   const sub = TrackPlayer.addEventListener(Event.PlaybackState, state => {
     let _state: PlayStatus
     switch (state) {
@@ -259,7 +316,7 @@ export const onStateChange = async(listener: (state: PlayStatus) => void) => {
  */
 // export const playState = callback => TrackPlayer.addEventListener('playback-state', callback)
 
-export const updateOptions = async(options = {
+export const updateOptions = async (options = {
   // Whether the player should stop running when the app is closed on Android
   // stopWithApp: true,
 

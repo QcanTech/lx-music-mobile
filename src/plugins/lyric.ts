@@ -39,7 +39,7 @@ const lrcTools = {
     for (const hook of this.playHooks) hook(line, text)
   },
   onSetLyric(lines: Lines) {
-    console.log('onSetLyric', lines)
+    // console.log('onSetLyric', lines)
     this.currentLines = lines
     this.currentLineData.line = 0
     this.currentLineData.text = ''
@@ -69,12 +69,12 @@ const lrcTools = {
 }
 
 
-export const init = async() => {
+export const init = async () => {
   lrcTools.init()
   lrcTools.addPlayHook(updateRemoteLyric)
 }
 
-const updateRemoteLyric = async(line: number, lrc: string)  => {
+const updateRemoteLyric = async (line: number, lrc: string) => {
   // console.log('updateRemoteLyric', line, lrc)
   const isShowBluetoothLyric = settingState.setting['player.isShowBluetoothLyric']
   if (!isShowBluetoothLyric) {

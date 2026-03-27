@@ -38,7 +38,7 @@ const ListItem = memo(({
     case 'sync': return <Sync />
     // case 'backup': return <Backup />
     case 'other': return <Other />
-    case 'version': return <Version />
+    // case 'version': return <Version />
     // case 'about': return <About />
     case 'basic': return <Basic />
   }

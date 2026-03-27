@@ -147,6 +147,11 @@ declare global {
       'player.cacheSize': string
 
       /**
+       * 是否启用边听边缓存
+       */
+      'player.playWhileCache': boolean
+
+      /**
        * 定时暂停播放-倒计时时间
        */
       'player.timeoutExit': string

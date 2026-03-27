@@ -9,6 +9,7 @@ export default {
       },
     })
     requestObj.promise.then(({ body }) => {
+      console.log("mg getPicUrl", songId, body)
       if (body.returnCode !== '000000') {
         if (tryNum > 5) return Promise.reject(new Error('图片获取失败'))
         let tryRequestObj = this.getPic(songId, ++tryNum)

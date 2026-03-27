@@ -1,3 +1,5 @@
+import convertToProxyURL from 'react-native-video-cache'
+import { Platform } from 'react-native'
 import { isInitialized, initial as playerInitial, isEmpty, setPause, setPlay, setResource, setStop } from '@/plugins/player'
 import {
   setStatusText,
@@ -72,7 +74,7 @@ const diffCurrentMusicInfo = (curMusicInfo: LX.Music.MusicInfo | LX.Download.Lis
 }
 
 let cancelDelayRetry: (() => void) | null = null
-const delayRetry = async(musicInfo: LX.Music.MusicInfo | LX.Download.ListItem, isRefresh = false): Promise<string | null> => {
+const delayRetry = async (musicInfo: LX.Music.MusicInfo | LX.Download.ListItem, isRefresh = false): Promise<string | null> => {
   // if (cancelDelayRetry) cancelDelayRetry()
   return new Promise<string | null>((resolve, reject) => {
     const time = getRandom(2, 6)
@@ -81,7 +83,7 @@ const delayRetry = async(musicInfo: LX.Music.MusicInfo | LX.Download.ListItem, i
       getMusicPlayUrl(musicInfo, isRefresh, true).then((result) => {
         cancelDelayRetry = null
         resolve(result)
-      }).catch(async(err: any) => {
+      }).catch(async (err: any) => {
         cancelDelayRetry = null
         reject(err)
       })
@@ -93,7 +95,7 @@ const delayRetry = async(musicInfo: LX.Music.MusicInfo | LX.Download.ListItem, i
     }
   })
 }
-const getMusicPlayUrl = async(musicInfo: LX.Music.MusicInfo | LX.Download.ListItem, isRefresh = false, isRetryed = false): Promise<string | null> => {
+const getMusicPlayUrl = async (musicInfo: LX.Music.MusicInfo | LX.Download.ListItem, isRefresh = false, isRetryed = false): Promise<string | null> => {
   // this.musicInfo.url = await getMusicPlayUrl(targetSong, type)
   setStatusText(global.i18n.t('player__getting_url'))
   addLoadTimeout()
@@ -105,7 +107,7 @@ const getMusicPlayUrl = async(musicInfo: LX.Music.MusicInfo | LX.Download.ListIt
     musicInfo: toggleMusicInfo,
     isRefresh,
     allowToggleSource: false,
-  }) : Promise.reject(new Error('not found'))).catch(async() => {
+  }) : Promise.reject(new Error('not found'))).catch(async () => {
     return getMusicUrl({
       musicInfo,
       isRefresh,
@@ -140,7 +142,18 @@ export const setMusicUrl = (musicInfo: LX.Music.MusicInfo | LX.Download.ListItem
   void getMusicPlayUrl(musicInfo, isRefresh).then((url) => {
     if (!url) return
     console.log('setMusicUrl', musicInfo, url)
-    setResource(musicInfo, url, playerState.progress.nowPlayTime)
+
+    let playUrl = url
+    if (
+      Platform.OS === 'ios' &&
+      settingState.setting['player.playWhileCache'] &&
+      playUrl.startsWith('http')
+    ) {
+      playUrl = convertToProxyURL(playUrl)
+      console.log("playUrl", playUrl)
+    }
+
+    setResource(musicInfo, playUrl, playerState.progress.nowPlayTime)
   }).catch((err: any) => {
     console.log(err)
     setStatusText(err.message as string)
@@ -155,7 +168,7 @@ export const setMusicUrl = (musicInfo: LX.Music.MusicInfo | LX.Download.ListItem
 }
 
 // 恢复上次播放的状态
-const handleRestorePlay = async(restorePlayInfo: LX.Player.SavedPlayInfo) => {
+const handleRestorePlay = async (restorePlayInfo: LX.Player.SavedPlayInfo) => {
   const musicInfo = playerState.playMusicInfo.musicInfo
   if (!musicInfo) return
 
@@ -226,7 +239,7 @@ const debouncePlay = debounceBackgroundTimer((musicInfo: LX.Player.PlayMusic) =>
 }, 200)
 
 // 处理音乐播放
-const handlePlay = async() => {
+const handlePlay = async () => {
   // console.log('-------------handlePlay-------------', global.lx.restorePlayInfo)
   if (!isInitialized()) {
     await checkNotificationPermission()
@@ -272,7 +285,7 @@ const handlePlay = async() => {
  * @param listId 列表id
  * @param id 歌曲id
  */
-export const playListById = async(listId: string, id: string) => {
+export const playListById = async (listId: string, id: string) => {
   const prevListId = playerState.playInfo.playerListId
   setPlayListId(listId)
   const musicInfo = getList(listId).find(m => m.id == id)
@@ -288,7 +301,7 @@ export const playListById = async(listId: string, id: string) => {
  * @param listId 列表id
  * @param index 播放的歌曲位置
  */
-export const playList = async(listId: string, index: number) => {
+export const playList = async (listId: string, index: number) => {
   // console.log('playList', listId, index, getList(listId))
   const prevListId = playerState.playInfo.playerListId
   setPlayListId(listId)
@@ -298,7 +311,7 @@ export const playList = async(listId: string, index: number) => {
   await handlePlay()
 }
 
-const handleToggleStop = async() => {
+const handleToggleStop = async () => {
   await stop()
   setTimeout(() => {
     setPlayMusicInfo(null, null)
@@ -317,7 +330,7 @@ export const resetRandomNextMusicInfo = () => {
   }
 }
 
-export const getNextPlayMusicInfo = async(): Promise<LX.Player.PlayMusicInfo | null> => {
+export const getNextPlayMusicInfo = async (): Promise<LX.Player.PlayMusicInfo | null> => {
   if (playerState.tempPlayList.length) { // 如果稍后播放列表存在歌曲则直接播放改列表的歌曲
     const playMusicInfo = playerState.tempPlayList[0]
     return playMusicInfo
@@ -402,7 +415,7 @@ export const getNextPlayMusicInfo = async(): Promise<LX.Player.PlayMusicInfo | n
   return nextPlayMusicInfo
 }
 
-const handlePlayNext = async(playMusicInfo: LX.Player.PlayMusicInfo) => {
+const handlePlayNext = async (playMusicInfo: LX.Player.PlayMusicInfo) => {
   setPlayMusicInfo(playMusicInfo.listId, playMusicInfo.musicInfo, playMusicInfo.isTempPlay)
   await handlePlay()
 }
@@ -411,7 +424,7 @@ const handlePlayNext = async(playMusicInfo: LX.Player.PlayMusicInfo) => {
  * @param isAutoToggle 是否自动切换
  * @returns
  */
-export const playNext = async(isAutoToggle = false): Promise<void> => {
+export const playNext = async (isAutoToggle = false): Promise<void> => {
   // console.error('playNext', playerState.tempPlayList, isAutoToggle)
   if (playerState.tempPlayList.length) { // 如果稍后播放列表存在歌曲则直接播放改列表的歌曲
     const playMusicInfo = playerState.tempPlayList[0]
@@ -511,7 +524,7 @@ export const playNext = async(isAutoToggle = false): Promise<void> => {
 /**
  * 上一曲
  */
-export const playPrev = async(isAutoToggle = false): Promise<void> => {
+export const playPrev = async (isAutoToggle = false): Promise<void> => {
   const playMusicInfo = playerState.playMusicInfo
   if (playMusicInfo.musicInfo == null) return handleToggleStop()
   const playInfo = playerState.playInfo
@@ -610,14 +623,14 @@ export const play = () => {
 /**
  * 暂停播放
  */
-export const pause = async() => {
+export const pause = async () => {
   await setPause()
 }
 
 /**
  * 停止播放
  */
-export const stop = async() => {
+export const stop = async () => {
   await setStop()
   setTimeout(() => {
     global.app_event.stop()
@@ -663,7 +676,7 @@ export const uncollectMusic = () => {
 /**
  * 不喜欢当前播放的歌曲
  */
-export const dislikeMusic = async() => {
+export const dislikeMusic = async () => {
   if (!playerState.playMusicInfo.musicInfo) return
   const minfo = 'progress' in playerState.playMusicInfo.musicInfo ? playerState.playMusicInfo.musicInfo.metadata.musicInfo : playerState.playMusicInfo.musicInfo
   await addDislikeInfo([{ name: minfo.name, singer: minfo.singer }])

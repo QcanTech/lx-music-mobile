@@ -349,6 +349,7 @@
   "setting_play_cache_size": "Maximum Cache Size (MB)",
   "setting_play_cache_size_no_cache": "Cache Disabled",
   "setting_play_cache_size_save_tip": "The cache is set and takes effect after restarting the app.",
+  "setting_play_while_cache": "Cache songs while playing (iOS)",
   "setting_play_handle_audio_focus": "Automatically pause playback when other apps playing sound",
   "setting_play_handle_audio_focus_tip": "Take effect after restarting the app",
   "setting_play_lyric_transition": "Show translated lyrics",
