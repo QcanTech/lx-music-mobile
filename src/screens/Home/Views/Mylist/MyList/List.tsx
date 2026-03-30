@@ -115,11 +115,12 @@ export default ({ onShowMenu }: {
     return { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
   }
 
+  const theme = useTheme()
   return (
     <FlatList
       ref={flatListRef}
       onScroll={handleScroll}
-      style={styles.container}
+      style={{ ...styles.container, backgroundColor: theme['c-content-background'] }}
       data={allList}
       maxToRenderPerBatch={9}
       // updateCellsBatchingPeriod={80}
@@ -138,7 +139,7 @@ export default ({ onShowMenu }: {
 const styles = createStyle({
   container: {
     flexShrink: 1,
-    flexGrow: 0,
+    flexGrow: 1,
   },
   // listContainer: {
   //   // borderBottomWidth: BorderWidths.normal2,

@@ -208,7 +208,7 @@ const LeaderboardView = () => {
       widthPercentageMax={MAX_WIDTH}
       drawerPosition={settingState.setting['common.drawerLayoutPosition']}
       renderNavigationView={navigationView}
-      // drawerBackgroundColor={theme['c-content-background']}
+      drawerStyle={{ backgroundColor: theme['c-content-background'] }}
       // style={{ elevation: 1 }}
     >
       <View style={styles.container}>

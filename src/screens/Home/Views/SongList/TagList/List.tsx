@@ -4,10 +4,10 @@ import { View, ScrollView } from 'react-native'
 import { createStyle } from '@/utils/tools'
 import TagGroup, { type TagGroupProps } from './TagGroup'
 import { useI18n } from '@/lang'
+import { useTheme } from '@/store/theme/hook'
 import { type TagInfo, type Source } from '@/store/songlist/state'
 import { getTags } from '@/core/songlist'
 import Text from '@/components/common/Text'
-// import { BorderWidths } from '@/theme'
 
 export interface ListProps {
   onTagChange: TagGroupProps['onTagChange']
@@ -18,7 +18,7 @@ export interface ListType {
 }
 
 export default forwardRef<ListType, ListProps>(({ onTagChange }, ref) => {
-  // const theme = useTheme()
+  const theme = useTheme()
   const [activeId, setActiveId] = useState('')
   const [list, setList] = useState<TagInfo['tags']>([])
   const t = useI18n()
@@ -37,7 +37,7 @@ export default forwardRef<ListType, ListProps>(({ onTagChange }, ref) => {
       if (id != activeId) setActiveId(id)
       if (source != prevSource.current) {
         setList([{ name: '', list: [{ name: t('songlist_tag_default'), id: '', parent_id: '', parent_name: '', source }] }])
-        void getTags(source).then(tagInfo => {
+        void getTags(source).then((tagInfo: TagInfo) => {
           if (isUnmountedRef.current) return
           prevSource.current = source
           setList([
@@ -52,7 +52,7 @@ export default forwardRef<ListType, ListProps>(({ onTagChange }, ref) => {
 
 
   return (
-    <ScrollView style={{ flexShrink: 1, flexGrow: 0 }} keyboardShouldPersistTaps={'always'}>
+    <ScrollView style={{ flexShrink: 1, flexGrow: 1, backgroundColor: theme['c-content-background'] }} keyboardShouldPersistTaps={'always'}>
       <View style={styles.tagContainer} onStartShouldSetResponder={() => true}>
         {
           list.map((type, index) => (

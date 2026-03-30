@@ -26,8 +26,8 @@ export default ({ name, list, onTagChange, activeId }: TagGroupProps) => {
         {list.map(item => (
           activeId == item.id
             ? (
-                <View style={{ ...styles.tagButton, backgroundColor: theme['c-button-background'] }} key={item.id}>
-                  <Text style={styles.tagButtonText} color={theme['c-primary-font-active']}>{item.name}</Text>
+                <View style={{ ...styles.tagButton, backgroundColor: theme['c-button-background-selected'] }} key={item.id}>
+                  <Text style={styles.tagButtonText} color={theme['c-button-font-selected']}>{item.name}</Text>
                 </View>
               )
             : (

@@ -14,6 +14,7 @@ interface Props {
   drawerType?: 'front' | 'back' | 'slide' | 'permanent'
   drawerStyle?: any
   overlayStyle?: any
+  style?: any
   children: React.ReactNode
 }
 
@@ -32,6 +33,7 @@ const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({
   drawerType = 'front',
   drawerStyle,
   overlayStyle,
+  style,
   children,
   ...props
 }, ref) => {
@@ -107,7 +109,7 @@ const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({
   return (
     <View
       onLayout={handleLayout}
-      style={{ width: w, flex: 1 }}
+      style={[{ width: w, flex: 1 }, style]}
     >
       {isReady && (
         <Drawer

@@ -45,7 +45,7 @@ export default () => {
     return () => {
       global.state_event.off('navActiveIdUpdated', handleFixDrawer)
       global.app_event.off('changeLoveListVisible', changeVisible)
-    // changeEvent.remove()
+      // changeEvent.remove()
     }
   }, [])
 
@@ -61,7 +61,7 @@ export default () => {
       widthPercentageMax={MAX_WIDTH}
       drawerPosition={settingState.setting['common.drawerLayoutPosition']}
       renderNavigationView={navigationView}
-      drawerBackgroundColor={theme['c-content-background']}
+      drawerStyle={{ backgroundColor: theme['c-content-background'] }}
       style={{ elevation: 1 }}
     >
       <MusicList />

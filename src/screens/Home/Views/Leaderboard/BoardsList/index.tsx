@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import List, { type ListType, type ListProps } from './List'
 import ListMenu, { type ListMenuType, type Position } from './ListMenu'
 import { type BoardItem } from '@/store/leaderboard/state'
+import { useTheme } from '@/store/theme/hook'
 
 
 export interface BoardsListProps {
@@ -33,8 +34,9 @@ export default forwardRef<BoardsListType, BoardsListProps>(({ onBoundChange, onP
     }, position)
   }
 
+  const theme = useTheme()
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, backgroundColor: theme['c-content-background'] }}>
       <List
         ref={listRef}
         onBoundChange={onBoundChange}
