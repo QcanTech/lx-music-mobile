@@ -308,12 +308,12 @@ export const handleGetOnlineMusicUrl = async ({ musicInfo, quality, onToggleSour
   return reqPromise.then(({ url, type }: { url: string, type: LX.Quality }) => {
     return { musicInfo, url, quality: type, isFromCache: false }
   }).catch(async (err: any) => {
-    console.log(err)
+    console.log("handleGetOnlineMusicUrl failed", err)
     if (!allowToggleSource || err.message == requestMsg.tooManyRequests) throw err
     onToggleSource()
     // eslint-disable-next-line @typescript-eslint/promise-function-async
     return getOtherSource(musicInfo).then(otherSource => {
-      // console.log('find otherSource', otherSource.length)
+      console.log('find otherSource', otherSource)
       if (otherSource.length) {
         return getOnlineOtherSourceMusicUrl({
           musicInfos: [...otherSource],
