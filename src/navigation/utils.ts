@@ -37,7 +37,7 @@ export const showPactModal = () => {
         },
         navigationBar: {
           // visible: false,
-          backgroundColor: theme['c-content-background'],
+          backgroundColor: theme['c-main-background'],
         },
         // animations: {
 
@@ -86,7 +86,7 @@ export const showVersionModal = () => {
         },
         navigationBar: {
           // visible: false,
-          backgroundColor: theme['c-content-background'],
+          backgroundColor: theme['c-main-background'],
         },
         // animations: {
 
@@ -135,7 +135,7 @@ export const showSyncModeModal = () => {
         },
         navigationBar: {
           // visible: false,
-          backgroundColor: theme['c-content-background'],
+          backgroundColor: theme['c-main-background'],
         },
         // animations: {
 

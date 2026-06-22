@@ -121,6 +121,7 @@ const DrawerLayoutFixed = forwardRef<DrawerLayoutFixedType, Props>(({
           drawerType={drawerType}
           drawerStyle={drawerStyleWithWidth}
           overlayStyle={overlayStyle}
+          swipeEnabled={false}
           {...props}
         >
           <View style={{ width: '100%', flex: 1 }}>

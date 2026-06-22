@@ -74,10 +74,10 @@ export async function pushHomeScreen() {
               },
               navigationBar: {
                 // visible: false,
-                backgroundColor: theme['c-content-background'],
+                backgroundColor: theme['c-main-background'],
               },
               layout: {
-                componentBackgroundColor: theme['c-content-background'],
+                componentBackgroundColor: theme['c-main-background'],
               },
               window: {
                 // backgroundColor: 'red',
@@ -142,10 +142,10 @@ export function pushPlayDetailScreen(componentId: string, skipAnimation = false)
           },
           navigationBar: {
             // visible: false,
-            backgroundColor: theme['c-content-background'],
+            backgroundColor: theme['c-main-background'],
           },
           layout: {
-            componentBackgroundColor: theme['c-content-background'],
+            componentBackgroundColor: theme['c-main-background'],
           },
           animations: {
             push: skipAnimation ? {} : {
@@ -227,10 +227,10 @@ export function pushSonglistDetailScreen(componentId: string, info: ListInfoItem
           },
           navigationBar: {
             // visible: false,
-            backgroundColor: theme['c-content-background'],
+            backgroundColor: theme['c-main-background'],
           },
           layout: {
-            componentBackgroundColor: theme['c-content-background'],
+            componentBackgroundColor: theme['c-main-background'],
           },
           animations: {
             push: {
@@ -360,10 +360,10 @@ export function pushCommentScreen(componentId: string) {
           },
           navigationBar: {
             // visible: false,
-            backgroundColor: theme['c-content-background'],
+            backgroundColor: theme['c-main-background'],
           },
           layout: {
-            componentBackgroundColor: theme['c-content-background'],
+            componentBackgroundColor: theme['c-main-background'],
           },
           animations: {
             push: {
@@ -599,10 +599,10 @@ export async function updateNavigationColors(theme: LX.ActiveTheme) {
       style,
     },
     navigationBar: {
-      backgroundColor: theme['c-content-background'],
+      backgroundColor: theme['c-main-background'],
     },
     layout: {
-      componentBackgroundColor: theme['c-content-background'],
+      componentBackgroundColor: theme['c-main-background'],
     },
   })
 
@@ -612,10 +612,10 @@ export async function updateNavigationColors(theme: LX.ActiveTheme) {
         style,
       },
       navigationBar: {
-        backgroundColor: theme['c-content-background'],
+        backgroundColor: theme['c-main-background'],
       },
       layout: {
-        componentBackgroundColor: theme['c-content-background'],
+        componentBackgroundColor: theme['c-main-background'],
       },
     })
   }
