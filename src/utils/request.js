@@ -18,6 +18,7 @@ const defaultHeaders = {
  * @param {*} options
  */
 export const httpFetch = (url, options = { method: 'get' }) => {
+  console.log("httpFetch", url, options)
   const requestObj = fetchData(url, options)
   return {
     promise: requestObj.request.catch(err => {
@@ -181,7 +182,7 @@ const fetchData = (url, { timeout = 15000, ...options }) => {
         ...options,
         signal: controller.signal,
       }).then(resp => (options.binary ? resp.blob() : resp.text()).then(text => {
-        // console.log(options, text)
+        // console.log('handleRequestData text', text)
         return {
           headers: resp.headers.map,
           body: text,
@@ -191,6 +192,7 @@ const fetchData = (url, { timeout = 15000, ...options }) => {
           ok: resp.ok,
         }
       })).then(resp => {
+        // console.log('handleRequestData handle blob', resp)
         if (options.binary) {
           return blobToBuffer(resp.body).then(buffer => {
             resp.body = buffer

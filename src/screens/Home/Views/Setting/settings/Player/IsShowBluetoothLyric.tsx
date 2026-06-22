@@ -11,7 +11,6 @@ import { showRemoteLyric } from '@/core/desktopLyric'
 import { setLastLyric } from '@/core/player/playInfo'
 import { updateNowPlayingTitles } from '@/plugins/player/utils'
 import playerState from '@/store/player/state'
-import { state } from '@/plugins/player/playList'
 
 export default memo(() => {
   const t = useI18n()

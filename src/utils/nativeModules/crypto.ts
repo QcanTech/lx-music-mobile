@@ -185,3 +185,12 @@ export const aesDecryptSync = (text: string, key: string, vi: string, mode: AES_
   
   return decrypted.toString()
 }
+
+export const hashSHA1 = async(text: string): Promise<string> => {
+  try {
+    return QuickCrypto.createHash('sha1').update(text, 'utf8').digest('hex')
+  } catch (error) {
+    console.error('生成SHA1出现问题:', error)
+    throw error
+  }
+}
