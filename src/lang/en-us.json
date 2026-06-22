@@ -386,6 +386,7 @@
   "setting_theme": "Theme",
   "setting_version": "Update",
   "setting_version_show_ver_modal": "Open Update Window 🚀",
+  "setting_version_go_to_update": "Go to Update 🚀",
   "share_card_title_music": "Share \"{name}\" to...",
   "share_title_music": "Song Sharing",
   "singer": "Artist: {name}",

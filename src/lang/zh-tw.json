@@ -386,6 +386,7 @@
   "setting_theme": "主題設定",
   "setting_version": "軟體更新",
   "setting_version_show_ver_modal": "開啟更新視窗 🚀",
+  "setting_version_go_to_update": "前往更新 🚀",
   "share_card_title_music": "將「{name}」分享到...",
   "share_title_music": "歌曲分享",
   "singer": "演出者：{name}",
