@@ -9,6 +9,7 @@ type LimitDetailCache = Map<string, DetailPageCache | ListDetailInfo['list']>
 type CacheValue = LimitDetailCache | ListInfo
 
 const cache = new Map<string, CacheValue>()
+const inFlightRequests = new Map<string, Promise<ListInfo>>()
 const LIST_LOAD_LIMIT = 30
 
 
@@ -77,12 +78,26 @@ export const getList = async(source: LX.OnlineSource, tabId: string, sortId: str
     else return listCache
   }
 
-  return musicSdk[source]?.songList.getList(sortId, tabId, page).then((result: ListInfo) => {
+  // Deduplicate concurrent requests for the same page so that multiple callers
+  // (e.g. phone UI + CarPlay refresh) share the same promise instead of cancelling
+  // each other through the SDK's internal request cancellation.
+  const inFlight = inFlightRequests.get(pageKey)
+  if (inFlight) return inFlight
+
+  const sdk = musicSdk[source]?.songList
+  if (!sdk) return Promise.reject(new Error('source not found'))
+
+  const promise = sdk.getList(sortId, tabId, page).then((result: ListInfo) => {
     cache.set(pageKey, result)
+    inFlightRequests.delete(pageKey)
     return result
-    // if (pageKey != listInfo.key) return
-    // setList(result, tabId, sortId, page)
+  }).catch((err: Error) => {
+    inFlightRequests.delete(pageKey)
+    throw err
   })
+  inFlightRequests.set(pageKey, promise)
+
+  return promise
 }
 
 

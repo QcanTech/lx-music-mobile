@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "react-native run-android --active-arch-only",
     "ios": "react-native run-ios",
+    "patch-deps": "node dependencies-patch.js",
+    "postinstall": "node dependencies-patch.js",
     "start": "react-native start",
     "sc": "react-native start --reset-cache",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",

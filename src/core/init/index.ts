@@ -9,6 +9,7 @@ import initSync from './sync'
 import initCommonState from './common'
 import { initDeeplink } from './deeplink'
 import { setApiSource } from '@/core/apiSource'
+import { init as initCarPlay } from '@/core/carplay'
 import commonActions from '@/store/common/action'
 import settingState from '@/store/setting/state'
 import { checkUpdate } from '@/core/version'
@@ -62,6 +63,9 @@ export default async() => {
 
   void initSync(setting)
   bootLog('Sync inited.')
+
+  initCarPlay()
+  bootLog('CarPlay inited.')
 
   // syncSetting()
 

@@ -33,12 +33,14 @@ export default () => {
     songlistInfo.current.sortId = id
     void saveSongListSetting({ sortId: id })
     listRef.current?.loadList(songlistInfo.current.source, id, songlistInfo.current.tagId)
+    global.app_event.songlistInfoChange()
   }
 
   const handleTagChange: HeaderBarProps['onTagChange'] = (name, id) => {
     songlistInfo.current.tagId = id
     void saveSongListSetting({ tagName: name, tagId: id })
     listRef.current?.loadList(songlistInfo.current.source, songlistInfo.current.sortId, id)
+    global.app_event.songlistInfoChange()
   }
 
   const handleSourceChange: HeaderBarProps['onSourceChange'] = (source) => {
@@ -48,6 +50,7 @@ export default () => {
     void saveSongListSetting({ sortId: songlistInfo.current.sortId, source, tagId: '', tagName: '' })
     headerBarRef.current?.setSource(source, songlistInfo.current.sortId, '', songlistInfo.current.tagId)
     listRef.current?.loadList(source, songlistInfo.current.sortId, songlistInfo.current.tagId)
+    global.app_event.songlistInfoChange()
   }
 
   return (

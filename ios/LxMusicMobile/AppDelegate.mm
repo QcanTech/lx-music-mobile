@@ -3,6 +3,9 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <RNGestureHandlerManager.h>
+#import <CarPlay/CarPlay.h>
+#import "CarPlayModule.h"
+#import "SceneDelegate.h"
 
 @implementation AppDelegate
 
@@ -10,8 +13,6 @@
 {
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   [ReactNativeNavigation bootstrapWithBridge:bridge];
-  // You can add your custom initial props in the dictionary below.
-  // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
   return YES;
@@ -32,6 +33,19 @@
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+#pragma mark - UISceneSession lifecycle
+
+- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
+    UISceneConfiguration *config;
+    if ([connectingSceneSession.role isEqualToString:CPTemplateApplicationSceneSessionRoleApplication]) {
+        config = [[UISceneConfiguration alloc] initWithName:@"CarPlay" sessionRole:connectingSceneSession.role];
+    } else {
+        config = [[UISceneConfiguration alloc] initWithName:@"Default" sessionRole:connectingSceneSession.role];
+    }
+    config.delegateClass = [SceneDelegate class];
+    return config;
 }
 
 @end

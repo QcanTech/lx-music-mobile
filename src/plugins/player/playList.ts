@@ -235,7 +235,9 @@ const updateMetaInfo = async (mInfo: LX.Player.MusicInfo, lyric?: string) => {
     album: mInfo.album ?? undefined,
     artwork,
     duration: state.prevDuration || 0,
-    elapsedTime: progress.position
+    elapsedTime: progress.position,
+    // iOS: 0 表示暂停，非 0 表示播放中（CarPlay/锁屏播放按钮状态依赖此值）
+    rate: state.isPlaying ? 1 : 0,
   }
   console.log('updateNowPlayingMetadata', nowPlayingInfo)
   await TrackPlayer.updateNowPlayingMetadata(nowPlayingInfo)

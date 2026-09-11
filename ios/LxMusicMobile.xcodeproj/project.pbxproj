@@ -18,6 +18,10 @@
 		8139ECB5FB3A0628C7187ED7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 390459AD61C3D02D9EF80C5E /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8BDCB976FE0674FE67514EFD /* libPods-LxMusicMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4D9207B9F8BB2098CB2C8 /* libPods-LxMusicMobile.a */; };
+		A1B2C3D4E5F60001 /* CarPlayModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60003 /* CarPlayModule.m */; };
+		A1B2C3D4E5F60002 /* CarPlaySceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60005 /* CarPlaySceneDelegate.m */; };
+		A1B2C3D4E5F60008 /* CarPlay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60009 /* CarPlay.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B1C2D3E4F5A60001 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F5A60003 /* SceneDelegate.m */; };
 		F8AF0B32C54553635E58E9F5 /* libPods-LxMusicMobile-LxMusicMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F725BCC31DC7AF7B127375 /* libPods-LxMusicMobile-LxMusicMobileTests.a */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +58,14 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = LxMusicMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83D8DFBFB1ECBCE93E460114 /* Pods-LxMusicMobile-LxMusicMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LxMusicMobile-LxMusicMobileTests.release.xcconfig"; path = "Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		910E4D7A04074E5ED1C46FA2 /* Pods-LxMusicMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LxMusicMobile.release.xcconfig"; path = "Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile.release.xcconfig"; sourceTree = "<group>"; };
+		A1B2C3D4E5F60003 /* CarPlayModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CarPlayModule.m; path = LxMusicMobile/CarPlayModule.m; sourceTree = "<group>"; };
+		A1B2C3D4E5F60004 /* CarPlayModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CarPlayModule.h; path = LxMusicMobile/CarPlayModule.h; sourceTree = "<group>"; };
+		A1B2C3D4E5F60005 /* CarPlaySceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CarPlaySceneDelegate.m; path = LxMusicMobile/CarPlaySceneDelegate.m; sourceTree = "<group>"; };
+		A1B2C3D4E5F60006 /* CarPlaySceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CarPlaySceneDelegate.h; path = LxMusicMobile/CarPlaySceneDelegate.h; sourceTree = "<group>"; };
+		A1B2C3D4E5F60007 /* LxMusicMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = LxMusicMobile.entitlements; path = LxMusicMobile/LxMusicMobile.entitlements; sourceTree = "<group>"; };
+		A1B2C3D4E5F60009 /* CarPlay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarPlay.framework; path = System/Library/Frameworks/CarPlay.framework; sourceTree = SDKROOT; };
+		B1C2D3E4F5A60002 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = LxMusicMobile/SceneDelegate.h; sourceTree = "<group>"; };
+		B1C2D3E4F5A60003 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SceneDelegate.m; path = LxMusicMobile/SceneDelegate.m; sourceTree = "<group>"; };
 		DC71AEBA77C3465DAF66080C /* Pods-LxMusicMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LxMusicMobile.debug.xcconfig"; path = "Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -71,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B2C3D4E5F60008 /* CarPlay.framework in Frameworks */,
 				8BDCB976FE0674FE67514EFD /* libPods-LxMusicMobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,6 +111,13 @@
 		13B07FAE1A68108700A75B9A /* LxMusicMobile */ = {
 			isa = PBXGroup;
 			children = (
+				A1B2C3D4E5F60004 /* CarPlayModule.h */,
+				A1B2C3D4E5F60003 /* CarPlayModule.m */,
+				A1B2C3D4E5F60006 /* CarPlaySceneDelegate.h */,
+				A1B2C3D4E5F60005 /* CarPlaySceneDelegate.m */,
+				A1B2C3D4E5F60007 /* LxMusicMobile.entitlements */,
+				B1C2D3E4F5A60002 /* SceneDelegate.h */,
+				B1C2D3E4F5A60003 /* SceneDelegate.m */,
 				312D46112EC5B04500967909 /* UserApiConstants.h */,
 				312D460B2EC3325600967909 /* Assets */,
 				316E25E22EB9D6A2008FEE7C /* UserApiModule.h */,
@@ -116,6 +136,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A1B2C3D4E5F60009 /* CarPlay.framework */,
 				311567ED2ECDCD3400FE3150 /* OpenSSL.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				16A4D9207B9F8BB2098CB2C8 /* libPods-LxMusicMobile.a */,
@@ -442,6 +463,9 @@
 			files = (
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				311567EC2ECDBD9400FE3150 /* UserApiModule.m in Sources */,
+				A1B2C3D4E5F60001 /* CarPlayModule.m in Sources */,
+				A1B2C3D4E5F60002 /* CarPlaySceneDelegate.m in Sources */,
+				B1C2D3E4F5A60001 /* SceneDelegate.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -515,9 +539,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LxMusicMobile/LxMusicMobile.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 84NYQH5CF8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LxMusicMobile/Info.plist;
@@ -554,9 +579,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LxMusicMobile/LxMusicMobile.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 84NYQH5CF8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
