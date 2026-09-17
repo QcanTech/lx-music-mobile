@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { Platform } from 'react-native'
+import BackgroundTimer from 'react-native-background-timer'
 import Lyric, { type Lines } from 'lrc-file-parser'
 
-import { updateNowPlayingTitles } from '@/plugins/player/utils'
+import { getPosition, updateNowPlayingTitles } from '@/plugins/player/utils'
 import { setLastLyric } from '@/core/player/playInfo'
 import playerState from '@/store/player/state'
 import settingState from '@/store/setting/state'
@@ -69,17 +71,84 @@ const lrcTools = {
 }
 
 
-export const init = async () => {
+export const init = async() => {
   lrcTools.init()
   lrcTools.addPlayHook(updateRemoteLyric)
+  global.state_event.on('configUpdated', handleConfigUpdated)
 }
 
-const updateRemoteLyric = async (line: number, lrc: string) => {
+// The remote (CarPlay / Bluetooth) lyric is written into the Now Playing title
+// and is normally driven by lrc-file-parser's play hook, which schedules each
+// line with requestAnimationFrame. On iOS requestAnimationFrame is backed by a
+// CADisplayLink tied to the phone display, so it stops firing once the screen
+// turns off. The audio keeps playing (and the CarPlay scene keeps the app
+// active) but the lyric freezes. Drive the remote lyric with a BackgroundTimer
+// while playing so it keeps updating regardless of screen / app state.
+let lastRemoteLyricLine = Number.MIN_SAFE_INTEGER
+let lastRemoteLyricText: string | null = null
+
+const remoteLyricSync = {
+  timer: null as number | null,
+  // Mirrors lrc-file-parser's own line lookup so the emitted line matches the
+  // requestAnimationFrame-driven path exactly (no flicker between the two).
+  findCurLineNum(lines: Lines, curTime: number): number {
+    if (curTime <= 0) return 0
+    const length = lines.length
+    for (let index = 0; index < length; index++) {
+      if (curTime <= lines[index].time) return index === 0 ? 0 : index - 1
+    }
+    return length - 1
+  },
+  sync() {
+    if (!settingState.setting['player.isShowBluetoothLyric']) return
+    if (!lrcTools.isPlay) return
+    const lines = lrcTools.currentLines
+    if (!lines.length) return
+    const offset = Math.trunc((lrcTools.lrc?.tags.offset ?? 0) + (lrcTools.lrc?.offset ?? 0))
+    void getPosition().then((position) => {
+      if (!lrcTools.isPlay) return
+      const lineNum = this.findCurLineNum(lines, position * 1000 + offset)
+      const line = lines[lineNum]
+      if (line == null) return
+      void updateRemoteLyric(lineNum, line.text)
+    }).catch(() => {})
+  },
+  start() {
+    if (this.timer != null) return
+    // Only iOS needs this: Android drives the remote lyric from a native module
+    // that keeps running in the background.
+    if (Platform.OS !== 'ios') return
+    if (!settingState.setting['player.isShowBluetoothLyric']) return
+    this.timer = BackgroundTimer.setInterval(() => { this.sync() }, 500)
+  },
+  stop() {
+    if (this.timer == null) return
+    BackgroundTimer.clearInterval(this.timer)
+    this.timer = null
+  },
+}
+
+const handleConfigUpdated: typeof global.state_event.configUpdated = (keys) => {
+  if (!keys.includes('player.isShowBluetoothLyric')) return
+  if (settingState.setting['player.isShowBluetoothLyric']) {
+    if (lrcTools.isPlay) remoteLyricSync.start()
+  } else {
+    remoteLyricSync.stop()
+  }
+}
+
+const updateRemoteLyric = async(line: number, lrc: string) => {
   // console.log('updateRemoteLyric', line, lrc)
   const isShowBluetoothLyric = settingState.setting['player.isShowBluetoothLyric']
   if (!isShowBluetoothLyric) {
     return
   }
+  // The play hook and the background sync timer can both reach the same line
+  // near a boundary; skip duplicate emits for a real lyric line. Resets
+  // (line < 0) always emit so the title refreshes correctly on track change.
+  if (line >= 0 && line === lastRemoteLyricLine && lrc === lastRemoteLyricText) return
+  lastRemoteLyricLine = line
+  lastRemoteLyricText = lrc
   setLastLyric(lrc)
   if (lrc == null) {
     void updateNowPlayingTitles(playerState.musicInfo.name, playerState.musicInfo.singer ?? '')
@@ -90,6 +159,7 @@ const updateRemoteLyric = async (line: number, lrc: string) => {
 
 export const setLyric = (lyric: string, translation?: string, romalrc?: string) => {
   lrcTools.isPlay = false
+  remoteLyricSync.stop()
   lrcTools.lyricText = lyric
   lrcTools.translationText = translation
   lrcTools.romaText = romalrc
@@ -112,11 +182,13 @@ export const play = (time: number) => {
   // console.log(time)
   lrcTools.isPlay = true
   lrcTools.lrc!.play(time)
+  remoteLyricSync.start()
 }
 export const pause = () => {
   // console.log('pause')
   lrcTools.isPlay = false
   lrcTools.lrc!.pause()
+  remoteLyricSync.stop()
 }
 
 // on lyric play hook

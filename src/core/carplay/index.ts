@@ -1,7 +1,7 @@
-import { isAvailable, onCarPlayEvent, updateSonglists, updateSongs, updateSonglistTitle, updateMyLists, updateMyListSongs, updateNowPlayingState, type SonglistItem, type SongItem, type MyListItem, type MyListSongItem } from '@/utils/nativeModules/carplay'
+import { isAvailable, isCarPlayConnected, onCarPlayEvent, updateSonglists, updateSongs, updateSonglistTitle, updateMyLists, updateMyListSongs, updateNowPlayingState, updateSonglistCollectState, type SonglistItem, type SongItem, type MyListItem, type MyListSongItem } from '@/utils/nativeModules/carplay'
 import { getList, getListDetail, setListDetail } from '@/core/songlist'
 import { playList, collectMusic, uncollectMusic } from '@/core/player/player'
-import { setTempList } from '@/core/list'
+import { setTempList, removeUserList } from '@/core/list'
 import { LIST_IDS, MUSIC_TOGGLE_MODE_LIST } from '@/config/constant'
 import { getSongListSetting } from '@/utils/data'
 import listState from '@/store/list/state'
@@ -10,12 +10,20 @@ import settingState from '@/store/setting/state'
 import { getListMusics, getListMusicSync, allMusicList } from '@/utils/listManage'
 import { getPicUrl } from '@/core/music/online'
 import { updateSetting } from '@/core/common'
+import { debounce } from '@/utils/common'
 
 let unsubscribes: Array<() => void> = []
 
 const myListSongsPageSize = 50
 
 const getListId = (id: string, source: LX.OnlineSource) => `${source}__${id}`
+
+/**
+ * Find the user list created by collecting the given online songlist. A collected
+ * songlist stores its raw id in `sourceListId` and the platform in `source`, so
+ * both must match. Returns undefined when the songlist is not collected.
+ */
+const findCollectedSonglistList = (id: string, source: LX.OnlineSource) => listState.userList.find(l => l.source === source && l.sourceListId === id)
 
 /**
  * Fetch and send songlist data to CarPlay (推荐 tab)
@@ -52,9 +60,12 @@ const handleRequestSongs = async(songlistId: string, source: string, page: numbe
     const listDetail = await getListDetail(songlistId, source as LX.OnlineSource, page)
     setListDetail(listDetail, songlistId, page)
 
-    // Update the title with the songlist name
-    if (page === 1 && listDetail.info.name) {
-      updateSonglistTitle(listDetail.info.name)
+    if (page === 1) {
+      // Update the title with the songlist name
+      if (listDetail.info.name) updateSonglistTitle(listDetail.info.name)
+      // Reflect whether this songlist is already collected so the heart button
+      // shows filled when opening a previously collected songlist.
+      updateSonglistCollectState({ collected: findCollectedSonglistList(songlistId, source as LX.OnlineSource) !== undefined })
     }
 
     const list: SongItem[] = listDetail.list.map(m => ({
@@ -209,6 +220,44 @@ const handleOpenPlayDetail = () => {
 }
 
 /**
+ * Handle the "collect songlist" button on the CarPlay songlist detail page.
+ * Toggles: collects the songlist when not yet collected, otherwise removes the
+ * user list created from it. The heart is flipped optimistically and reverted on
+ * failure. The button is disabled (natively on tap, then via `enabled: false`)
+ * until the action settles so rapid taps can't create duplicate lists during the
+ * slow collect fetch. Collect reuses the phone's action so list creation + 我的
+ * tab refresh stay identical.
+ */
+const handleCollectSonglist = async(data: { id: string, source: string, name?: string }) => {
+  if (!isAvailable) return
+  if (!data.id || !data.source) return
+  const source = data.source as LX.OnlineSource
+  const targetList = findCollectedSonglistList(data.id, source)
+  const willCollect = !targetList
+  const name = data.name ?? ''
+  // Collecting creates a list that needs a name; re-enable and bail without one.
+  if (willCollect && !name) {
+    updateSonglistCollectState({ collected: false, enabled: true })
+    return
+  }
+
+  // Optimistic flip; keep the button disabled until the operation settles.
+  updateSonglistCollectState({ collected: willCollect, enabled: false })
+  try {
+    if (targetList) {
+      await removeUserList([targetList.id])
+    } else {
+      const { handleCollect } = await import('@/screens/SonglistDetail/listAction')
+      await handleCollect(data.id, source, name)
+    }
+    updateSonglistCollectState({ collected: willCollect, enabled: true })
+  } catch (err) {
+    console.error('CarPlay: failed to toggle collect songlist', err)
+    updateSonglistCollectState({ collected: !!targetList, enabled: true })
+  }
+}
+
+/**
  * Check whether the current playing song is in the love (收藏) list
  */
 const getIsCollected = () => {
@@ -219,13 +268,24 @@ const getIsCollected = () => {
 }
 
 /**
- * Sync collect state + play mode to CarPlay Now Playing buttons
+ * Id of the currently playing song, used to drive the song-list now-playing
+ * indicator so only one row renders as active.
+ */
+const getPlayingSongId = () => {
+  const musicInfo = playerState.playMusicInfo.musicInfo
+  if (!musicInfo) return ''
+  return 'progress' in musicInfo ? musicInfo.metadata.musicInfo.id : musicInfo.id
+}
+
+/**
+ * Sync collect state + play mode + now-playing song to CarPlay
  */
 const syncNowPlayingState = () => {
   if (!isAvailable) return
   updateNowPlayingState({
     collected: getIsCollected(),
     playMode: settingState.setting['player.togglePlayMethod'],
+    songId: getPlayingSongId(),
   })
 }
 
@@ -279,11 +339,22 @@ const handleSonglistCategoryChange = () => {
 }
 
 /**
+ * Refresh the 我的 tab, debounced so a songlist collect (which fires list_create
+ * while the new list is still empty, then list_music_add once the songs arrive)
+ * collapses into a single refresh that runs AFTER the songs are present. Without
+ * this the list cover - derived from the first song - is computed from an empty
+ * list and the row shows up with no cover.
+ */
+const refreshMyListsDebounced = debounce(() => {
+  if (!isAvailable) return
+  void handleRequestMyLists()
+}, 500)
+
+/**
  * Update 我的 tab when user's list structure changes (create/remove/update lists)
  */
 const handleListStructureChanged = async() => {
-  if (!isAvailable) return
-  void handleRequestMyLists()
+  refreshMyListsDebounced()
 }
 
 /**
@@ -333,6 +404,12 @@ export const init = () => {
     }),
   )
 
+  unsubscribes.push(
+    onCarPlayEvent('carplay:collect-songlist', (data: { id: string, source: string, name: string }) => {
+      void handleCollectSonglist(data)
+    }),
+  )
+
   // 我的 tab events
   unsubscribes.push(
     onCarPlayEvent('carplay:request-my-lists', () => {
@@ -371,6 +448,16 @@ export const init = () => {
       syncNowPlayingState()
     }),
   )
+
+  // Cold-launch: CarPlay may already be connected by the time the JS service
+  // initializes (app launched straight into CarPlay). The initial request
+  // events fired before JS was listening, so push the data proactively.
+  void isCarPlayConnected().then((connected) => {
+    if (!connected) return
+    void handleRequestSonglists(1)
+    void handleRequestMyLists()
+    syncNowPlayingState()
+  })
 
   // Sync: update Now Playing collect button when current song changes
   global.app_event.on('musicToggled', syncNowPlayingState)

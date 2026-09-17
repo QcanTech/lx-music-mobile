@@ -7,6 +7,11 @@ API_AVAILABLE(ios(12.0))
 
 + (instancetype)sharedInstance;
 
+// Called by SceneDelegate when CarPlay connects before the bridge has
+// instantiated this module (cold launch straight into the CarPlay app).
++ (void)setPendingConnectionWithScene:(CPTemplateApplicationScene *)scene interfaceController:(CPInterfaceController *)interfaceController;
++ (void)clearPendingConnection;
+
 @property (nonatomic, strong) CPInterfaceController *interfaceController;
 @property (nonatomic, strong) CPTemplateApplicationScene *carPlayScene;
 
@@ -20,5 +25,6 @@ API_AVAILABLE(ios(12.0))
 - (void)playSong:(NSNumber *)index;
 - (void)onPlayStateChanged:(NSDictionary *)info;
 - (void)updateNowPlayingState:(NSDictionary *)state;
+- (void)updateSonglistCollectState:(NSDictionary *)data;
 
 @end

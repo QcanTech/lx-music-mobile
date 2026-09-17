@@ -13,16 +13,19 @@ import { init as initCarPlay } from '@/core/carplay'
 import commonActions from '@/store/common/action'
 import settingState from '@/store/setting/state'
 import { checkUpdate } from '@/core/version'
+import { checkActivation, recordFirstLaunchTime } from '@/core/activation'
 import { bootLog } from '@/utils/bootLog'
 import { cheatTip } from '@/utils/tools'
 
 let isFirstPush = true
 const handlePushedHomeScreen = async() => {
   // await cheatTip()
+  await recordFirstLaunchTime()
   if (settingState.setting['common.isAgreePact']) {
     if (isFirstPush) {
       isFirstPush = false
       // void checkUpdate()
+      await checkActivation()
       void initDeeplink()
     }
   } else {

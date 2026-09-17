@@ -29,6 +29,8 @@ const dislikeListPrefix = storageDataPrefix.dislikeList
 const userApiPrefix = storageDataPrefix.userApi
 const openStoragePathPrefix = storageDataPrefix.openStoragePath
 const selectedManagedFolderPrefix = storageDataPrefix.selectedManagedFolder
+const activationFirstLaunchTimeKey = storageDataPrefix.activationFirstLaunchTime
+const activationInfoKey = storageDataPrefix.activationInfo
 
 // const defaultListKey = listPrefix + 'default'
 // const loveListKey = listPrefix + 'love'
@@ -197,6 +199,36 @@ export const getIgnoreVersionFailTipTime = async() => {
   return ignoreVersionFailTipTime ?? 0
 }
 
+export interface ActivationInfo {
+  userId: string
+  email: string
+  activatedAt: number
+}
+
+let activationFirstLaunchTime: number | null
+export const saveActivationFirstLaunchTime = (time: number) => {
+  activationFirstLaunchTime = time
+  void saveData(activationFirstLaunchTimeKey, time)
+}
+// 获取应用首次打开的时间，用于计算试用期
+export const getActivationFirstLaunchTime = async() => {
+  // eslint-disable-next-line require-atomic-updates
+  if (activationFirstLaunchTime === undefined) activationFirstLaunchTime = (await getData<number | null>(activationFirstLaunchTimeKey)) ?? null
+  return activationFirstLaunchTime
+}
+
+let activationInfo: ActivationInfo | null
+export const saveActivationInfo = (info: ActivationInfo) => {
+  activationInfo = info
+  void saveData(activationInfoKey, info)
+}
+// 获取激活信息，非 null 表示已激活
+export const getActivationInfo = async() => {
+  // eslint-disable-next-line require-atomic-updates
+  if (activationInfo === undefined) activationInfo = (await getData<ActivationInfo | null>(activationInfoKey)) ?? null
+  return activationInfo
+}
+
 let openStoragePath: string | null = ''
 export const saveOpenStoragePath = async(path: string) => {
   if (path) {
@@ -345,6 +377,18 @@ export const saveMusicUrl = async(musicInfo: LX.Music.MusicInfo, type: LX.Qualit
 export const clearMusicUrl = async(keys?: string[]) => {
   if (!keys) keys = (await getAllKeys()).filter(key => key.startsWith(storageDataPrefix.musicUrl))
   await removeDataMultiple(keys)
+}
+
+/**
+ * 删除指定歌曲缓存的所有音质URL
+ * 音频加载失败时调用，避免下次播放继续使用已失效的缓存URL
+ * @param musicInfo 歌曲信息
+ */
+export const clearMusicUrlByMusicInfo = async(musicInfo: LX.Music.MusicInfo | LX.Download.ListItem) => {
+  // key 格式为 `${musicUrl前缀}${id}_${音质}`，以 `id_` 结尾可避免误删 id 前缀相同的其它歌曲
+  const prefix = `${storageDataPrefix.musicUrl}${musicInfo.id}_`
+  const keys = (await getAllKeys()).filter(key => key.startsWith(prefix))
+  if (keys.length) await removeDataMultiple(keys)
 }
 
 export const getLyric = async(musicInfo: LX.Music.MusicInfo) => getData<LX.Music.LyricInfo>(`${storageDataPrefix.lyric}${musicInfo.id}`).then(lrcInfo => lrcInfo ?? { lyric: '' })

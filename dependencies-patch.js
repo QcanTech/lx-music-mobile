@@ -69,6 +69,50 @@ const patchs = [
         syncNowPlayingPlaybackRate()
         emit(`,
   ],
+  // 让 RNN 的 overlay 窗口绑定 windowScene，否则在采用 UIScene 生命周期的本 app 中弹窗完全不可见
+  // （SceneDelegate.m 已为主窗口做了同样的事，但 overlay 窗口是在 scene 连接之后才创建的）
+  [
+    path.join(rootPath, 'node_modules/react-native-navigation/lib/ios/RNNOverlayManager.m'),
+    `#import "RNNOverlayManager.h"
+#import "RNNOverlayWindow.h"
+
+@implementation RNNOverlayManager`,
+    `#import "RNNOverlayManager.h"
+#import "RNNOverlayWindow.h"
+
+// PATCH: On iOS 13+ a UIWindow whose windowScene is nil is never displayed. RNN creates
+// overlay windows with a bare initWithFrame: (RNNCommandsHandler.m), which makes them
+// invisible in apps that adopt the UIScene lifecycle. Prefer the scene owning RNN's
+// "previous" window (the app's own key window), otherwise fall back to the foreground
+// UIWindowScene. Non-UIWindowScene entries are skipped, e.g. the CarPlay scene.
+static UIWindowScene *RNNActiveWindowScene(UIWindow *window) {
+    if ([window.windowScene isKindOfClass:[UIWindowScene class]]) {
+        return window.windowScene;
+    }
+
+    UIWindowScene *firstWindowScene = nil;
+    for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
+        if (![scene isKindOfClass:[UIWindowScene class]]) continue;
+        if (scene.activationState == UISceneActivationStateForegroundActive) {
+            return (UIWindowScene *)scene;
+        }
+        if (firstWindowScene == nil) firstWindowScene = (UIWindowScene *)scene;
+    }
+
+    return firstWindowScene;
+}
+
+@implementation RNNOverlayManager`,
+  ],
+  [
+    path.join(rootPath, 'node_modules/react-native-navigation/lib/ios/RNNOverlayManager.m'),
+    `    overlayWindow.previousWindow = [UIApplication sharedApplication].keyWindow;
+    [_overlayWindows addObject:overlayWindow];`,
+    `    overlayWindow.previousWindow = [UIApplication sharedApplication].keyWindow;
+    // PATCH: attach the scene before unhiding, otherwise the window is never displayed
+    overlayWindow.windowScene = RNNActiveWindowScene(overlayWindow.previousWindow);
+    [_overlayWindows addObject:overlayWindow];`,
+  ],
 ]
 
 ;(async() => {

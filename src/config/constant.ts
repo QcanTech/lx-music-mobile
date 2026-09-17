@@ -75,6 +75,9 @@ export const storageDataPrefix = {
   cheatTip: '@cheat_tip',
   remoteLyricTip: '@remote_lyric_tip',
 
+  activationFirstLaunchTime: '@activation_first_launch_time',
+  activationInfo: '@activation_info',
+
   dislikeList: '@dislike_list',
 
   userApi: '@user_api__',

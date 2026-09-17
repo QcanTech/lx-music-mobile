@@ -102,11 +102,20 @@ export const onPlayStateChanged = (info: { isPlay: boolean, name?: string, singe
 }
 
 /**
- * Update the Now Playing template buttons state (collect + play mode)
+ * Update the Now Playing template buttons state (collect + play mode) and the
+ * song-list now-playing indicator (songId)
  */
-export const updateNowPlayingState = (state: { collected?: boolean, playMode?: string }) => {
+export const updateNowPlayingState = (state: { collected?: boolean, playMode?: string, songId?: string }) => {
   if (!isCarPlayAvailable) return
   CarPlayModule.updateNowPlayingState(state)
+}
+
+/**
+ * Update the songlist detail page's collect button heart state (outline/filled)
+ */
+export const updateSonglistCollectState = (state: { collected: boolean, enabled?: boolean }) => {
+  if (!isCarPlayAvailable) return
+  CarPlayModule.updateSonglistCollectState(state)
 }
 
 /**
@@ -115,6 +124,14 @@ export const updateNowPlayingState = (state: { collected?: boolean, playMode?: s
 export const openMainApp = () => {
   if (!isCarPlayAvailable) return
   CarPlayModule.openMainApp()
+}
+
+/**
+ * Check whether CarPlay is currently connected (native side)
+ */
+export const isCarPlayConnected = (): Promise<boolean> => {
+  if (!isCarPlayAvailable) return Promise.resolve(false)
+  return CarPlayModule.isCarPlayConnected() as Promise<boolean>
 }
 
 /**
@@ -144,6 +161,7 @@ export const CarPlayEvents = {
   LOAD_MORE_MY_LIST_SONGS: 'carplay:load-more-my-list-songs',
   TOGGLE_COLLECT: 'carplay:toggle-collect',
   TOGGLE_PLAY_MODE: 'carplay:toggle-play-mode',
+  COLLECT_SONGLIST: 'carplay:collect-songlist',
 } as const
 
 export const isAvailable = isCarPlayAvailable

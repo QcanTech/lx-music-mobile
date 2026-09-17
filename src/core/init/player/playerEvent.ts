@@ -2,6 +2,7 @@ import { playNext, setMusicUrl } from '@/core/player/player'
 import { setStatusText } from '@/core/player/playStatus'
 import { getPosition, isEmpty, setStop } from '@/plugins/player'
 import { isActive } from '@/utils/tools'
+import { clearMusicUrlByMusicInfo } from '@/utils/data'
 import BackgroundTimer from 'react-native-background-timer'
 import playerState from '@/store/player/state'
 import { setNowPlayTime } from '@/core/player/progress'
@@ -98,12 +99,17 @@ export default () => {
         // console.log(this.retryNum)
         if (playerState.playMusicInfo.musicInfo !== musicInfo) return
         retryNum++
+        // 音频加载失败，先删除本地缓存的歌曲URL再重新获取，避免继续使用已失效的缓存
+        void clearMusicUrlByMusicInfo(musicInfo)
         setMusicUrl(playerState.playMusicInfo.musicInfo, true)
         setStatusText(global.i18n.t('player__refresh_url'))
       })
       return
     }
     if (!isEmpty()) void setStop()
+
+    // 多次刷新URL后仍加载失败，删除本地缓存的歌曲URL，避免下次播放继续使用失效缓存
+    if (playerState.playMusicInfo.musicInfo) void clearMusicUrlByMusicInfo(playerState.playMusicInfo.musicInfo)
 
     if (isActive()) {
       setStatusText(global.i18n.t('player__error'))

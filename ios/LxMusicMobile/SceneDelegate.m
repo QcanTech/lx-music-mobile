@@ -36,6 +36,11 @@
     if (module) {
         [module templateApplicationScene:templateApplicationScene
              didConnectInterfaceController:interfaceController];
+    } else {
+        // Bridge hasn't instantiated the module yet (cold launch straight into
+        // the CarPlay app). Store the connection; the module adopts it in -init.
+        [CarPlayModule setPendingConnectionWithScene:templateApplicationScene
+                                 interfaceController:interfaceController];
     }
 }
 
@@ -45,6 +50,8 @@
     if (module) {
         [module templateApplicationScene:templateApplicationScene
              didDisconnectInterfaceController:interfaceController];
+    } else {
+        [CarPlayModule clearPendingConnection];
     }
 }
 

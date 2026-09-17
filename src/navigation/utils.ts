@@ -3,6 +3,7 @@ import {
   VERSION_MODAL,
   PACT_MODAL,
   SYNC_MODE_MODAL,
+  ACTIVATION_MODAL,
 } from './screenNames'
 import themeState from '@/store/theme/state'
 
@@ -60,6 +61,36 @@ export const showPactModal = () => {
         //     },
         //   },
         // },
+      },
+    },
+  })
+}
+
+export const showActivationModal = () => {
+  const theme = themeState.theme
+
+  void Navigation.showOverlay({
+    component: {
+      name: ACTIVATION_MODAL,
+      options: {
+        layout: {
+          componentBackgroundColor: 'transparent',
+        },
+        overlay: {
+          interceptTouchOutside: true,
+          // RNN 仅在此为 true 时把 overlay 窗口设为 key window，而 UIKit 只向 key window 派发键盘输入
+          handleKeyboardEvents: true,
+        },
+        statusBar: {
+          drawBehind: true,
+          visible: true,
+          style: getStatusBarStyle(theme.isDark),
+          backgroundColor: 'transparent',
+          animate: true,
+        },
+        navigationBar: {
+          backgroundColor: theme['c-main-background'],
+        },
       },
     },
   })
