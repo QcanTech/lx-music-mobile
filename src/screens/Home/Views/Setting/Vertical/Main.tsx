@@ -13,6 +13,7 @@ import Version from '../settings/Version'
 import About from '../settings/About'
 import { createStyle } from '@/utils/tools'
 import { SETTING_SCREENS, type SettingScreenIds } from '../Main'
+import { SectionCollapseProvider } from '../components/Section'
 
 type FlatListType = FlatListProps<SettingScreenIds>
 
@@ -49,17 +50,19 @@ export default () => {
   const getkey: FlatListType['keyExtractor'] = item => item
 
   return (
-    <FlatList
-      data={SETTING_SCREENS}
-      keyboardShouldPersistTaps={'always'}
-      renderItem={renderItem}
-      keyExtractor={getkey}
-      contentContainerStyle={styles.content}
-      maxToRenderPerBatch={2}
-      // updateCellsBatchingPeriod={80}
-      windowSize={2}
-      // removeClippedSubviews={true}
-      initialNumToRender={1}
-    />
+    <SectionCollapseProvider>
+      <FlatList
+        data={SETTING_SCREENS}
+        keyboardShouldPersistTaps={'always'}
+        renderItem={renderItem}
+        keyExtractor={getkey}
+        contentContainerStyle={styles.content}
+        maxToRenderPerBatch={2}
+        // updateCellsBatchingPeriod={80}
+        windowSize={2}
+        // removeClippedSubviews={true}
+        initialNumToRender={1}
+      />
+    </SectionCollapseProvider>
   )
 }
