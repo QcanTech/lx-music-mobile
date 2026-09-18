@@ -8,6 +8,7 @@ import { scaleSizeAbsHR } from '@/utils/pixelRatio'
 import { defaultHeaders } from './common/Image'
 import SizeView from './SizeView'
 import { useBgPic } from '@/store/common/hook'
+import { isNativeThemeBgSupported } from '@/utils/nativeThemeBg'
 
 interface Props {
   children: React.ReactNode
@@ -39,19 +40,20 @@ export default ({ children }: Props) => {
   // }
   // console.log('render page content')
 
+  const useNativeBg = isNativeThemeBgSupported && !!theme['bg-image']
   const themeComponent = useMemo(() => (
     <View style={{ flex: 1, overflow: 'hidden' }}>
       <ImageBackground
-        style={{ position: 'absolute', left: 0, top: 0, height: windowSize.height, width: windowSize.width, backgroundColor: theme['c-content-background'] }}
-        source={theme['bg-image']}
+        style={{ position: 'absolute', left: 0, top: 0, height: windowSize.height, width: windowSize.width, backgroundColor: useNativeBg ? 'transparent' : theme['c-content-background'] }}
+        source={useNativeBg ? null : theme['bg-image']}
         resizeMode="cover"
       >
       </ImageBackground>
-      <View style={{ flex: 1, flexDirection: 'column', backgroundColor: theme['c-main-background'] }}>
+      <View style={{ flex: 1, flexDirection: 'column', backgroundColor: useNativeBg ? 'transparent' : theme['c-main-background'] }}>
         {children}
       </View>
     </View>
-  ), [children, theme, windowSize.height, windowSize.width])
+  ), [children, theme, windowSize.height, windowSize.width, useNativeBg])
   const picComponent = useMemo(() => {
     return (
       <View style={{ flex: 1, overflow: 'hidden' }}>

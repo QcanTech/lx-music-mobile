@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo, useRef } from 'react'
 
 import { View } from 'react-native'
 
-import SubTitle from '../../components/SubTitle'
+import Section from '../../components/Section'
 import CheckBox from '@/components/common/CheckBox'
 import { createStyle } from '@/utils/tools'
 import { setApiSource } from '@/core/apiSource'
@@ -96,24 +96,29 @@ export default memo(() => {
   }
 
   return (
-    <SubTitle title={t('setting_basic_source')}>
-      <View style={styles.list}>
-        {
-          list.map(({ id, name }) => <Item name={name} id={id} key={id} change={setApiSourceId} />)
-        }
-        {
-          userApiList.map(({ id, name, desc, statusLabel }) => <Item name={name} desc={desc} statusLabel={statusLabel} id={id} key={id} change={setApiSourceId} />)
-        }
-      </View>
-      <View style={styles.btn}>
-        <Button onPress={handleShow}>{t('setting_basic_source_user_api_btn')}</Button>
+    <Section title={t('setting_source_manager')}>
+      <View style={styles.content}>
+        <View style={styles.list}>
+          {
+            list.map(({ id, name }) => <Item name={name} id={id} key={id} change={setApiSourceId} />)
+          }
+          {
+            userApiList.map(({ id, name, desc, statusLabel }) => <Item name={name} desc={desc} statusLabel={statusLabel} id={id} key={id} change={setApiSourceId} />)
+          }
+        </View>
+        <View style={styles.btn}>
+          <Button onPress={handleShow}>{t('setting_basic_source_user_api_btn')}</Button>
+        </View>
       </View>
       <UserApiEditModal ref={modalRef} />
-    </SubTitle>
+    </Section>
   )
 })
 
 const styles = createStyle({
+  content: {
+    paddingLeft: 25,
+  },
   list: {
     flexGrow: 0,
     flexShrink: 1,

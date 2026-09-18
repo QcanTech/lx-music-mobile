@@ -3268,7 +3268,7 @@ export default [
       },
       "extInfo": {
         "c-app-background": "rgba(255, 255, 255, 0)",
-        "c-main-background": "rgba(255, 255, 255, 0.9)",
+        "c-main-background": "rgba(255, 255, 255, 0.8)",
         "bg-image": "jqbg.jpg",
         "bg-image-position": "center",
         "bg-image-size": "cover",

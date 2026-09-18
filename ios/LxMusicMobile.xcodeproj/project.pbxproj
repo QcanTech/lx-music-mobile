@@ -23,6 +23,12 @@
 		A1B2C3D4E5F60008 /* CarPlay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60009 /* CarPlay.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B1C2D3E4F5A60001 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F5A60003 /* SceneDelegate.m */; };
 		C1D2E3F4A5B60001 /* DeviceModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B60003 /* DeviceModule.m */; };
+		C1D2E3F4A5B60101 /* ThemeBackgroundModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B60103 /* ThemeBackgroundModule.m */; };
+		C1D2E3F4A5B60121 /* jqbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B60111 /* jqbg.jpg */; };
+		C1D2E3F4A5B60122 /* myzcbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B60112 /* myzcbg.jpg */; };
+		C1D2E3F4A5B60123 /* china_ink.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B60113 /* china_ink.jpg */; };
+		C1D2E3F4A5B60124 /* xnkl.png in Resources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B60114 /* xnkl.png */; };
+		C1D2E3F4A5B60125 /* landingMoon.png in Resources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B60115 /* landingMoon.png */; };
 		F8AF0B32C54553635E58E9F5 /* libPods-LxMusicMobile-LxMusicMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68F725BCC31DC7AF7B127375 /* libPods-LxMusicMobile-LxMusicMobileTests.a */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +75,13 @@
 		B1C2D3E4F5A60003 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SceneDelegate.m; path = LxMusicMobile/SceneDelegate.m; sourceTree = "<group>"; };
 		C1D2E3F4A5B60002 /* DeviceModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DeviceModule.h; path = LxMusicMobile/DeviceModule.h; sourceTree = "<group>"; };
 		C1D2E3F4A5B60003 /* DeviceModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DeviceModule.m; path = LxMusicMobile/DeviceModule.m; sourceTree = "<group>"; };
+		C1D2E3F4A5B60102 /* ThemeBackgroundModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ThemeBackgroundModule.h; path = LxMusicMobile/ThemeBackgroundModule.h; sourceTree = "<group>"; };
+		C1D2E3F4A5B60103 /* ThemeBackgroundModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ThemeBackgroundModule.m; path = LxMusicMobile/ThemeBackgroundModule.m; sourceTree = "<group>"; };
+		C1D2E3F4A5B60111 /* jqbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = jqbg.jpg; path = LxMusicMobile/theme_images/jqbg.jpg; sourceTree = "<group>"; };
+		C1D2E3F4A5B60112 /* myzcbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = myzcbg.jpg; path = LxMusicMobile/theme_images/myzcbg.jpg; sourceTree = "<group>"; };
+		C1D2E3F4A5B60113 /* china_ink.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = china_ink.jpg; path = LxMusicMobile/theme_images/china_ink.jpg; sourceTree = "<group>"; };
+		C1D2E3F4A5B60114 /* xnkl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = xnkl.png; path = LxMusicMobile/theme_images/xnkl.png; sourceTree = "<group>"; };
+		C1D2E3F4A5B60115 /* landingMoon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = landingMoon.png; path = LxMusicMobile/theme_images/landingMoon.png; sourceTree = "<group>"; };
 		DC71AEBA77C3465DAF66080C /* Pods-LxMusicMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LxMusicMobile.debug.xcconfig"; path = "Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -120,6 +133,13 @@
 				A1B2C3D4E5F60005 /* CarPlaySceneDelegate.m */,
 				C1D2E3F4A5B60002 /* DeviceModule.h */,
 				C1D2E3F4A5B60003 /* DeviceModule.m */,
+				C1D2E3F4A5B60102 /* ThemeBackgroundModule.h */,
+				C1D2E3F4A5B60103 /* ThemeBackgroundModule.m */,
+				C1D2E3F4A5B60111 /* jqbg.jpg */,
+				C1D2E3F4A5B60112 /* myzcbg.jpg */,
+				C1D2E3F4A5B60113 /* china_ink.jpg */,
+				C1D2E3F4A5B60114 /* xnkl.png */,
+				C1D2E3F4A5B60115 /* landingMoon.png */,
 				A1B2C3D4E5F60007 /* LxMusicMobile.entitlements */,
 				B1C2D3E4F5A60002 /* SceneDelegate.h */,
 				B1C2D3E4F5A60003 /* SceneDelegate.m */,
@@ -297,6 +317,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				31327BF82EBCA20B0005BA87 /* icomoon.ttf in Resources */,
+				C1D2E3F4A5B60121 /* jqbg.jpg in Resources */,
+				C1D2E3F4A5B60122 /* myzcbg.jpg in Resources */,
+				C1D2E3F4A5B60123 /* china_ink.jpg in Resources */,
+				C1D2E3F4A5B60124 /* xnkl.png in Resources */,
+				C1D2E3F4A5B60125 /* landingMoon.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				312D460C2EC3325600967909 /* user-api-preload.js in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -331,9 +356,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -370,9 +399,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -387,9 +420,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile/Pods-LxMusicMobile-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -426,9 +463,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LxMusicMobile-LxMusicMobileTests/Pods-LxMusicMobile-LxMusicMobileTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -456,6 +497,7 @@
 				A1B2C3D4E5F60002 /* CarPlaySceneDelegate.m in Sources */,
 				B1C2D3E4F5A60001 /* SceneDelegate.m in Sources */,
 				C1D2E3F4A5B60001 /* DeviceModule.m in Sources */,
+				C1D2E3F4A5B60101 /* ThemeBackgroundModule.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -532,7 +574,7 @@
 				CODE_SIGN_ENTITLEMENTS = LxMusicMobile/LxMusicMobile.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 84NYQH5CF8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LxMusicMobile/Info.plist;
@@ -572,7 +614,7 @@
 				CODE_SIGN_ENTITLEMENTS = LxMusicMobile/LxMusicMobile.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 84NYQH5CF8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -675,10 +717,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -747,10 +786,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

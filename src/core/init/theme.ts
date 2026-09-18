@@ -5,6 +5,8 @@ import { getTheme } from '@/theme/themes/index'
 import settingState from '@/store/setting/state'
 import StatusBar from '@/components/common/StatusBar'
 import { updateNavigationColors } from '@/navigation'
+import themeState from '@/store/theme/state'
+import { updateNativeThemeBackground } from '@/utils/nativeThemeBg'
 // import { Dimensions, PixelRatio } from 'react-native'
 
 
@@ -19,10 +21,16 @@ export default async(setting: LX.AppSetting) => {
   }
 
   applyTheme(await getTheme())
+  updateNativeThemeBackground(themeState.theme)
 
   global.state_event.on('themeUpdated', (theme) => {
     StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content', true)
     void updateNavigationColors(theme)
+    updateNativeThemeBackground(theme)
+  })
+  global.state_event.on('bgPicUpdated', () => {
+    updateNativeThemeBackground(themeState.theme)
+    void updateNavigationColors(themeState.theme)
   })
   // onDimensionChange(({ window }) => {
   //   let screenW = window.width

@@ -13,7 +13,7 @@ const StatusBar = function() {
   }, [statusBarStyle])
 
   return (
-    <View style={{ height: statusBarHeight, backgroundColor: theme['c-main-background'] }}>
+    <View style={{ height: statusBarHeight, backgroundColor: theme['bg-image'] ? 'transparent' : theme['c-main-background'] }}>
       <RNStatusBar backgroundColor="rgba(0,0,0,0)" barStyle={statusBarStyle} animated translucent={true} />
     </View>
   )

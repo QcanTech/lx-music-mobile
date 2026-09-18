@@ -13,6 +13,7 @@ import themeState from '@/store/theme/state'
 import commonState from '@/store/common/state'
 import { COMPONENT_IDS, NAV_SHEAR_NATIVE_IDS } from '@/config/constant'
 import { getStatusBarStyle } from './utils'
+import { getComponentBackgroundColor } from '@/utils/nativeThemeBg'
 import { windowSizeTools } from '@/utils/windowSizeTools'
 import { type ListInfoItem } from '@/store/songlist/state'
 
@@ -77,7 +78,7 @@ export async function pushHomeScreen() {
                 backgroundColor: theme['c-main-background'],
               },
               layout: {
-                componentBackgroundColor: theme['c-main-background'],
+                componentBackgroundColor: getComponentBackgroundColor(theme),
               },
               window: {
                 // backgroundColor: 'red',
@@ -145,7 +146,7 @@ export function pushPlayDetailScreen(componentId: string, skipAnimation = false)
             backgroundColor: theme['c-main-background'],
           },
           layout: {
-            componentBackgroundColor: theme['c-main-background'],
+            componentBackgroundColor: getComponentBackgroundColor(theme),
           },
           animations: {
             push: skipAnimation ? {} : {
@@ -230,7 +231,7 @@ export function pushSonglistDetailScreen(componentId: string, info: ListInfoItem
             backgroundColor: theme['c-main-background'],
           },
           layout: {
-            componentBackgroundColor: theme['c-main-background'],
+            componentBackgroundColor: getComponentBackgroundColor(theme),
           },
           animations: {
             push: {
@@ -363,7 +364,7 @@ export function pushCommentScreen(componentId: string) {
             backgroundColor: theme['c-main-background'],
           },
           layout: {
-            componentBackgroundColor: theme['c-main-background'],
+            componentBackgroundColor: getComponentBackgroundColor(theme),
           },
           animations: {
             push: {
@@ -602,7 +603,7 @@ export async function updateNavigationColors(theme: LX.ActiveTheme) {
       backgroundColor: theme['c-main-background'],
     },
     layout: {
-      componentBackgroundColor: theme['c-main-background'],
+      componentBackgroundColor: getComponentBackgroundColor(theme),
     },
   })
 
@@ -615,7 +616,7 @@ export async function updateNavigationColors(theme: LX.ActiveTheme) {
         backgroundColor: theme['c-main-background'],
       },
       layout: {
-        componentBackgroundColor: theme['c-main-background'],
+        componentBackgroundColor: getComponentBackgroundColor(theme),
       },
     })
   }

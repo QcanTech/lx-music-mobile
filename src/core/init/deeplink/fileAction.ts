@@ -1,6 +1,6 @@
 import { readMetadata } from '@/utils/localMediaMetadata'
 import { handleImportList } from '@/screens/Home/Views/Setting/settings/Backup/actions'
-import { handleImportLocalFile } from '@/screens/Home/Views/Setting/settings/Basic/UserApiEditModal/action'
+import { handleImportLocalFile } from '@/screens/Home/Views/Setting/settings/SourceManager/UserApiEditModal/action'
 import { type FileType } from '@/utils/fs'
 import { confirmDialog } from '@/utils/tools'
 import playerState from '@/store/player/state'

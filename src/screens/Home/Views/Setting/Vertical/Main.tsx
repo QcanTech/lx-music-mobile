@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { FlatList, type FlatListProps } from 'react-native'
 
 import Basic from '../settings/Basic'
+import SourceManager from '../settings/SourceManager'
 import Player from '../settings/Player'
 // import LyricDesktop from '../settings/LyricDesktop'
 import Search from '../settings/Search'
@@ -32,6 +33,7 @@ const ListItem = memo(({
   id,
 }: { id: SettingScreenIds }) => {
   switch (id) {
+    case 'source_manager': return <SourceManager />
     case 'player': return <Player />
     // case 'lyric_desktop': return <LyricDesktop />
     case 'search': return <Search />
