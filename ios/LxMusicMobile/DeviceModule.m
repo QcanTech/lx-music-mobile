@@ -2,6 +2,13 @@
 #import <Security/Security.h>
 #import <TargetConditionals.h>
 #import <sys/utsname.h>
+#import <React/RCTUtils.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
+@interface DeviceModule () <UIDocumentPickerDelegate>
+@property(nonatomic, copy) RCTPromiseResolveBlock importResolve;
+@property(nonatomic, copy) RCTPromiseRejectBlock importReject;
+@end
 
 static NSString *const kDeviceIdService = @"cn.toside.music.mobile";
 static NSString *const kDeviceIdAccount = @"activation_device_id";
@@ -12,6 +19,87 @@ RCT_EXPORT_MODULE(DeviceModule);
 
 + (BOOL)requiresMainQueueSetup {
     return NO;
+}
+
+RCT_EXPORT_METHOD(pickUserApiScript:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.importResolve != nil) {
+            reject(@"ERR_IMPORT_BUSY", @"A file picker is already open", nil);
+            return;
+        }
+        UIViewController *presenter = RCTPresentedViewController();
+        if (presenter == nil || presenter.view.window == nil) {
+            reject(@"ERR_IMPORT_PRESENT", @"Unable to present the file picker", nil);
+            return;
+        }
+        self.importResolve = resolve;
+        self.importReject = reject;
+        // Some file providers identify .js files as plain text or generic data.
+        // Read selected text and let the shared importer validate the source format.
+        UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc]
+            initForOpeningContentTypes:@[UTTypeData] asCopy:YES];
+        picker.delegate = self;
+        picker.allowsMultipleSelection = NO;
+        picker.shouldShowFileExtensions = YES;
+        [presenter presentViewController:picker animated:YES completion:nil];
+    });
+}
+
+- (void)finishImportPicker:(UIDocumentPickerViewController *)controller completion:(dispatch_block_t)completion {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // UIKit can still be dismissing its remote file browser when the delegate
+        // fires. Do not let JS present an alert on that disappearing controller.
+        id<UIViewControllerTransitionCoordinator> transition = controller.transitionCoordinator;
+        if (controller.isBeingDismissed && transition != nil) {
+            BOOL queued = [transition animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+                completion();
+            }];
+            if (queued) return;
+        }
+        if (controller.presentingViewController != nil) {
+            [controller dismissViewControllerAnimated:YES completion:completion];
+        } else {
+            completion();
+        }
+    });
+}
+
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    RCTPromiseResolveBlock resolve = self.importResolve;
+    self.importResolve = nil;
+    self.importReject = nil;
+    if (resolve) [self finishImportPicker:controller completion:^{ resolve([NSNull null]); }];
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
+    RCTPromiseResolveBlock resolve = self.importResolve;
+    RCTPromiseRejectBlock reject = self.importReject;
+    self.importResolve = nil;
+    self.importReject = nil;
+    if (!resolve || !reject) return;
+    NSURL *url = urls.firstObject;
+    if (url == nil) {
+        [self finishImportPicker:controller completion:^{ resolve([NSNull null]); }];
+        return;
+    }
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSError *error = nil;
+        BOOL accessed = [url startAccessingSecurityScopedResource];
+        NSString *script = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
+        if (accessed) [url stopAccessingSecurityScopedResource];
+        // asCopy:YES creates an app-owned temporary copy; the source is untouched.
+        [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+        [self finishImportPicker:controller completion:^{
+            if (script != nil) {
+                resolve(script);
+            } else {
+                NSString *message = [NSString stringWithFormat:@"无法读取音源文件「%@」：%@",
+                    url.lastPathComponent, error.localizedDescription ?: @"文件内容无法解码为 UTF-8 文本"];
+                reject(@"ERR_IMPORT_FILE", message, error);
+            }
+        }];
+    });
 }
 
 RCT_EXPORT_METHOD(getDeviceId:(RCTPromiseResolveBlock)resolve

@@ -58,6 +58,7 @@ const styles = createStyle({
 
 export interface DialogProps {
   onHide?: () => void
+  onDismiss?: () => void
   keyHide?: boolean
   bgHide?: boolean
   closeBtn?: boolean
@@ -72,6 +73,7 @@ export interface DialogType {
 
 export default forwardRef<DialogType, DialogProps>(({
   onHide,
+  onDismiss,
   keyHide = true,
   bgHide = true,
   closeBtn = true,
@@ -98,7 +100,7 @@ export default forwardRef<DialogType, DialogProps>(({
   }, [closeBtn, theme])
 
   return (
-    <Modal onHide={onHide} keyHide={keyHide} bgHide={bgHide} bgColor="rgba(50,50,50,.3)" ref={modalRef}>
+    <Modal onHide={onHide} onDismiss={onDismiss} keyHide={keyHide} bgHide={bgHide} bgColor="rgba(50,50,50,.3)" ref={modalRef}>
       <View style={{ ...styles.centeredView, paddingBottom: keyboardShown ? keyboardHeight : 0 }}>
         <View style={{ ...styles.modalView, height, backgroundColor: theme['c-content-background'] }} onStartShouldSetResponder={() => true}>
           <View style={{ ...styles.header, backgroundColor: theme['c-primary-light-100-alpha-100'] }}>

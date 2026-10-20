@@ -171,6 +171,7 @@ export interface MenuProps<M extends Menus = Menus> {
   menus: M
   onPress: (menu: M[number]) => void
   onHide?: () => void
+  onDismiss?: () => void
   width?: number
   height?: number
   fontSize?: number
@@ -183,7 +184,7 @@ export interface MenuType {
   hide: () => void
 }
 
-const Component = <M extends Menus>({ menus, width, height, activeId, onHide, onPress, fontSize, center }: MenuProps<M>, ref: Ref<MenuType>) => {
+const Component = <M extends Menus>({ menus, width, height, activeId, onHide, onDismiss, onPress, fontSize, center }: MenuProps<M>, ref: Ref<MenuType>) => {
   // console.log(visible)
   const modalRef = useRef<ModalType>(null)
   const [position, setPosition] = useState<Position>({ w: 0, h: 0, x: 0, y: 0 })
@@ -203,7 +204,7 @@ const Component = <M extends Menus>({ menus, width, height, activeId, onHide, on
   }))
 
   return (
-    <Modal onHide={onHide} ref={modalRef}>
+    <Modal onHide={onHide} onDismiss={onDismiss} ref={modalRef}>
       <Menu menus={menus} width={width} height={height} activeId={activeId} buttonPosition={position} menuSize={menuSize} onPress={onPress} onHide={hide} fontSize={fontSize} center={center} />
     </Modal>
   )

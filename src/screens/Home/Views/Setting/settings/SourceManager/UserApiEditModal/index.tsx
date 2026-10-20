@@ -8,6 +8,9 @@ import Dialog, { type DialogType } from '@/components/common/Dialog'
 import Button from '@/components/common/Button'
 import List from './List'
 import ImportBtn from './ImportBtn'
+import { pickUserApiScript } from '@/utils/nativeModules/device'
+import { importUserApi } from '@/core/userApi'
+import { log } from '@/utils/log'
 
 // interface UrlInputType {
 //   setText: (text: string) => void
@@ -66,6 +69,8 @@ export default forwardRef<UserApiEditModalType, {}>((props, ref) => {
   // const sourceSelectorRef = useRef<SourceSelectorType>(null)
   // const inputRef = useRef<UrlInputType>(null)
   const [visible, setVisible] = useState(false)
+  const [importMessage, setImportMessage] = useState('')
+  const pendingLocalImport = useRef(false)
   const theme = useTheme()
   const t = useI18n()
 
@@ -95,6 +100,32 @@ export default forwardRef<UserApiEditModalType, {}>((props, ref) => {
     dialogRef.current?.setVisible(false)
   }
 
+  const handleImportLocal = () => {
+    pendingLocalImport.current = true
+    setImportMessage('')
+    dialogRef.current?.setVisible(false)
+  }
+
+  const handleDismiss = () => {
+    if (!pendingLocalImport.current) {
+      // Release the closed dialog and all nested menu/modal hosts.
+      setVisible(false)
+      return
+    }
+    pendingLocalImport.current = false
+    // Present the system picker only after both React Native modals are gone.
+    void pickUserApiScript().then(async script => {
+      if (script == null) return
+      await importUserApi(script.trimStart())
+      setImportMessage(t('user_api_import_success_tip'))
+    }).catch((error: Error) => {
+      log.error(error.stack ?? error.message)
+      setImportMessage(t('user_api_import_failed_tip', { message: error.message }))
+    }).finally(() => {
+      handleShow()
+    })
+  }
+
   const openFAQPage = () => {
     void openUrl('https://lyswhut.github.io/lx-music-doc/mobile/custom-source')
   }
@@ -102,11 +133,12 @@ export default forwardRef<UserApiEditModalType, {}>((props, ref) => {
   return (
     visible
       ? (
-          <Dialog ref={dialogRef} bgHide={false}>
+          <Dialog ref={dialogRef} bgHide={false} onDismiss={handleDismiss}>
             <View style={styles.content}>
               {/* <UrlInput ref={inputRef} /> */}
               <Text size={16} style={styles.title}>{t('user_api_title')}</Text>
               <List />
+              {importMessage ? <Text selectable size={13}>{importMessage}</Text> : null}
               <View style={styles.tips}>
                 <Text style={styles.tipsText} size={12}>
                   {t('user_api_readme')}
@@ -123,7 +155,7 @@ export default forwardRef<UserApiEditModalType, {}>((props, ref) => {
               <Button style={{ ...styles.btn, backgroundColor: theme['c-button-background'] }} onPress={handleCancel}>
                 <Text size={14} color={theme['c-button-font']}>{t('close')}</Text>
               </Button>
-              <ImportBtn btnStyle={{ ...styles.btn, backgroundColor: theme['c-button-background'] }} />
+              <ImportBtn onImportLocal={handleImportLocal} btnStyle={{ ...styles.btn, backgroundColor: theme['c-button-background'] }} />
             </View>
           </Dialog>
         ) : null
@@ -172,5 +204,4 @@ const styles = createStyle({
     marginRight: 15,
   },
 })
-
 

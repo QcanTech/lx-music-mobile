@@ -13,6 +13,7 @@ export interface DorpDownMenuProps<T extends Menus> extends Omit<MenuProps<T>, '
 export default <T extends Menus>({
   menus,
   onPress,
+  onDismiss,
   height,
   fontSize,
   center,
@@ -41,6 +42,7 @@ export default <T extends Menus>({
         menus={menus}
         center={center}
         onPress={onPress}
+        onDismiss={onDismiss}
         fontSize={fontSize}
         height={height}
         activeId={activeId}
