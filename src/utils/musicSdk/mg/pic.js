@@ -1,5 +1,4 @@
-import { httpFetch } from '../../request'
-import getSongId from './songId'
+import { getMusicInfo } from './musicInfo'
 
 export default {
   async getPicUrl(songId, tryNum = 0) {
@@ -23,7 +22,7 @@ export default {
     return requestObj
   },
   async getPic(songInfo) {
-    const songId = await getSongId(songInfo)
-    return this.getPicUrl(songId)
+    const info = await getMusicInfo(songInfo.songmid)
+    return info.img
   },
 }
