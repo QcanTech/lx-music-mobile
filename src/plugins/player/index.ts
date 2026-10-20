@@ -1,6 +1,6 @@
-import TrackPlayer from 'react-native-track-player'
+import TrackPlayer, { IOSCategory } from 'react-native-track-player'
 import { updateOptions, setVolume, setPlaybackRate, migratePlayerCache } from './utils'
-import { IOSCategory } from 'react-native-track-player'
+import { Platform } from 'react-native'
 
 // const listenEvent = () => {
 //   TrackPlayer.addEventListener('playback-error', err => {
@@ -34,7 +34,9 @@ const initial = async({ volume, playRate, cacheSize, isHandleAudioFocus, isEnabl
     waitForBuffer: true,
     // handleAudioFocus: isHandleAudioFocus,
     // audioOffload: isEnableAudioOffload,
-    autoUpdateMetadata: false,
+    autoUpdateMetadata: true,
+    // iOS 在音频中断结束且系统允许恢复时继续播放。
+    autoHandleInterruptions: Platform.OS === 'ios',
     iosCategory: IOSCategory.Playback,
   })
   global.lx.playerStatus.isInitialized = true
