@@ -106,6 +106,9 @@
     "typescript": "^5.9.3"
   },
   "overrides": {
+    "@craftzdog/react-native-buffer": {
+      "react-native-quick-base64": "$react-native-quick-base64"
+    },
     "@react-native-community/cli-platform-android": {
       "fast-xml-parser": "^5.3.4"
     },

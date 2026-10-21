@@ -574,7 +574,7 @@
 				CODE_SIGN_ENTITLEMENTS = LxMusicMobile/LxMusicMobile.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 84NYQH5CF8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LxMusicMobile/Info.plist;
@@ -614,7 +614,7 @@
 				CODE_SIGN_ENTITLEMENTS = LxMusicMobile/LxMusicMobile.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 84NYQH5CF8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

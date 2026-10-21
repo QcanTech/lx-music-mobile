@@ -1,4 +1,6 @@
 {
+  "play_detail_playlist_title": "Current playlist",
+  "play_detail_playlist_empty": "The current playlist is empty",
   "add_to": "Add to ...",
   "agree": "Sure",
   "agree_go": "Turn it on",
