@@ -1,4 +1,5 @@
 import { NativeEventEmitter, NativeModules } from 'react-native'
+import { state as userApiState } from '@/store/userApi/state'
 
 const { UserApiModule } = NativeModules
 
@@ -94,7 +95,7 @@ export const onScriptAction = (handler: (event: ActionsEvent) => void): () => vo
           }
         }
       }
-      
+
       if (event.action == 'init') {
         // Safely handle the info object
         if (event.data && typeof event.data === 'object') {
@@ -105,7 +106,8 @@ export const onScriptAction = (handler: (event: ActionsEvent) => void): () => vo
           }
         }
       } else if (event.action == 'showUpdateAlert') {
-        if (!loadScriptInfo?.allowShowUpdateAlert) return
+        const currentApi = userApiState.list.find(api => api.id === loadScriptInfo?.id)
+        if (!currentApi?.allowShowUpdateAlert) return
       }
       handler(event as ActionsEvent)
     } catch (error) {

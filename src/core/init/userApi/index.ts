@@ -229,7 +229,7 @@ export default async(setting: LX.AppSetting) => {
         cancelRequest(event.data, 'request canceled')
         break
       case 'showUpdateAlert':
-        // showUpdateAlert(event.data)
+        showUpdateAlert(event.data)
         break
       case 'log':
         switch ((event as unknown as { type: keyof typeof log }).type) {
